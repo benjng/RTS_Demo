@@ -1,5 +1,7 @@
 using UnityEngine;
 
+// Actual Clicking mechanics (getmousebuttondown, raycast)
+// send the detected gameObj to UnitSelection instance for add/remove 
 public class UnitClick : MonoBehaviour
 {
     private Camera myCam;

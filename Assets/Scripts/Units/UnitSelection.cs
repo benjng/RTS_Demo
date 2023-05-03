@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Takes care the list/unlist logics
 public class UnitSelection : MonoBehaviour
 {
     public List<GameObject> unitList = new List<GameObject>();
@@ -33,8 +34,11 @@ public class UnitSelection : MonoBehaviour
         }
     }
 
-    public void DragClickSelect(GameObject unitToAdd){
-
+    public void DragSelect(GameObject unitToAdd){
+        if (!unitsSelected.Contains(unitToAdd)){
+            unitsSelected.Add(unitToAdd);
+            unitToAdd.transform.GetChild(0).gameObject.SetActive(true);
+        }
     }
 
     public void DeselectAll(){
