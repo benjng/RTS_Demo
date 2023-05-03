@@ -15,7 +15,7 @@ public class UnitClick : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0)){
+        if (Input.GetMouseButtonDown(0)){ //LMB
             RaycastHit hit;
             Ray ray = myCam.ScreenPointToRay(Input.mousePosition); // create a ray from screen to mouse
 
@@ -32,5 +32,14 @@ public class UnitClick : MonoBehaviour
                     UnitSelection.Instance.DeselectAll();
             }
         }
+
+        // if (Input.GetMouseButtonDown(1)){ //RMB
+        //     RaycastHit hit;
+        //     Ray ray = myCam.ScreenPointToRay(Input.mousePosition); // create a ray from screen to mouse
+
+        //     if(Physics.Raycast(ray, out hit, Mathf.Infinity, ground)){ // cast the ray
+                
+        //     }
+        // }
     }
 }
