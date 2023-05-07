@@ -19,8 +19,8 @@ public class UnitClick : MonoBehaviour
             RaycastHit hit;
             Ray ray = myCam.ScreenPointToRay(Input.mousePosition); // create a ray from screen to mouse
 
+            // hit a clickable (Shift/normal)
             if(Physics.Raycast(ray, out hit, Mathf.Infinity, clickable)){ // cast the ray
-                // hit a clickable (Shift/normal)
                 if (Input.GetKey(KeyCode.LeftShift)){
                     UnitSelection.Instance.ShiftClickSelect(hit.collider.gameObject);
                 } else {

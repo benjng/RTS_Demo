@@ -20,19 +20,19 @@ public class CameraController : MonoBehaviour
         float horizontalInput, verticalInput;
 
         // Check if the mouse position is on the left edge of the screen
-        if (Input.mousePosition.x <= leftEdge)
+        if (/*Input.mousePosition.x <= leftEdge || */Input.GetKey(KeyCode.A))
         {
             horizontalInput = -1f;
-        } else if (Input.mousePosition.x >= rightEdge) {
+        } else if (/*Input.mousePosition.x >= rightEdge || */Input.GetKey(KeyCode.D)) {
             horizontalInput = 1f;
         } else {
             horizontalInput = 0;
         }
 
-        if (Input.mousePosition.y <= bottomEdge)
+        if (/*Input.mousePosition.y <= bottomEdge || */Input.GetKey(KeyCode.S))
         {
             verticalInput = -1f;
-        } else if (Input.mousePosition.y >= TopEdge) {
+        } else if (/*Input.mousePosition.y >= TopEdge || */Input.GetKey(KeyCode.W)) {
             verticalInput = 1f;
         } else {
             verticalInput = 0;
@@ -51,8 +51,8 @@ public class CameraController : MonoBehaviour
         transform.position += movementDir * Time.deltaTime * moveSpeed;
     }
 
-    void OnDrawGizmos() {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawSphere(transform.position, 2.0f);
-    }
+    // void OnDrawGizmos() {
+    //     Gizmos.color = Color.yellow;
+    //     Gizmos.DrawSphere(transform.position, 2.0f);
+    // }
 }
