@@ -23,21 +23,23 @@ public class Unit : MonoBehaviour
         
         RaycastHit[] hits = Physics.RaycastAll(camToUnitRay, Mathf.Infinity, obstacle); // When hitting obstacle
 
-        if (hits.Length > 0){ // Hit(s) detected
-            foreach (RaycastHit _hit in hits){
-                Debug.Log("Ray hitting: " + _hit.transform.name);
-                _hit.transform.gameObject.GetComponentInParent<Obstacle>().IsBlockingRay = true;
+        if (hits.Length == 0) { // No obstacle hit(s) between unit and camera
+            if (obstacleHitList.Count <= 0) return; // if list is empty
 
-                if (!obstacleHitList.Contains(_hit.transform.gameObject.GetComponentInParent<Obstacle>()))
-                    obstacleHitList.Add(_hit.transform.gameObject.GetComponentInParent<Obstacle>());
+            foreach (Obstacle obstacle in obstacleHitList){ 
+                obstacle.IsBlockingRay = false;
             }
-        } else { // No obstacle hit(s) between unit and camera
-            if (obstacleHitList.Count > 0) {
-                foreach (Obstacle obstacle in obstacleHitList){ // Clear out all list
-                    obstacle.IsBlockingRay = false;
-                }
-                obstacleHitList.Clear();
-            }
+            obstacleHitList.Clear();
+            return;
+        }
+
+        // if any hits
+        foreach (RaycastHit obstHit in hits){
+            Debug.Log("Ray hitting: " + obstHit.transform.name);
+            obstHit.transform.gameObject.GetComponent<Obstacle>().IsBlockingRay = true;
+
+            if (!obstacleHitList.Contains(obstHit.transform.gameObject.GetComponent<Obstacle>()))
+                obstacleHitList.Add(obstHit.transform.gameObject.GetComponent<Obstacle>());
         }
     }
     

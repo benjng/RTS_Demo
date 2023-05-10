@@ -9,7 +9,7 @@ public class Obstacle : MonoBehaviour
     private MeshRenderer meshRenderer;
     private List<Material> originalMaterials = new List<Material>();
     private int numOfMaterials;
-    public Material transparentMaterial;
+    // public Material transparentMaterial;
 
     public bool IsBlockingRay { get => isBlockingRay; set => isBlockingRay = value; }
 
