@@ -6,7 +6,6 @@ public class Obstacle : MonoBehaviour
 {   
     private bool isBlockingRay = false;
     private bool hasCompletedReplacing = false;
-    private Color transparentColor = new Color();
     private MeshRenderer meshRenderer;
     private List<Material> originalMaterials = new List<Material>();
     private int numOfMaterials;
@@ -21,7 +20,6 @@ public class Obstacle : MonoBehaviour
         foreach (Material material in meshRenderer.materials){
             originalMaterials.Add(material);
         }
-        transparentColor.a = 0.3f;
     }
 
     void Update(){
@@ -38,12 +36,23 @@ public class Obstacle : MonoBehaviour
                 meshRenderer.materials[i].DisableKeyword("_ALPHABLEND_ON");
                 meshRenderer.materials[i].EnableKeyword("_ALPHAPREMULTIPLY_ON");
                 meshRenderer.materials[i].renderQueue = (int) UnityEngine.Rendering.RenderQueue.Transparent;
-                
-                meshRenderer.materials[i].color = transparentColor;
+
+                meshRenderer.materials[i].color = new Color(meshRenderer.materials[i].color.r, meshRenderer.materials[i].color.g, meshRenderer.materials[i].color.b, 0.3f);
             }
             hasCompletedReplacing = true;
-        } else {
-            
+        } 
+        if (!isBlockingRay){
+            for (int i = 0; i < numOfMaterials; i++){
+                meshRenderer.materials[i].SetOverrideTag("RenderType", "");
+                meshRenderer.materials[i].SetInt("_SrcBlend", (int) UnityEngine.Rendering.BlendMode.One);
+                meshRenderer.materials[i].SetInt("_DstBlend", (int) UnityEngine.Rendering.BlendMode.Zero);
+                meshRenderer.materials[i].SetInt("_ZWrite", 1);
+                meshRenderer.materials[i].DisableKeyword("_ALPHATEST_ON");
+                meshRenderer.materials[i].DisableKeyword("_ALPHABLEND_ON");
+                meshRenderer.materials[i].DisableKeyword("_ALPHAPREMULTIPLY_ON");
+                meshRenderer.materials[i].renderQueue = -1;
+            }
+            hasCompletedReplacing = false;
         }
     }
 }

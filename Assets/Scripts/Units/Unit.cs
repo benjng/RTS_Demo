@@ -15,10 +15,12 @@ public class Unit : MonoBehaviour
     }
 
     void Update(){
-        // RaycastHit hit;
+        CheckIfObstacleBlocking();
+    }
+
+    void CheckIfObstacleBlocking(){
         camToUnitRay = myCam.ScreenPointToRay(myCam.WorldToScreenPoint(transform.position));
         
-        // if (Physics.Raycast(ray, out hit, Mathf.Infinity, obstacle)){ // When hitting obstacle
         RaycastHit[] hits = Physics.RaycastAll(camToUnitRay, Mathf.Infinity, obstacle); // When hitting obstacle
 
         if (hits.Length > 0){ // Hit(s) detected
@@ -29,10 +31,12 @@ public class Unit : MonoBehaviour
                 if (!obstacleHitList.Contains(_hit.transform.gameObject.GetComponentInParent<Obstacle>()))
                     obstacleHitList.Add(_hit.transform.gameObject.GetComponentInParent<Obstacle>());
             }
-        } else { // No hit(s)
-            foreach (Obstacle obstacle in obstacleHitList){ // Clear out all list
-                obstacle.IsBlockingRay = false;
-                obstacleHitList.Remove(obstacle);
+        } else { // No obstacle hit(s) between unit and camera
+            if (obstacleHitList.Count > 0) {
+                foreach (Obstacle obstacle in obstacleHitList){ // Clear out all list
+                    obstacle.IsBlockingRay = false;
+                }
+                obstacleHitList.Clear();
             }
         }
     }
