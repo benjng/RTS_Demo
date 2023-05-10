@@ -6,7 +6,7 @@ public class Unit : MonoBehaviour
     private Camera myCam;
     public LayerMask obstacle;
     private Ray camToUnitRay;
-    public List<Obstacle> obstacleHitList = new List<Obstacle>();
+    public List<Obstacle> currentObstHitList = new List<Obstacle>();
 
     void Start()
     {
@@ -20,26 +20,31 @@ public class Unit : MonoBehaviour
 
     void CheckIfObstacleBlocking(){
         camToUnitRay = myCam.ScreenPointToRay(myCam.WorldToScreenPoint(transform.position));
-        
         RaycastHit[] hits = Physics.RaycastAll(camToUnitRay, Mathf.Infinity, obstacle); // When hitting obstacle
 
-        if (hits.Length == 0) { // No obstacle hit(s) between unit and camera
-            if (obstacleHitList.Count <= 0) return; // if list is empty
+        // No obstacle hit(s) between unit and camera
+        if (hits.Length == 0) { 
+            // if list is empty
+            if (currentObstHitList.Count <= 0) return; 
 
-            foreach (Obstacle obstacle in obstacleHitList){ 
+            // Loop through all existing obstacles
+            foreach (Obstacle obstacle in currentObstHitList){ 
+                // Release the obstacle (Correct: Release the obstacle that is not blocking)
                 obstacle.IsBlockingRay = false;
             }
-            obstacleHitList.Clear();
+            // Clear obstacle hit list
+            currentObstHitList.Clear();
             return;
         }
 
         // if any hits
         foreach (RaycastHit obstHit in hits){
             Debug.Log("Ray hitting: " + obstHit.transform.name);
-            obstHit.transform.gameObject.GetComponent<Obstacle>().IsBlockingRay = true;
+            Obstacle thisHitObst = obstHit.transform.gameObject.GetComponent<Obstacle>();
+            thisHitObst.IsBlockingRay = true;
 
-            if (!obstacleHitList.Contains(obstHit.transform.gameObject.GetComponent<Obstacle>()))
-                obstacleHitList.Add(obstHit.transform.gameObject.GetComponent<Obstacle>());
+            if (!currentObstHitList.Contains(thisHitObst))
+                currentObstHitList.Add(thisHitObst);
         }
     }
     
