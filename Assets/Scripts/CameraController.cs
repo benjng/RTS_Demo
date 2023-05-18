@@ -6,8 +6,8 @@ public class CameraController : MonoBehaviour
 {
     [SerializeField] private Transform cameraTransform;
     [SerializeField] private float moveSpeed;
-    private float leftEdge = 0f;
-    private float bottomEdge = 10f;
+    // private float leftEdge = 0f;
+    // private float bottomEdge = 10f;
     private float rightEdge = Screen.width - 10;
     private float TopEdge = Screen.height - 10;
     void Start()
