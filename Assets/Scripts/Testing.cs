@@ -7,10 +7,15 @@ public class Testing : MonoBehaviour
     private Grid grid;
     Vector3 vec;
     Ray ray;
+    [SerializeField] private int gridWidth;
+    [SerializeField] private int gridHeight;
+    [SerializeField] private float originX;
+    [SerializeField] private float originZ;
+    [SerializeField] private float cellSize = 4f;
 
     void Start()
     {
-        grid = new Grid(4, 2, 2f, new Vector3(20, 0, 0)); 
+        grid = new Grid(gridWidth, gridHeight, cellSize, new Vector3(originX, 0, originZ)); 
     }
     void Update()
     {
