@@ -5,6 +5,7 @@ using UnityEngine;
 public class Testing : MonoBehaviour
 {
     private Grid grid;
+    Vector3 vec;
 
     void Start()
     {
@@ -18,8 +19,15 @@ public class Testing : MonoBehaviour
     }
 
     private Vector3 GetMouseWorldPosition(){
-        Vector3 vec = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Physics.Raycast(ray, out hit, Mathf.Infinity);
+        vec = hit.point;
         vec.y = 0f;
         return vec;
+    }
+
+    private void OnDrawGizmos() {
+        Gizmos.DrawSphere(vec, 2f);
     }
 }
