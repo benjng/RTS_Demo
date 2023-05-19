@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Testing : MonoBehaviour
 {
-    private Grid<bool> grid;
+    private Grid<HeatMapGridObject> grid;
     Vector3 vec;
     Ray ray;
     [SerializeField] private int gridWidth;
@@ -15,7 +15,8 @@ public class Testing : MonoBehaviour
 
     void Start()
     {
-        // grid = new Grid<bool>(gridWidth, gridHeight, cellSize, new Vector3(originX, 0, originZ)); 
+        Vector3 origin = new Vector3(originX, 0, originZ);
+        // grid = new Grid<HeatMapGridObject>(gridWidth, gridHeight, cellSize, origin, () => new HeatMapGridObject()); 
     }
     void Update()
     {
@@ -41,5 +42,12 @@ public class Testing : MonoBehaviour
         Gizmos.DrawSphere(vec, 0.2f);
 
         Gizmos.DrawLine(ray.origin, ray.direction*1000f);
+    }
+
+    public class HeatMapGridObject {
+        public int value;
+        public void AddValue(int addValue) {
+            value += addValue;
+        }
     }
 }

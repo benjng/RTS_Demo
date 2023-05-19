@@ -19,7 +19,7 @@ public class Grid<TGridObject> {
     private TextMesh[,] debugTextArray;
     private Vector3 originPosition;
 
-    public Grid(int width, int height, float cellSize, Vector3 originPosition, Func<TGridObject> createGridObject) {
+    public Grid(int width, int height, float cellSize, Vector3 originPosition, Func<Grid<TGridObject>, int, int, TGridObject> createGridObject) {
         this.width = width;
         this.height = height;
         this.cellSize = cellSize;
@@ -27,9 +27,10 @@ public class Grid<TGridObject> {
 
         gridArray = new TGridObject[width, height];
 
+        // Init value(gridObject) to gridArray
         for (int x = 0; x < gridArray.GetLength(0); x++){
             for (int z = 0; z < gridArray.GetLength(1); z++){
-                gridArray[x, z] = createGridObject();
+                gridArray[x, z] = createGridObject(this, x, z); // createGridObject(): create the grid object with whatever type we want
             }
         }
 
