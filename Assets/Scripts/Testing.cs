@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Testing : MonoBehaviour
 {
-    private Grid grid;
+    private Grid<bool> grid;
     Vector3 vec;
     Ray ray;
     [SerializeField] private int gridWidth;
@@ -15,16 +15,16 @@ public class Testing : MonoBehaviour
 
     void Start()
     {
-        grid = new Grid(gridWidth, gridHeight, cellSize, new Vector3(originX, 0, originZ)); 
+        // grid = new Grid<bool>(gridWidth, gridHeight, cellSize, new Vector3(originX, 0, originZ)); 
     }
     void Update()
     {
-        if (Input.GetMouseButtonDown(0)){
-            grid.SetValue(GetMouseWorldPosition(), 56);
-        }
-        if (Input.GetMouseButtonDown(1)){
-            Debug.Log(grid.GetValue(GetMouseWorldPosition()));
-        }
+        // if (Input.GetMouseButtonDown(0)){
+        //     grid.SetValue(GetMouseWorldPosition(), true);
+        // }
+        // if (Input.GetMouseButtonDown(1)){
+        //     Debug.Log(grid.GetValue(GetMouseWorldPosition()));
+        // }
     }
 
     private Vector3 GetMouseWorldPosition(){
