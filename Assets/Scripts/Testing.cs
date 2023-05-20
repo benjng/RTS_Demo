@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// for debug
 public class Testing : MonoBehaviour
 {
     private Grid<HeatMapGridObject> grid;

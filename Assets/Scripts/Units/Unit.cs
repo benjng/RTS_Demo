@@ -39,7 +39,7 @@ public class Unit : MonoBehaviour
 
         // if any hits
         foreach (RaycastHit obstHit in hits){
-            Debug.Log("Ray hitting: " + obstHit.transform.name);
+            // Debug.Log("Ray hitting: " + obstHit.transform.name);
             Obstacle thisHitObst = obstHit.transform.gameObject.GetComponent<Obstacle>();
             thisHitObst.IsBlockingRay = true;
 
