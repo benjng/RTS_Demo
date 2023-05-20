@@ -15,7 +15,7 @@ public class Obstacle : MonoBehaviour
 
     void Start()
     {
-        meshRenderer = GetComponent<MeshRenderer>();
+        meshRenderer = GetComponentInChildren<MeshRenderer>();
         numOfMaterials = meshRenderer.materials.Length;
         foreach (Material material in meshRenderer.materials){
             originalMaterials.Add(material);

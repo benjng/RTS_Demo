@@ -5,6 +5,7 @@ using UnityEngine;
 public class GridBuildingSystem : MonoBehaviour
 {
     [SerializeField] private Transform testTransform;
+    [SerializeField] private LayerMask buildableLayers;
 
     private Grid<GridObject> grid;
     [SerializeField] private int gridWidth;
@@ -38,13 +39,14 @@ public class GridBuildingSystem : MonoBehaviour
 
     private void Update() {
         if (Input.GetMouseButtonDown(1)){
+            Debug.Log("Adding new building");
             Instantiate(testTransform, GetMouseWorldPosition3D(), Quaternion.identity);
         }
     }
 
     private Vector3 GetMouseWorldPosition3D(){
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out RaycastHit raycastHit, 999f, LayerMask.NameToLayer("Ground"))){
+        if (Physics.Raycast(ray, out RaycastHit raycastHit, 999f, buildableLayers)){
             return raycastHit.point;
         } else {
             return Vector3.zero;
