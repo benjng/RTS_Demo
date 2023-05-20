@@ -71,12 +71,12 @@ public class Grid<TGridObject> {
         return textMesh;
     }
 
-    private Vector3 GetWorldPosition(int x, int z){
+    public Vector3 GetWorldPosition(int x, int z){
         return new Vector3(x, yOffset/cellSize, z) * cellSize + originPosition;
     }
 
-    // Get grid position x and z from mouse world position
-    private void GetXZ(Vector3 worldPosition, out int x, out int z){
+    // Get grid position x and z from mouse world position (*SNAPPING logic)
+    public void GetXZ(Vector3 worldPosition, out int x, out int z){
         x = Mathf.FloorToInt((worldPosition-originPosition).x/cellSize);
         z = Mathf.FloorToInt((worldPosition-originPosition).z/cellSize);
     }

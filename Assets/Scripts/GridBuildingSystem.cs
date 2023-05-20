@@ -17,7 +17,6 @@ public class GridBuildingSystem : MonoBehaviour
     private void Awake() {
         Vector3 origin = new Vector3(originX, 0, originZ);
         grid = new Grid<GridObject>(gridWidth, gridHeight, cellSize, origin, (Grid<GridObject> g, int x, int z) => new GridObject(g, x, z));
-        // grid = new Grid<bool>(gridWidth, gridHeight, cellSize, Vector3.zero, () => 1);
     }
 
     public class GridObject{
@@ -39,8 +38,8 @@ public class GridBuildingSystem : MonoBehaviour
 
     private void Update() {
         if (Input.GetMouseButtonDown(1)){
-            Debug.Log("Adding new building");
-            Instantiate(testTransform, GetMouseWorldPosition3D(), Quaternion.identity);
+            grid.GetXZ(GetMouseWorldPosition3D(), out int x, out int z);
+            Instantiate(testTransform, grid.GetWorldPosition(x, z), Quaternion.identity);
         }
     }
 
