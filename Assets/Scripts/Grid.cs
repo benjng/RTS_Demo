@@ -15,10 +15,11 @@ public class Grid<TGridObject> {
     private int height;
     private float yOffset = 1.5f;
     private float cellSize;
-    private TGridObject[,] gridArray;
+    private TGridObject[,] gridArray; // Generic type array, takes care whatever type that comes in
     private TextMesh[,] debugTextArray;
     private Vector3 originPosition;
 
+    // Constructor
     public Grid(int width, int height, float cellSize, Vector3 originPosition, Func<Grid<TGridObject>, int, int, TGridObject> createGridObject) {
         this.width = width;
         this.height = height;
@@ -30,7 +31,8 @@ public class Grid<TGridObject> {
         // Init value(gridObject) to gridArray
         for (int x = 0; x < gridArray.GetLength(0); x++){
             for (int z = 0; z < gridArray.GetLength(1); z++){
-                gridArray[x, z] = createGridObject(this, x, z); // createGridObject(): create the grid object with whatever type we want
+                // createGridObject(): create a GridObject with its Grid data (width,etc) and x,z
+                gridArray[x, z] = createGridObject(this, x, z); 
             }
         }
 
@@ -49,7 +51,9 @@ public class Grid<TGridObject> {
             Debug.DrawLine(GetWorldPosition(width, 0), GetWorldPosition(width, height), Color.red, 100f);
         }
     }
+    // end of Grid constructor
 
+    // Create visible coordination text
     public static TextMesh CreateWorldText(string text, Transform parent = null, Vector3 localPosition = default(Vector3), int fontSize = 5, Color? color = null, TextAnchor textAnchor = TextAnchor.UpperLeft, TextAlignment textAlignment = TextAlignment.Left, int sortingOrder = 5000){
         if (color == null) color = Color.white;
         return CreateWorldText(parent, text, localPosition, fontSize, (Color)color, textAnchor, textAlignment, sortingOrder);
@@ -82,39 +86,49 @@ public class Grid<TGridObject> {
     }
 
     // Set value of the visible grid text
-    public void SetValue(int x, int z, TGridObject value){
-        if (x >= 0 && z >= 0 && x < width && z < height){
-            gridArray[x, z] = value;
-            debugTextArray[x, z].text = gridArray[x, z].ToString();
-        } 
-    }
+    // public void SetValue(int x, int z, TGridObject value){
+    //     if (x >= 0 && z >= 0 && x < width && z < height){
+    //         gridArray[x, z] = value;
+    //         debugTextArray[x, z].text = gridArray[x, z].ToString();
+    //     } 
+    // }
 
-    public void SetValue(Vector3 worldPosition, TGridObject value){
-        int x, z;
-        GetXZ(worldPosition, out x, out z);
-        SetValue(x, z, value);
-    }
+    // public void SetValue(Vector3 worldPosition, TGridObject value){
+    //     int x, z;
+    //     GetXZ(worldPosition, out x, out z);
+    //     SetValue(x, z, value);
+    // }
 
-    public TGridObject GetValue(int x, int z){
-        if (x >= 0 && z >= 0 && x < width && z < height){
-            return gridArray[x, z];
-        } else {
-            return default(TGridObject);
-        }
-    }
+    // public TGridObject GetValue(int x, int z){
+    //     if (x >= 0 && z >= 0 && x < width && z < height){
+    //         return gridArray[x, z];
+    //     } else {
+    //         return default(TGridObject);
+    //     }
+    // }
 
-    public TGridObject GetValue(Vector3 worldPosition){
-        int x, z;
-        GetXZ(worldPosition, out x, out z);
-        return GetValue(x, z);
-    }
+    // public TGridObject GetValue(Vector3 worldPosition){
+    //     int x, z;
+    //     GetXZ(worldPosition, out x, out z);
+    //     return GetValue(x, z);
+    // }
 
     public void TriggerGridObjectChanged(int x, int z){
         if (OnGridValueChanged != null) 
             OnGridValueChanged(this, new OnGridValueChangedEventArgs { x = x, z = z }); // update new x and z
     }
 
+    public void SetGridObject(int x, int z, TGridObject value){
+        if (x >= 0 && z >= 0 && x < width && z < height){
+            gridArray[x, z] = value;
+            OnGridValueChanged(this, new OnGridValueChangedEventArgs { x = x, z = z }); // update new x and z
+        }
+    }
+
     public TGridObject GetGridObject(int x, int z){
-        return gridArray[x, z];
+        if (x >= 0 && z >= 0 && x < width && z < height)
+            return gridArray[x, z];
+        else 
+            return default(TGridObject);
     }
 }

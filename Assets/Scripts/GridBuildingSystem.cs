@@ -16,11 +16,6 @@ public class GridBuildingSystem : MonoBehaviour
     [SerializeField] private float originZ;
     [SerializeField] private float cellSize = 10f;
     #endregion
-    
-    private void Awake() {
-        Vector3 origin = new Vector3(originX, 0, originZ);
-        grid = new Grid<GridObject>(gridWidth, gridHeight, cellSize, origin, (Grid<GridObject> g, int x, int z) => new GridObject(g, x, z));
-    }
 
     /* 
         GridObject Class
@@ -44,10 +39,6 @@ public class GridBuildingSystem : MonoBehaviour
             grid.TriggerGridObjectChanged(x, z); // inform grid that something has changed
         }
 
-        public Transform GetTransform(){
-            return transform;
-        }
-
         public void ClearTransform(){
             transform = null;
             grid.TriggerGridObjectChanged(x, z);
@@ -63,6 +54,16 @@ public class GridBuildingSystem : MonoBehaviour
         }
     }
     // end of GridObject class
+
+    private void Awake() {
+        Vector3 origin = new Vector3(originX, 0, originZ);
+        /* 
+            Creating a new Grid instance needs:
+            1. grid params
+            2. gridObjects
+        */
+        grid = new Grid<GridObject>(gridWidth, gridHeight, cellSize, origin, (Grid<GridObject> g, int x, int z) => new GridObject(g, x, z));
+    }
 
     private void Update() {
         if (Input.GetMouseButtonDown(1)){
