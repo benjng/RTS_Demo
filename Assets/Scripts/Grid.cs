@@ -120,14 +120,14 @@ public class Grid<TGridObject> {
 
     public void TriggerGridObjectChanged(int x, int z){
         if (OnGridValueChanged != null) {
-            OnGridValueChanged(this, new OnGridValueChangedEventArgs { x = x, z = z }); // update new x and z
+            OnGridValueChanged(this, new OnGridValueChangedEventArgs { x = x, z = z }); // pass new x and z to arg
         }
     }
 
     public void SetGridObject(int x, int z, TGridObject value){
         if (x >= 0 && z >= 0 && x < width && z < height){
             gridArray[x, z] = value;
-            OnGridValueChanged(this, new OnGridValueChangedEventArgs { x = x, z = z }); // update new x and z
+            OnGridValueChanged(this, new OnGridValueChangedEventArgs { x = x, z = z });
         }
     }
 

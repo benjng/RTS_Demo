@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class GridBuildingSystem : MonoBehaviour
 {
-    [SerializeField] private Transform testBuilding;
-    [SerializeField] private LayerMask buildableLayers;
+    [SerializeField] private PlacedObjectTypeSO placedObjectTypeSO;
+    [SerializeField] private LayerMask buildableLayers; 
 
     private Grid<GridObject> grid; // a grid building system has one grid
 
@@ -68,17 +68,37 @@ public class GridBuildingSystem : MonoBehaviour
     }
 
     private void Update() {
+        // When player builds (RMB)
         if (Input.GetMouseButtonDown(1)){
-            grid.GetXZ(GetMouseWorldPosition3D(), out int x, out int z); // find snapping location, output to x and z
-            GridObject gridObject = grid.GetGridObject(x, z);
+            // find snapping location, output to x and z, fetch the current x,z GridObject from grid instance
+            grid.GetXZ(GetMouseWorldPosition3D(), out int x, out int z); 
+            GridObject gridObject = grid.GetGridObject(x, z); 
 
-            if (!gridObject.CanBuild()) {
+            bool canBuild = true;
+            // get all the grid positions that will occupied
+            List<Vector2Int> gridPositionList = placedObjectTypeSO.GetGridPositionList(new Vector2Int(x, z), PlacedObjectTypeSO.Dir.Down);
+
+            foreach (Vector2Int gridPosition in gridPositionList){
+                if (!grid.GetGridObject(gridPosition.x, gridPosition.y).CanBuild()){
+                    // Cannot build
+                    canBuild = false;
+                    break;
+                }
+            }
+
+            // Check if any existing building in all occupied area
+            if (!canBuild) {
                 Debug.Log("YOU CANNOT BUILD HERE");
                 return;
             }
 
             // Setting new building transform into this gridObject
-            Transform builtTransform = Instantiate(testBuilding, grid.GetWorldPosition(x, z), Quaternion.identity);
+            Transform builtTransform = Instantiate(placedObjectTypeSO.prefab, grid.GetWorldPosition(x, z), Quaternion.identity);
+
+            // Insert transform info into all the gridPosition occupied
+            foreach (Vector2Int gridPosition in gridPositionList){
+                grid.GetGridObject(gridPosition.x, gridPosition.y).SetTransform(builtTransform);
+            }
             gridObject.SetTransform(builtTransform);
         }
     }
