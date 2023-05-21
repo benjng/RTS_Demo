@@ -20,7 +20,7 @@ public class Grid<TGridObject> {
     private Vector3 originPosition;
 
     // Constructor
-    public Grid(int width, int height, float cellSize, Vector3 originPosition, Func<Grid<TGridObject>, int, int, TGridObject> createGridObject) {
+    public Grid(int width, int height, float cellSize, Vector3 originPosition, Func<Grid<TGridObject>, int, int, TGridObject> createGridObject) { // Func<>: a method signature
         this.width = width;
         this.height = height;
         this.cellSize = cellSize;
@@ -49,6 +49,11 @@ public class Grid<TGridObject> {
             }
             Debug.DrawLine(GetWorldPosition(0, height), GetWorldPosition(width, height), Color.red, 100f);
             Debug.DrawLine(GetWorldPosition(width, 0), GetWorldPosition(width, height), Color.red, 100f);
+
+            // subscribe to event
+            OnGridValueChanged += (object sender, OnGridValueChangedEventArgs eventArgs) => {
+                debugTextArray[eventArgs.x, eventArgs.z].text = gridArray[eventArgs.x, eventArgs.z]?.ToString();
+            };
         }
     }
     // end of Grid constructor
@@ -64,7 +69,7 @@ public class Grid<TGridObject> {
         Transform transform = gameObject.transform;
         transform.SetParent(parent, false);
         transform.localPosition = localPosition;
-        transform.rotation = Quaternion.Euler(90f, 0, 0);
+        // transform.rotation = Quaternion.Euler(90f, 0, 0);
         TextMesh textMesh = gameObject.GetComponent<TextMesh>();
         textMesh.anchor = textAnchor;
         textMesh.alignment = textAlignment;
@@ -114,8 +119,9 @@ public class Grid<TGridObject> {
     // }
 
     public void TriggerGridObjectChanged(int x, int z){
-        if (OnGridValueChanged != null) 
+        if (OnGridValueChanged != null) {
             OnGridValueChanged(this, new OnGridValueChangedEventArgs { x = x, z = z }); // update new x and z
+        }
     }
 
     public void SetGridObject(int x, int z, TGridObject value){

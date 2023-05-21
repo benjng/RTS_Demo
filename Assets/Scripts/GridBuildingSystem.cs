@@ -27,7 +27,8 @@ public class GridBuildingSystem : MonoBehaviour
         private int z;
         private Transform transform; // the building transform that is placed on this grid position
 
-        public GridObject(Grid<GridObject> grid, int x, int z){ // Constructor
+        // Constructor
+        public GridObject(Grid<GridObject> grid, int x, int z){ 
             this.grid = grid;
             this.x = x;
             this.z = z;
@@ -51,6 +52,7 @@ public class GridBuildingSystem : MonoBehaviour
         public override string ToString()
         {
             return x + ", " + z + "\n" + transform; // text being updated by TriggerGridObjectChanged
+            // return x + ""; // text being updated by TriggerGridObjectChanged
         }
     }
     // end of GridObject class
