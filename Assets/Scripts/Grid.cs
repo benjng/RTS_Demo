@@ -5,11 +5,11 @@ using UnityEngine;
 
 public class Grid<TGridObject> {
 
-    // public event EventHandler<OnGridValueChangedEventArgs> OnGridValueChanged;
-    // public class OnGridValueChangedEventArgs : OnGridValueChangedEventArgs {
-    //     public int x;
-    //     public int z;
-    // }
+    public event EventHandler<OnGridValueChangedEventArgs> OnGridValueChanged; // <OGVCE> specifies the type of the event arguments that will be passed when the event is triggered
+    public class OnGridValueChangedEventArgs : EventArgs { // hold additional infromation related to the event
+        public int x;
+        public int z;
+    }
 
     private int width;
     private int height;
@@ -107,5 +107,14 @@ public class Grid<TGridObject> {
         int x, z;
         GetXZ(worldPosition, out x, out z);
         return GetValue(x, z);
+    }
+
+    public void TriggerGridObjectChanged(int x, int z){
+        if (OnGridValueChanged != null) 
+            OnGridValueChanged(this, new OnGridValueChangedEventArgs { x = x, z = z }); // update new x and z
+    }
+
+    public TGridObject GetGridObject(int x, int z){
+        return gridArray[x, z];
     }
 }
