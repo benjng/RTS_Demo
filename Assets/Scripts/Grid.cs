@@ -50,8 +50,9 @@ public class Grid<TGridObject> {
             Debug.DrawLine(GetWorldPosition(0, height), GetWorldPosition(width, height), Color.red, 100f);
             Debug.DrawLine(GetWorldPosition(width, 0), GetWorldPosition(width, height), Color.red, 100f);
 
-            // subscribe to event
+            // When Value is changed, run the following
             OnGridValueChanged += (object sender, OnGridValueChangedEventArgs eventArgs) => {
+                // Debug.Log(gridArray[eventArgs.x, eventArgs.z]?.ToString());
                 debugTextArray[eventArgs.x, eventArgs.z].text = gridArray[eventArgs.x, eventArgs.z]?.ToString();
             };
         }
@@ -136,5 +137,9 @@ public class Grid<TGridObject> {
             return gridArray[x, z];
         else 
             return default(TGridObject);
+    }
+
+    public float GetCellSize(){
+        return this.cellSize;
     }
 }

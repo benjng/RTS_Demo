@@ -6,7 +6,7 @@ public class GridBuildingSystem : MonoBehaviour
 {
     [SerializeField] private PlacedObjectTypeSO placedObjectTypeSO;
     [SerializeField] private LayerMask buildableLayers; 
-
+    private PlacedObjectTypeSO.Dir dir = PlacedObjectTypeSO.Dir.Down;
     private Grid<GridObject> grid; // a grid building system has one grid
 
     #region Grid param (Width, Height, Origin, Cell size)
@@ -50,9 +50,13 @@ public class GridBuildingSystem : MonoBehaviour
         }
 
         public override string ToString()
-        {
-            return x + ", " + z + "\n" + transform; // text being updated by TriggerGridObjectChanged
-            // return x + ""; // text being updated by TriggerGridObjectChanged
+        {   
+            if (transform != null) {
+                // Debug.Log(transform.name);
+                return transform + "";
+            }
+
+            return x + ", " + z;
         }
     }
     // end of GridObject class
@@ -62,7 +66,7 @@ public class GridBuildingSystem : MonoBehaviour
         /* 
             Creating a new Grid instance needs:
             1. grid params
-            2. gridObjects
+            2. gridObject for each grid position
         */
         grid = new Grid<GridObject>(gridWidth, gridHeight, cellSize, origin, (Grid<GridObject> g, int x, int z) => new GridObject(g, x, z));
     }
@@ -75,12 +79,12 @@ public class GridBuildingSystem : MonoBehaviour
             GridObject gridObject = grid.GetGridObject(x, z); 
 
             bool canBuild = true;
-            // get all the grid positions that will occupied
-            List<Vector2Int> gridPositionList = placedObjectTypeSO.GetGridPositionList(new Vector2Int(x, z), PlacedObjectTypeSO.Dir.Down);
+            // **get all the grid positions that will be occupied by the building type**
+            List<Vector2Int> gridPositionList = placedObjectTypeSO.GetGridPositionList(new Vector2Int(x, z), dir);
 
+            // if ANY gridPosition cannot be built, no build is allowed
             foreach (Vector2Int gridPosition in gridPositionList){
                 if (!grid.GetGridObject(gridPosition.x, gridPosition.y).CanBuild()){
-                    // Cannot build
                     canBuild = false;
                     break;
                 }
@@ -92,14 +96,29 @@ public class GridBuildingSystem : MonoBehaviour
                 return;
             }
 
-            // Setting new building transform into this gridObject
-            Transform builtTransform = Instantiate(placedObjectTypeSO.prefab, grid.GetWorldPosition(x, z), Quaternion.identity);
+            // ===Can build logic===
+
+            // offset logic
+            Vector2Int rotationOffset = placedObjectTypeSO.GetRotationOffset(dir);
+            Vector3 placedObjectWorldPosition = grid.GetWorldPosition(x, z) + new Vector3(rotationOffset.x, 0, rotationOffset.y) * grid.GetCellSize();
+            
+            // Setting new building transform into this gridObject, with building direction
+            Transform builtTransform = Instantiate(
+                placedObjectTypeSO.prefab, 
+                placedObjectWorldPosition, 
+                Quaternion.Euler(0, placedObjectTypeSO.GetRotationAngle(dir), 0)
+            );
 
             // Insert transform info into all the gridPosition occupied
             foreach (Vector2Int gridPosition in gridPositionList){
                 grid.GetGridObject(gridPosition.x, gridPosition.y).SetTransform(builtTransform);
             }
             gridObject.SetTransform(builtTransform);
+        }
+
+        if (Input.GetKeyDown(KeyCode.R)){
+            dir = PlacedObjectTypeSO.GetNextDir(dir);
+            Debug.Log(dir);
         }
     }
 

@@ -4875,12 +4875,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a149c5c7fd885664285aa53612d9a62e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  placedObjectTypeSO: {fileID: 0}
+  placedObjectTypeSO: {fileID: 11400000, guid: ead3e1e87c9c5644b859dd7e6b47e371, type: 2}
   buildableLayers:
     serializedVersion: 2
     m_Bits: 128
-  gridWidth: 50
-  gridHeight: 50
+  gridWidth: 15
+  gridHeight: 15
   originX: -62.7
   originZ: -43.5
   cellSize: 10
@@ -8883,7 +8883,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh23650
+  m_Name: pb_Mesh23652
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
