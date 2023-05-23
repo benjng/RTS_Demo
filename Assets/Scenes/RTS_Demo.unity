@@ -4875,7 +4875,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a149c5c7fd885664285aa53612d9a62e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  placedObjectTypeSO: {fileID: 11400000, guid: ead3e1e87c9c5644b859dd7e6b47e371, type: 2}
+  placedObjectTypeSOList:
+  - {fileID: 11400000, guid: ead3e1e87c9c5644b859dd7e6b47e371, type: 2}
+  - {fileID: 11400000, guid: 14af1eb3ecc536a478554205018a96df, type: 2}
   buildableLayers:
     serializedVersion: 2
     m_Bits: 128

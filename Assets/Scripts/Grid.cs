@@ -91,34 +91,6 @@ public class Grid<TGridObject> {
         z = Mathf.FloorToInt((worldPosition-originPosition).z/cellSize);
     }
 
-    // Set value of the visible grid text
-    // public void SetValue(int x, int z, TGridObject value){
-    //     if (x >= 0 && z >= 0 && x < width && z < height){
-    //         gridArray[x, z] = value;
-    //         debugTextArray[x, z].text = gridArray[x, z].ToString();
-    //     } 
-    // }
-
-    // public void SetValue(Vector3 worldPosition, TGridObject value){
-    //     int x, z;
-    //     GetXZ(worldPosition, out x, out z);
-    //     SetValue(x, z, value);
-    // }
-
-    // public TGridObject GetValue(int x, int z){
-    //     if (x >= 0 && z >= 0 && x < width && z < height){
-    //         return gridArray[x, z];
-    //     } else {
-    //         return default(TGridObject);
-    //     }
-    // }
-
-    // public TGridObject GetValue(Vector3 worldPosition){
-    //     int x, z;
-    //     GetXZ(worldPosition, out x, out z);
-    //     return GetValue(x, z);
-    // }
-
     public void TriggerGridObjectChanged(int x, int z){
         if (OnGridValueChanged != null) {
             OnGridValueChanged(this, new OnGridValueChangedEventArgs { x = x, z = z }); // pass new x and z to arg
@@ -130,6 +102,11 @@ public class Grid<TGridObject> {
             gridArray[x, z] = value;
             OnGridValueChanged(this, new OnGridValueChangedEventArgs { x = x, z = z });
         }
+    }
+
+    public TGridObject GetGridObjectByWorldPosition(Vector3 worldPosition){
+        GetXZ(worldPosition, out int x, out int z);
+        return GetGridObject(x, z);
     }
 
     public TGridObject GetGridObject(int x, int z){
