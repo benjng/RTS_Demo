@@ -180,7 +180,8 @@ public class GridBuildingSystem : MonoBehaviour
     public Vector3 GetSnappedMouseWorldPosition(){
         Vector3 mouseWorldPosition = GetMouseWorldPosition3D();
         grid.GetXZ(mouseWorldPosition, out int x, out int z);
-        Vector3 snappedMouseWorldPosition = grid.GetWorldPosition(x, z);
+        Vector2Int rotationOffset = placedObjectTypeSO.GetRotationOffset(dir);
+        Vector3 snappedMouseWorldPosition = grid.GetWorldPosition(x, z) + new Vector3(rotationOffset.x, 0, rotationOffset.y) * grid.GetCellSize();
         return snappedMouseWorldPosition;
     }
 
