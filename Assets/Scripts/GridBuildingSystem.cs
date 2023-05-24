@@ -124,14 +124,13 @@ public class GridBuildingSystem : MonoBehaviour
             Vector2Int rotationOffset = placedObjectTypeSO.GetRotationOffset(dir);
             Vector3 placedObjectWorldPosition = grid.GetWorldPosition(x, z) + new Vector3(rotationOffset.x, 0, rotationOffset.y) * grid.GetCellSize();
             
-            // Setting new placeObject into this gridObject, with building direction
+            // *****Setting new placeObject into this gridObject, with building direction
             PlacedObject placedObject = PlacedObject.Create(placedObjectWorldPosition, new Vector2Int(x, z), dir, placedObjectTypeSO);
 
             // Insert placedObject info into all the gridPosition occupied
             foreach (Vector2Int gridPosition in gridPositionList){
                 grid.GetGridObject(gridPosition.x, gridPosition.y).SetPlacedObject(placedObject);
             }
-            // gridObject.SetTransform(builtTransform);
         }
 
         if (Input.GetMouseButtonDown(2)){
@@ -178,10 +177,11 @@ public class GridBuildingSystem : MonoBehaviour
         }
     }
 
-    public Vector3 GetMouseWorldSnappedPosition(){
+    public Vector3 GetSnappedMouseWorldPosition(){
         Vector3 mouseWorldPosition = GetMouseWorldPosition3D();
         grid.GetXZ(mouseWorldPosition, out int x, out int z);
-        return new Vector3(x, 0, z);
+        Vector3 snappedMouseWorldPosition = grid.GetWorldPosition(x, z);
+        return snappedMouseWorldPosition;
     }
 
     public Quaternion GetPlacedObjectRotation(){
