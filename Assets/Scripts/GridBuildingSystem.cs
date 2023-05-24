@@ -1,9 +1,15 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GridBuildingSystem : MonoBehaviour
 {
+    public event EventHandler<OnSelectedChangedEventArgs> OnSelectedChanged;
+    public class OnSelectedChangedEventArgs : EventArgs {
+
+    }
+
     [SerializeField] private List<PlacedObjectTypeSO> placedObjectTypeSOList;
     private PlacedObjectTypeSO placedObjectTypeSO;
     [SerializeField] private LayerMask buildableLayers; 
@@ -67,9 +73,15 @@ public class GridBuildingSystem : MonoBehaviour
     // end of GridObject class
 
 
-
+    public static GridBuildingSystem Instance;
 
     private void Awake() {
+        if (Instance != null){
+            Debug.LogWarning("More than one GridBuildingSystem instance found!");
+            return;
+        }
+        Instance = this;
+
         Vector3 origin = new Vector3(originX, 0, originZ);
         /* 
             Creating a new Grid instance needs:
@@ -143,8 +155,15 @@ public class GridBuildingSystem : MonoBehaviour
             Debug.Log(dir);
         }
 
-        if (Input.GetKeyDown(KeyCode.Alpha1)) { placedObjectTypeSO = placedObjectTypeSOList[0];}
-        if (Input.GetKeyDown(KeyCode.Alpha2)) { placedObjectTypeSO = placedObjectTypeSOList[1];}
+        // switching placedObject 
+        if (Input.GetKeyDown(KeyCode.Alpha1)) { 
+            placedObjectTypeSO = placedObjectTypeSOList[0];
+            OnSelectedChanged(this, new OnSelectedChangedEventArgs {});
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2)) { 
+            placedObjectTypeSO = placedObjectTypeSOList[1];
+            OnSelectedChanged(this, new OnSelectedChangedEventArgs {});
+        }
         if (Input.GetKeyDown(KeyCode.Alpha3)) { placedObjectTypeSO = placedObjectTypeSOList[2];}
         if (Input.GetKeyDown(KeyCode.Alpha4)) { placedObjectTypeSO = placedObjectTypeSOList[3];}
         if (Input.GetKeyDown(KeyCode.Alpha5)) { placedObjectTypeSO = placedObjectTypeSOList[4];}
@@ -159,4 +178,17 @@ public class GridBuildingSystem : MonoBehaviour
         }
     }
 
+    public Vector3 GetMouseWorldSnappedPosition(){
+        Vector3 mouseWorldPosition = GetMouseWorldPosition3D();
+        grid.GetXZ(mouseWorldPosition, out int x, out int z);
+        return new Vector3(x, 0, z);
+    }
+
+    public Quaternion GetPlacedObjectRotation(){
+        return Quaternion.Euler(0, placedObjectTypeSO.GetRotationAngle(dir), 0);
+    }
+
+    public PlacedObjectTypeSO GetPlacedObjectTypeSO(){
+        return placedObjectTypeSO;
+    }
 }
