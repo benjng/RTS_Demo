@@ -28,7 +28,7 @@ public class Grid<TGridObject> {
 
         gridArray = new TGridObject[width, height];
 
-        // Init value(gridObject) to gridArray
+        // Init gridObject to gridArray
         for (int x = 0; x < gridArray.GetLength(0); x++){
             for (int z = 0; z < gridArray.GetLength(1); z++){
                 // createGridObject(): create a GridObject with its Grid data (width,etc) and x,z
@@ -36,7 +36,8 @@ public class Grid<TGridObject> {
             }
         }
 
-        bool showDebug = true;
+        // For debug text on screen (grid lines, coordinates, gridObject names)
+        bool showDebug = false;
         if (showDebug){
             debugTextArray = new TextMesh[width, height];
 
@@ -59,7 +60,7 @@ public class Grid<TGridObject> {
     }
     // end of Grid constructor
 
-    // Create visible coordination text
+    // Create visible coordination text (debug)
     public static TextMesh CreateWorldText(string text, Transform parent = null, Vector3 localPosition = default(Vector3), int fontSize = 5, Color? color = null, TextAnchor textAnchor = TextAnchor.UpperLeft, TextAlignment textAlignment = TextAlignment.Left, int sortingOrder = 5000){
         if (color == null) color = Color.white;
         return CreateWorldText(parent, text, localPosition, fontSize, (Color)color, textAnchor, textAlignment, sortingOrder);

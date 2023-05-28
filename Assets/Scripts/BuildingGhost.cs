@@ -8,22 +8,27 @@ public class BuildingGhost : MonoBehaviour
     private PlacedObjectTypeSO placedObjectTypeSO;
 
     private void Start() {
-        RefreshVisual();
-
         GridBuildingSystem.Instance.OnSelectedChanged += Instance_OnSelectedChanged;      
     }
 
     private void Instance_OnSelectedChanged(object sender, System.EventArgs e){
+        Debug.Log("event");
         RefreshVisual();
     }
 
     private void LateUpdate(){
+        if (ModeHandler.currentMode != Mode.Build) {
+            if (visual != null) DisableVisual();
+            return;
+        }
+
         Vector3 targetPosition = GridBuildingSystem.Instance.GetSnappedMouseWorldPosition();
         targetPosition.y = 1f;
         transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * 15f);
         transform.rotation = Quaternion.Lerp(transform.rotation, GridBuildingSystem.Instance.GetPlacedObjectRotation(), Time.deltaTime * 15f);
     }
 
+    // Visual: for building preview
     private void RefreshVisual(){
         if (visual != null){
             Destroy(visual.gameObject);
@@ -37,8 +42,12 @@ public class BuildingGhost : MonoBehaviour
             visual.parent = transform;
             visual.localPosition = Vector3.zero;
             visual.localEulerAngles = Vector3.zero;
-            SetLayerRecursive(visual.gameObject, 11);
+            // SetLayerRecursive(visual.gameObject, 11);
         }
+    }
+
+    private void DisableVisual(){
+        Destroy(visual.gameObject);
     }
 
     private void SetLayerRecursive(GameObject targetGameObject, int layer){

@@ -19,6 +19,7 @@ public class UnitSelection : MonoBehaviour
     }
 
     public void ClickSelect(GameObject unitToAdd){
+        ModeHandler.currentMode = Mode.Unit;
         DeselectAll();
         unitsSelected.Add(unitToAdd);
         unitToAdd.transform.GetChild(0).gameObject.SetActive(true);
@@ -26,6 +27,7 @@ public class UnitSelection : MonoBehaviour
     }
 
     public void ShiftClickSelect(GameObject unitToAdd){
+        ModeHandler.currentMode = Mode.Unit;
         if(!unitsSelected.Contains(unitToAdd)){
             unitsSelected.Add(unitToAdd);
             unitToAdd.transform.GetChild(0).gameObject.SetActive(true);
@@ -39,6 +41,7 @@ public class UnitSelection : MonoBehaviour
 
     public void DragSelect(GameObject unitToAdd){
         if (!unitsSelected.Contains(unitToAdd)){
+            ModeHandler.currentMode = Mode.Unit;
             unitsSelected.Add(unitToAdd);
             unitToAdd.transform.GetChild(0).gameObject.SetActive(true);
             unitToAdd.GetComponent<UnitMovement>().enabled = true;

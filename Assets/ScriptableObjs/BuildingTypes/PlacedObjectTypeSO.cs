@@ -5,6 +5,18 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Building", fileName = "New building")]
 public class PlacedObjectTypeSO : ScriptableObject
 {
+    public string nameString;
+    public Transform prefab;
+    public Transform visual;
+    public int width;
+    public int height;
+    public enum Dir { Down, Left, Up, Right, }
+
+    public static Dir GetNextDir(Dir dir){
+        if ((int)dir >= 3) return 0;
+        return dir + 1;
+    }
+
     public int GetRotationAngle(Dir dir){
         return (int)dir * 90;
     }
@@ -18,18 +30,6 @@ public class PlacedObjectTypeSO : ScriptableObject
             case Dir.Right: return new Vector2Int(height, 0);
         }
     }
-
-    public static Dir GetNextDir(Dir dir){
-        if ((int)dir >= 3) return 0;
-        return dir + 1;
-    }
-    public enum Dir { Down, Left, Up, Right, }
-
-    public string nameString;
-    public Transform prefab;
-    public Transform visual;
-    public int width;
-    public int height;
 
     // Check the position that will be occuipied and return the list
     public List<Vector2Int> GetGridPositionList(Vector2Int offset, Dir dir){

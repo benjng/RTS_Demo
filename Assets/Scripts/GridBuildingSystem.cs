@@ -6,9 +6,7 @@ using UnityEngine;
 public class GridBuildingSystem : MonoBehaviour
 {
     public event EventHandler<OnSelectedChangedEventArgs> OnSelectedChanged;
-    public class OnSelectedChangedEventArgs : EventArgs {
-
-    }
+    public class OnSelectedChangedEventArgs : EventArgs {}
 
     [SerializeField] private List<PlacedObjectTypeSO> placedObjectTypeSOList;
     private PlacedObjectTypeSO placedObjectTypeSO;
@@ -94,6 +92,8 @@ public class GridBuildingSystem : MonoBehaviour
     }
 
     private void Update() {
+        if (ModeHandler.currentMode != Mode.Build) return;
+
         // When player builds (RMB)
         if (Input.GetMouseButtonDown(1)){
             // find snapping location, output to x and z, fetch the current x,z GridObject from grid instance
@@ -151,7 +151,6 @@ public class GridBuildingSystem : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.R)){
             dir = PlacedObjectTypeSO.GetNextDir(dir);
-            Debug.Log(dir);
         }
 
         // switching placedObject 
@@ -163,9 +162,9 @@ public class GridBuildingSystem : MonoBehaviour
             placedObjectTypeSO = placedObjectTypeSOList[1];
             OnSelectedChanged(this, new OnSelectedChangedEventArgs {});
         }
-        if (Input.GetKeyDown(KeyCode.Alpha3)) { placedObjectTypeSO = placedObjectTypeSOList[2];}
-        if (Input.GetKeyDown(KeyCode.Alpha4)) { placedObjectTypeSO = placedObjectTypeSOList[3];}
-        if (Input.GetKeyDown(KeyCode.Alpha5)) { placedObjectTypeSO = placedObjectTypeSOList[4];}
+        // if (Input.GetKeyDown(KeyCode.Alpha3)) { placedObjectTypeSO = placedObjectTypeSOList[2];}
+        // if (Input.GetKeyDown(KeyCode.Alpha4)) { placedObjectTypeSO = placedObjectTypeSOList[3];}
+        // if (Input.GetKeyDown(KeyCode.Alpha5)) { placedObjectTypeSO = placedObjectTypeSOList[4];}
     }
 
     private Vector3 GetMouseWorldPosition3D(){
@@ -178,8 +177,7 @@ public class GridBuildingSystem : MonoBehaviour
     }
 
     public Vector3 GetSnappedMouseWorldPosition(){
-        Vector3 mouseWorldPosition = GetMouseWorldPosition3D();
-        grid.GetXZ(mouseWorldPosition, out int x, out int z);
+        grid.GetXZ(GetMouseWorldPosition3D(), out int x, out int z);
         Vector2Int rotationOffset = placedObjectTypeSO.GetRotationOffset(dir);
         Vector3 snappedMouseWorldPosition = grid.GetWorldPosition(x, z) + new Vector3(rotationOffset.x, 0, rotationOffset.y) * grid.GetCellSize();
         return snappedMouseWorldPosition;
