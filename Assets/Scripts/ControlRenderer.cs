@@ -18,9 +18,13 @@ public class ControlRenderer : MonoBehaviour
         instance = this;
     } 
 
-    public void UpdateInfo(Image newImage, TMP_Text newUnitName){
-        unitIcon = newImage;
-        unitName.text = newUnitName.text;
+    private void Start() {
+        ClearInfoAndAction();
+    }
+
+    public void UpdateInfo(UnitSO unitSO){
+        unitIcon.sprite = unitSO.unitIcon;
+        unitName.text = unitSO.unitName;
     }
 
     public void UpdateAction(){
@@ -28,6 +32,7 @@ public class ControlRenderer : MonoBehaviour
     }
 
     public void ClearInfoAndAction(){
-        
+        unitIcon.sprite = null;
+        unitName.text = "";
     }
 }

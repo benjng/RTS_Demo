@@ -51,6 +51,7 @@ public class UnitSelection : MonoBehaviour
         }
         unitsSelected.Clear();
         modeHandler.SwitchMode(null);
+        ControlRenderer.Instance.ClearInfoAndAction();
     }
 
 
@@ -59,6 +60,9 @@ public class UnitSelection : MonoBehaviour
         unitsSelected.Add(unitToAdd);
         unitToAdd.transform.GetChild(0).gameObject.SetActive(true);
         unitToAdd.GetComponent<UnitMovement>().enabled = true;
+
+        UnitSO unitSO = unitToAdd.GetComponent<Unit>().unitSO;
+        ControlRenderer.Instance.UpdateInfo(unitSO);
     }
 
     private void SwitchMode(GameObject unit){
