@@ -92,8 +92,28 @@ public class GridBuildingSystem : MonoBehaviour
     }
 
     private void Update() {
-        if (ModeHandler.currentMode != Mode.BuilderSelected || 
+        if (ModeHandler.currentMode != Mode.BuilderSelected && 
             ModeHandler.currentMode != Mode.Building) return;
+
+        // switching placedObject 
+        if (Input.GetKeyDown(KeyCode.Alpha1)) { 
+            Debug.Log("hitting 1");
+            placedObjectTypeSO = placedObjectTypeSOList[0];
+            OnSelectedChanged(this, new OnSelectedChangedEventArgs {});
+            ModeHandler.currentMode = Mode.Building;
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2)) { 
+            Debug.Log("hitting 2");
+            placedObjectTypeSO = placedObjectTypeSOList[1];
+            OnSelectedChanged(this, new OnSelectedChangedEventArgs {});
+            ModeHandler.currentMode = Mode.Building;
+        }
+        // if (Input.GetKeyDown(KeyCode.Alpha3)) { placedObjectTypeSO = placedObjectTypeSOList[2];}
+        // if (Input.GetKeyDown(KeyCode.Alpha4)) { placedObjectTypeSO = placedObjectTypeSOList[3];}
+        // if (Input.GetKeyDown(KeyCode.Alpha5)) { placedObjectTypeSO = placedObjectTypeSOList[4];}
+
+        // ===Building mode logic===
+        if (ModeHandler.currentMode != Mode.Building) return;
 
         // When player builds (RMB)
         if (Input.GetMouseButtonDown(1)){
@@ -118,8 +138,6 @@ public class GridBuildingSystem : MonoBehaviour
                 Debug.Log("YOU CANNOT BUILD HERE");
                 return;
             }
-
-            // ===Can build logic===
 
             // offset logic
             Vector2Int rotationOffset = placedObjectTypeSO.GetRotationOffset(dir);
@@ -154,19 +172,6 @@ public class GridBuildingSystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R)){
             dir = PlacedObjectTypeSO.GetNextDir(dir);
         }
-
-        // switching placedObject 
-        if (Input.GetKeyDown(KeyCode.Alpha1)) { 
-            placedObjectTypeSO = placedObjectTypeSOList[0];
-            OnSelectedChanged(this, new OnSelectedChangedEventArgs {});
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2)) { 
-            placedObjectTypeSO = placedObjectTypeSOList[1];
-            OnSelectedChanged(this, new OnSelectedChangedEventArgs {});
-        }
-        // if (Input.GetKeyDown(KeyCode.Alpha3)) { placedObjectTypeSO = placedObjectTypeSOList[2];}
-        // if (Input.GetKeyDown(KeyCode.Alpha4)) { placedObjectTypeSO = placedObjectTypeSOList[3];}
-        // if (Input.GetKeyDown(KeyCode.Alpha5)) { placedObjectTypeSO = placedObjectTypeSOList[4];}
     }
 
     private Vector3 GetMouseWorldPosition3D(){

@@ -1,6 +1,6 @@
 public enum Mode{
     None,
     UnitSelected,
-    BuilderSelected, // allow BuildingGhost
-    Building // disallow UnitMovement
+    BuilderSelected, // allow gridBuildingSystem build key switch 
+    Building // allow BuildingGhost, disallow UnitMovement
 }

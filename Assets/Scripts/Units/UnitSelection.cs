@@ -13,41 +13,35 @@ public class UnitSelection : MonoBehaviour
     public static UnitSelection Instance { get { return instance; }}
 
     void Awake(){
-        if (instance != null && instance != this){
+        if (instance != null) {
             Destroy(this.gameObject);
-        } else {
-            instance = this;
+            return;
         }
-    }
+        instance = this;
+    } 
 
     public void ClickSelect(GameObject unitToAdd){
         DeselectAll();
-        unitsSelected.Add(unitToAdd);
-        unitToAdd.transform.GetChild(0).gameObject.SetActive(true); // selection indicator
-        unitToAdd.GetComponent<UnitMovement>().enabled = true;
-
-        UnitSO unitSO = unitToAdd.GetComponent<UnitSO>();
-        modeHandler.SwitchMode(unitSO);
+        ActivateUnit(unitToAdd);
+        SwitchMode(unitToAdd);
     }
 
     public void ShiftClickSelect(GameObject unitToAdd){
         if(!unitsSelected.Contains(unitToAdd)){
-            unitsSelected.Add(unitToAdd);
-            unitToAdd.transform.GetChild(0).gameObject.SetActive(true);
-            unitToAdd.GetComponent<UnitMovement>().enabled = true;
+            ActivateUnit(unitToAdd);
         } else {
             unitToAdd.GetComponent<UnitMovement>().enabled = false;
             unitToAdd.transform.GetChild(0).gameObject.SetActive(false);
             unitsSelected.Remove(unitToAdd);
         }
+        SwitchMode(unitToAdd);
     }
 
     public void DragSelect(GameObject unitToAdd){
-        if (!unitsSelected.Contains(unitToAdd)){
-            unitsSelected.Add(unitToAdd);
-            unitToAdd.transform.GetChild(0).gameObject.SetActive(true);
-            unitToAdd.GetComponent<UnitMovement>().enabled = true;
-        }
+        if (unitsSelected.Contains(unitToAdd)) return;
+
+        ActivateUnit(unitToAdd);
+        SwitchMode(unitToAdd);
     }
 
     public void DeselectAll(){
@@ -56,9 +50,19 @@ public class UnitSelection : MonoBehaviour
             unit.transform.GetChild(0).gameObject.SetActive(false);
         }
         unitsSelected.Clear();
+        modeHandler.SwitchMode(null);
     }
 
-    public void Deselect(GameObject unitToDeselect){
 
+    // 1. add selected unit to list, 2. activate indicator, 3. enable unit movement
+    private void ActivateUnit(GameObject unitToAdd){
+        unitsSelected.Add(unitToAdd);
+        unitToAdd.transform.GetChild(0).gameObject.SetActive(true);
+        unitToAdd.GetComponent<UnitMovement>().enabled = true;
+    }
+
+    private void SwitchMode(GameObject unit){
+        UnitSO unitSO = unit.GetComponent<Unit>().unitSO;
+        modeHandler.SwitchMode(unitSO);
     }
 }

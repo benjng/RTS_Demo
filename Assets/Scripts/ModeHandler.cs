@@ -7,11 +7,18 @@ public class ModeHandler : MonoBehaviour
     public static Mode currentMode = Mode.None;
 
     public void SwitchMode(UnitSO unitSO){
+        if (unitSO == null) {
+            currentMode = Mode.None;
+            Debug.Log(currentMode);  
+            return;
+        }
+
         UnitType unitType = unitSO.unitType;
         if (unitType == UnitType.Builder){
-            ModeHandler.currentMode = Mode.BuilderSelected;
+            currentMode = Mode.BuilderSelected;
         } else {
-            ModeHandler.currentMode = Mode.UnitSelected;
+            currentMode = Mode.UnitSelected;
         }
+        Debug.Log(currentMode);  
     }
 }
