@@ -92,7 +92,8 @@ public class GridBuildingSystem : MonoBehaviour
     }
 
     private void Update() {
-        if (ModeHandler.currentMode != Mode.Build) return;
+        if (ModeHandler.currentMode != Mode.BuilderSelected || 
+            ModeHandler.currentMode != Mode.Building) return;
 
         // When player builds (RMB)
         if (Input.GetMouseButtonDown(1)){
@@ -133,6 +134,7 @@ public class GridBuildingSystem : MonoBehaviour
             }
         }
 
+        // Destroy building logic  (MMB)
         if (Input.GetMouseButtonDown(2)){
             GridObject gridObject = grid.GetGridObjectByWorldPosition(GetMouseWorldPosition3D());
             PlacedObject placedObject = gridObject.GetPlacedObject();

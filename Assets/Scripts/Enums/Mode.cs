@@ -1,4 +1,6 @@
 public enum Mode{
-    Unit,
-    Build
+    None,
+    UnitSelected,
+    BuilderSelected, // allow BuildingGhost
+    Building // disallow UnitMovement
 }

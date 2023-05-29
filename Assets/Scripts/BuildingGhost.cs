@@ -12,13 +12,12 @@ public class BuildingGhost : MonoBehaviour
     }
 
     private void Instance_OnSelectedChanged(object sender, System.EventArgs e){
-        Debug.Log("event");
         RefreshVisual();
     }
 
     private void LateUpdate(){
-        if (ModeHandler.currentMode != Mode.Build) {
-            if (visual != null) DisableVisual();
+        if (ModeHandler.currentMode != Mode.Building) {
+            if (visual != null) DestroyVisual();
             return;
         }
 
@@ -46,7 +45,7 @@ public class BuildingGhost : MonoBehaviour
         }
     }
 
-    private void DisableVisual(){
+    private void DestroyVisual(){
         Destroy(visual.gameObject);
     }
 

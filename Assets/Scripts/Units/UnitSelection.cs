@@ -7,6 +7,8 @@ public class UnitSelection : MonoBehaviour
     public List<GameObject> unitList = new List<GameObject>();
     public List<GameObject> unitsSelected = new List<GameObject>();
 
+    [SerializeField] private ModeHandler modeHandler;
+
     private static UnitSelection instance;
     public static UnitSelection Instance { get { return instance; }}
 
@@ -19,15 +21,16 @@ public class UnitSelection : MonoBehaviour
     }
 
     public void ClickSelect(GameObject unitToAdd){
-        ModeHandler.currentMode = Mode.Unit;
         DeselectAll();
         unitsSelected.Add(unitToAdd);
-        unitToAdd.transform.GetChild(0).gameObject.SetActive(true);
+        unitToAdd.transform.GetChild(0).gameObject.SetActive(true); // selection indicator
         unitToAdd.GetComponent<UnitMovement>().enabled = true;
+
+        UnitSO unitSO = unitToAdd.GetComponent<UnitSO>();
+        modeHandler.SwitchMode(unitSO);
     }
 
     public void ShiftClickSelect(GameObject unitToAdd){
-        ModeHandler.currentMode = Mode.Unit;
         if(!unitsSelected.Contains(unitToAdd)){
             unitsSelected.Add(unitToAdd);
             unitToAdd.transform.GetChild(0).gameObject.SetActive(true);
@@ -41,7 +44,6 @@ public class UnitSelection : MonoBehaviour
 
     public void DragSelect(GameObject unitToAdd){
         if (!unitsSelected.Contains(unitToAdd)){
-            ModeHandler.currentMode = Mode.Unit;
             unitsSelected.Add(unitToAdd);
             unitToAdd.transform.GetChild(0).gameObject.SetActive(true);
             unitToAdd.GetComponent<UnitMovement>().enabled = true;

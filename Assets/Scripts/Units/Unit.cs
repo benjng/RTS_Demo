@@ -7,6 +7,7 @@ public class Unit : MonoBehaviour
     public LayerMask obstacle;
     private Ray camToUnitRay;
     public List<Obstacle> currentObstHitList = new List<Obstacle>();
+    public UnitSO unitSO;
 
     void Start()
     {
