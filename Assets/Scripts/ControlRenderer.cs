@@ -24,6 +24,7 @@ public class ControlRenderer : MonoBehaviour
     }
     
     public void UpdateInfo(List<GameObject> unitsSelected){
+        ClearInfoAndAction();
         for (int i=0; i < unitsSelected.Count; i++){
             UnitSO unitSO = unitsSelected[i].GetComponent<Unit>().unitSO;
 
@@ -36,8 +37,10 @@ public class ControlRenderer : MonoBehaviour
             Image unitIconImg = unitIcon.AddComponent<Image>();
             unitIconImg.sprite = unitSO.unitIcon;
         }
+
+        if (unitsSelected.Count <= 1) return;
         unitDescription.text += " +";
-        unitDescription.text += unitsSelected.Count.ToString();
+        unitDescription.text += (unitsSelected.Count - 1).ToString();
     }
 
     public void UpdateAction(){

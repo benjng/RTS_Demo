@@ -52,7 +52,16 @@ public class UnitSelection : MonoBehaviour
         }
         unitsSelected.Clear();
         modeHandler.SwitchMode(null);
+        ClearControlUI();
+    }
 
+    public void UpdateControlUI(){
+        Debug.Log("UpdateControlUI");
+        ControlRenderer.Instance.UpdateInfo(unitsSelected);
+    }
+
+    public void ClearControlUI(){
+        Debug.Log("ClearControlUI");
         // Clear out UI info and action
         ControlRenderer.Instance.ClearInfoAndAction();
     }

@@ -35,13 +35,14 @@ public class UnitDrag : MonoBehaviour
         }
         // release click
         if (Input.GetMouseButtonUp(0)){
-            SelectUnits();
+            int unitCount = SelectUnits();
             startPosition = Vector2.zero;
             endPosition = Vector2.zero;
             DrawVisual();
 
+            if (unitCount == 0) return;
             // Update UI
-            ControlRenderer.Instance.UpdateInfo(UnitSelection.Instance.unitsSelected);
+            UnitSelection.Instance.UpdateControlUI();
         }
     }
 
@@ -82,14 +83,17 @@ public class UnitDrag : MonoBehaviour
         }
     }
 
-    void SelectUnits(){
+    int SelectUnits(){
+        int unitCount = 0;
         // loop thru all the units
         foreach (var unit in UnitSelection.Instance.unitList){
             // **if unit is within the bounds of the selection rect
             if (selectionBox.Contains(myCam.WorldToScreenPoint(unit.transform.position))){
                 // add them to selection
                 UnitSelection.Instance.DragSelect(unit);
+                unitCount++;
             }
         }
+        return unitCount;
     }
 }
