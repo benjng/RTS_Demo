@@ -39,6 +39,9 @@ public class UnitDrag : MonoBehaviour
             startPosition = Vector2.zero;
             endPosition = Vector2.zero;
             DrawVisual();
+
+            // Update UI
+            ControlRenderer.Instance.UpdateInfo(UnitSelection.Instance.unitsSelected);
         }
     }
 

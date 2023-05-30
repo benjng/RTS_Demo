@@ -9,7 +9,7 @@ public class ModeHandler : MonoBehaviour
     public void SwitchMode(UnitSO unitSO){
         if (unitSO == null) {
             currentMode = Mode.None;
-            Debug.Log(currentMode);  
+            // Debug.Log(currentMode);  
             return;
         }
 
@@ -19,6 +19,6 @@ public class ModeHandler : MonoBehaviour
         } else {
             currentMode = Mode.UnitSelected;
         }
-        Debug.Log(currentMode);  
+        // Debug.Log(currentMode);  
     }
 }

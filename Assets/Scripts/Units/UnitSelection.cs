@@ -30,6 +30,7 @@ public class UnitSelection : MonoBehaviour
         if(!unitsSelected.Contains(unitToAdd)){
             ActivateUnit(unitToAdd);
         } else {
+            // deselect unit
             unitToAdd.GetComponent<UnitMovement>().enabled = false;
             unitToAdd.transform.GetChild(0).gameObject.SetActive(false);
             unitsSelected.Remove(unitToAdd);
@@ -51,18 +52,16 @@ public class UnitSelection : MonoBehaviour
         }
         unitsSelected.Clear();
         modeHandler.SwitchMode(null);
+
+        // Clear out UI info and action
         ControlRenderer.Instance.ClearInfoAndAction();
     }
-
 
     // 1. add selected unit to list, 2. activate indicator, 3. enable unit movement
     private void ActivateUnit(GameObject unitToAdd){
         unitsSelected.Add(unitToAdd);
         unitToAdd.transform.GetChild(0).gameObject.SetActive(true);
         unitToAdd.GetComponent<UnitMovement>().enabled = true;
-
-        UnitSO unitSO = unitToAdd.GetComponent<Unit>().unitSO;
-        ControlRenderer.Instance.UpdateInfo(unitSO);
     }
 
     private void SwitchMode(GameObject unit){

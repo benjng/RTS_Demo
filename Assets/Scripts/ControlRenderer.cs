@@ -6,8 +6,9 @@ using UnityEngine.UI;
 
 public class ControlRenderer : MonoBehaviour
 {
-    [SerializeField] private Image unitIcon;
-    [SerializeField] private TMP_Text unitName;
+    // [SerializeField] private Image unitIcon;
+    [SerializeField] private Transform unitIconPanel;
+    [SerializeField] private TMP_Text unitDescription;
     private static ControlRenderer instance;
     public static ControlRenderer Instance { get { return instance; }}
     void Awake(){
@@ -21,10 +22,22 @@ public class ControlRenderer : MonoBehaviour
     private void Start() {
         ClearInfoAndAction();
     }
+    
+    public void UpdateInfo(List<GameObject> unitsSelected){
+        for (int i=0; i < unitsSelected.Count; i++){
+            UnitSO unitSO = unitsSelected[i].GetComponent<Unit>().unitSO;
 
-    public void UpdateInfo(UnitSO unitSO){
-        unitIcon.sprite = unitSO.unitIcon;
-        unitName.text = unitSO.unitName;
+            if (i == 0) {
+                unitDescription.text = unitSO.unitName;
+            }
+
+            GameObject unitIcon = new GameObject("unitIcon");
+            unitIcon.transform.SetParent(unitIconPanel);
+            Image unitIconImg = unitIcon.AddComponent<Image>();
+            unitIconImg.sprite = unitSO.unitIcon;
+        }
+        unitDescription.text += " +";
+        unitDescription.text += unitsSelected.Count.ToString();
     }
 
     public void UpdateAction(){
@@ -32,7 +45,11 @@ public class ControlRenderer : MonoBehaviour
     }
 
     public void ClearInfoAndAction(){
-        unitIcon.sprite = null;
-        unitName.text = "";
+        unitDescription.text = "";
+
+        if (unitIconPanel.childCount == 0) return;
+        for (int i=0; i < unitIconPanel.childCount; i++) {
+            Destroy(unitIconPanel.GetChild(i).gameObject);
+        }
     }
 }

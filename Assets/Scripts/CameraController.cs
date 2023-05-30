@@ -12,7 +12,7 @@ public class CameraController : MonoBehaviour
     private float TopEdge = Screen.height - 10;
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Confined;
+        // Cursor.lockState = CursorLockMode.Confined;
     }
 
     void Update()
