@@ -87,11 +87,11 @@ public class UnitDrag : MonoBehaviour
         int unitCount = 0;
         // loop thru all the units
         foreach (var unit in UnitSelection.Instance.unitList){
+            unitCount++;
             // **if unit is within the bounds of the selection rect
             if (selectionBox.Contains(myCam.WorldToScreenPoint(unit.transform.position))){
                 // add them to selection
                 UnitSelection.Instance.DragSelect(unit);
-                unitCount++;
             }
         }
         return unitCount;

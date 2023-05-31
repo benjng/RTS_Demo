@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class CameraController : MonoBehaviour
 {
@@ -38,6 +39,26 @@ public class CameraController : MonoBehaviour
             verticalInput = 0;
         }
 
+        float scrollWheelInput = Input.GetAxis("Mouse ScrollWheel");
+        float currentFOV = cameraTransform.GetComponent<CinemachineVirtualCamera>().m_Lens.FieldOfView;
+        float targetFOV = currentFOV;
+        if (scrollWheelInput > 0f){
+            // Scroll wheel is scrolling up
+            targetFOV -= 5;
+            
+        } else if (scrollWheelInput < 0f){
+            // Scroll wheel is scrolling down
+            targetFOV += 5;
+        }
+
+        // TODO: Fix lerp
+        if (targetFOV != currentFOV) {
+            float t = 0;
+            for (int i=0; i<1000; i++){
+                cameraTransform.GetComponent<CinemachineVirtualCamera>().m_Lens.FieldOfView = Mathf.Lerp(currentFOV, targetFOV, t);
+                t += 0.001f;
+            }
+        }
 
 
         // Calculate the movement direction based on the camera's orientation

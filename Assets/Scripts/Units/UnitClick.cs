@@ -8,6 +8,7 @@ public class UnitClick : MonoBehaviour
 
     public LayerMask clickable;
     public LayerMask ground;
+    Ray ray;
     void Start()
     {
         myCam = Camera.main;
@@ -17,17 +18,18 @@ public class UnitClick : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0)){ //LMB
             RaycastHit hit;
-            Ray ray = myCam.ScreenPointToRay(Input.mousePosition); // create a ray from screen to mouse
+            ray = myCam.ScreenPointToRay(Input.mousePosition); // create a ray from screen to mouse
 
             // hit a clickable (Shift/normal)
             if(Physics.Raycast(ray, out hit, Mathf.Infinity, clickable)){ // cast the ray
-            // UnitSelection.Instance.ClearControlUI();
+                Debug.Log("HIT");
                 if (Input.GetKey(KeyCode.LeftShift)){
                     UnitSelection.Instance.ShiftClickSelect(hit.collider.gameObject);
                 } else {
                     UnitSelection.Instance.ClickSelect(hit.collider.gameObject);
                 }
             } else {
+                Debug.Log("NOHIT");
                 // didn't hit a clickable
                 if (!Input.GetKey(KeyCode.LeftShift))
                     UnitSelection.Instance.DeselectAll();
@@ -42,5 +44,13 @@ public class UnitClick : MonoBehaviour
                 
         //     }
         // }
+    }
+
+    private void OnDrawGizmos() {
+        Gizmos.color = Color.red;
+        Gizmos.DrawRay(ray.origin, ray.direction*70);
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawLine(ray.origin, ray.direction*70);
+        Gizmos.DrawSphere(ray.direction*70, 2f);
     }
 }
