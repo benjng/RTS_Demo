@@ -3,9 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 
-public class GridBuildingSystem : MonoBehaviour, IPointerClickHandler
+public class GridBuildingSystem : MonoBehaviour
 {
     public event EventHandler<OnSelectedChangedEventArgs> OnSelectedChanged;
     public class OnSelectedChangedEventArgs : EventArgs {}
@@ -97,7 +96,6 @@ public class GridBuildingSystem : MonoBehaviour, IPointerClickHandler
             GameObject actionBtn = ControlRenderer.Instance.unitActionButtons[i];
             Button btn = actionBtn.GetComponent<Button>();
             btn.onClick.AddListener(() => OnBuildingTrigger(index));
-            // TODO: Stop keeping track when cursor goes/click into UI area
         }
     }
 
@@ -106,15 +104,6 @@ public class GridBuildingSystem : MonoBehaviour, IPointerClickHandler
         currentPlacedObjectTypeSO = placedObjectTypeSOList[index];
         OnSelectedChanged(this, new OnSelectedChangedEventArgs {});
         ModeHandler.currentMode = Mode.Building;
-    }
-    
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        if (eventData.button == PointerEventData.InputButton.Left)
-        {
-            Debug.Log("UI panel clicked!");
-            // Perform your desired actions here
-        }
     }
 
     private void Update() {

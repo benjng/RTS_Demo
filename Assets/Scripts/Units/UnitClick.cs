@@ -7,6 +7,7 @@ public class UnitClick : MonoBehaviour
     private Camera myCam;
 
     public LayerMask clickable;
+    public LayerMask ui;
     // public LayerMask ground;
     Ray ray;
     void Start()

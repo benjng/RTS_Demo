@@ -54,7 +54,6 @@ public class ControlRenderer : MonoBehaviour
     }
 
     private void CreateActionButtons(){
-        //TODO: add button functionality
         foreach (PlacedObjectTypeSO placedObjectType in GridBuildingSystem.Instance.placedObjectTypeSOList){
             //TODO: change button sprite to building sprite
             GameObject buildingBtn = Instantiate(buildingBtnPrefab, unitActionPanel);
