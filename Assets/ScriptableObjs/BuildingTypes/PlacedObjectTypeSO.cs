@@ -8,6 +8,7 @@ public class PlacedObjectTypeSO : ScriptableObject
     public string nameString;
     public Transform prefab;
     public Transform visual;
+    public Sprite actionBtnSprite;
     public int width;
     public int height;
     public enum Dir { Down, Left, Up, Right, }

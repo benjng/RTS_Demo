@@ -7,7 +7,7 @@ public class UnitClick : MonoBehaviour
     private Camera myCam;
 
     public LayerMask clickable;
-    public LayerMask ground;
+    // public LayerMask ground;
     Ray ray;
     void Start()
     {
@@ -29,8 +29,8 @@ public class UnitClick : MonoBehaviour
                 }
             } else {
                 // didn't hit a clickable
-                if (!Input.GetKey(KeyCode.LeftShift))
-                    UnitSelection.Instance.DeselectAll();
+                // if (!Input.GetKey(KeyCode.LeftShift))
+                //     UnitSelection.Instance.DeselectAll();
             }
         }
 

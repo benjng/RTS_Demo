@@ -2,23 +2,24 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GridBuildingSystem : MonoBehaviour
 {
     public event EventHandler<OnSelectedChangedEventArgs> OnSelectedChanged;
     public class OnSelectedChangedEventArgs : EventArgs {}
 
-    public List<PlacedObjectTypeSO> placedObjectTypeSOList; // TODO: loop thru this list, create new buttons for action panel rendering
-    private PlacedObjectTypeSO currentPlacedObjectTypeSO;
+    public List<PlacedObjectTypeSO> placedObjectTypeSOList; 
     [SerializeField] private LayerMask buildableLayers; 
+
+    private PlacedObjectTypeSO currentPlacedObjectTypeSO;
     private PlacedObjectTypeSO.Dir dir = PlacedObjectTypeSO.Dir.Down;
     private Grid<GridObject> grid; // a grid building system has one grid
 
     #region Grid param (Width, Height, Origin, Cell size)
+    [SerializeField] private Transform origin; 
     [SerializeField] private int gridWidth;
     [SerializeField] private int gridHeight;
-    [SerializeField] private float originX;
-    [SerializeField] private float originZ;
     [SerializeField] private float cellSize = 10f;
     #endregion
 
@@ -79,16 +80,30 @@ public class GridBuildingSystem : MonoBehaviour
             return;
         }
         Instance = this;
-
-        Vector3 origin = new Vector3(originX, 0, originZ);
         /* 
             Creating a new Grid instance needs:
             1. grid params
             2. gridObject for each grid position
         */
-        grid = new Grid<GridObject>(gridWidth, gridHeight, cellSize, origin, (Grid<GridObject> g, int x, int z) => new GridObject(g, x, z));
+        grid = new Grid<GridObject>(gridWidth, gridHeight, cellSize, origin.position, (Grid<GridObject> g, int x, int z) => new GridObject(g, x, z));
 
         currentPlacedObjectTypeSO = placedObjectTypeSOList[0];
+    }
+
+    private void Start(){
+        for (int i = 0; i < ControlRenderer.Instance.unitActionButtons.Count; i++){
+            int index = i; // Capture the index variable
+            GameObject actionBtn = ControlRenderer.Instance.unitActionButtons[i];
+            Button btn = actionBtn.GetComponent<Button>();
+            btn.onClick.AddListener(() => OnBuildingTrigger(index));
+        }
+    }
+
+    private void OnBuildingTrigger(int index){
+        Debug.Log("hitting build action " + index.ToString());
+        currentPlacedObjectTypeSO = placedObjectTypeSOList[index];
+        OnSelectedChanged(this, new OnSelectedChangedEventArgs {});
+        ModeHandler.currentMode = Mode.Building;
     }
 
     private void Update() {
@@ -97,16 +112,10 @@ public class GridBuildingSystem : MonoBehaviour
 
         // switching placedObject 
         if (Input.GetKeyDown(KeyCode.Alpha1)) { 
-            Debug.Log("hitting 1");
-            currentPlacedObjectTypeSO = placedObjectTypeSOList[0];
-            OnSelectedChanged(this, new OnSelectedChangedEventArgs {});
-            ModeHandler.currentMode = Mode.Building;
+            OnBuildingTrigger(0);
         }
         if (Input.GetKeyDown(KeyCode.Alpha2)) { 
-            Debug.Log("hitting 2");
-            currentPlacedObjectTypeSO = placedObjectTypeSOList[1];
-            OnSelectedChanged(this, new OnSelectedChangedEventArgs {});
-            ModeHandler.currentMode = Mode.Building;
+            OnBuildingTrigger(1);
         }
         // if (Input.GetKeyDown(KeyCode.Alpha3)) { placedObjectTypeSO = placedObjectTypeSOList[2];}
         // if (Input.GetKeyDown(KeyCode.Alpha4)) { placedObjectTypeSO = placedObjectTypeSOList[3];}
@@ -116,7 +125,7 @@ public class GridBuildingSystem : MonoBehaviour
         if (ModeHandler.currentMode != Mode.Building) return;
 
         // When player builds (RMB)
-        if (Input.GetMouseButtonDown(1)){
+        if (Input.GetMouseButtonDown(0)){
             // find snapping location, output to x and z, fetch the current x,z GridObject from grid instance
             grid.GetXZ(GetMouseWorldPosition3D(), out int x, out int z); 
             GridObject gridObject = grid.GetGridObject(x, z); 
