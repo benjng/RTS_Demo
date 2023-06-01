@@ -3,8 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class GridBuildingSystem : MonoBehaviour
+public class GridBuildingSystem : MonoBehaviour, IPointerClickHandler
 {
     public event EventHandler<OnSelectedChangedEventArgs> OnSelectedChanged;
     public class OnSelectedChangedEventArgs : EventArgs {}
@@ -96,6 +97,7 @@ public class GridBuildingSystem : MonoBehaviour
             GameObject actionBtn = ControlRenderer.Instance.unitActionButtons[i];
             Button btn = actionBtn.GetComponent<Button>();
             btn.onClick.AddListener(() => OnBuildingTrigger(index));
+            // TODO: Stop keeping track when cursor goes/click into UI area
         }
     }
 
@@ -104,6 +106,15 @@ public class GridBuildingSystem : MonoBehaviour
         currentPlacedObjectTypeSO = placedObjectTypeSOList[index];
         OnSelectedChanged(this, new OnSelectedChangedEventArgs {});
         ModeHandler.currentMode = Mode.Building;
+    }
+    
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Left)
+        {
+            Debug.Log("UI panel clicked!");
+            // Perform your desired actions here
+        }
     }
 
     private void Update() {
@@ -124,7 +135,7 @@ public class GridBuildingSystem : MonoBehaviour
         // ===Building mode logic===
         if (ModeHandler.currentMode != Mode.Building) return;
 
-        // When player builds (RMB)
+        // When player builds (LMB)
         if (Input.GetMouseButtonDown(0)){
             // find snapping location, output to x and z, fetch the current x,z GridObject from grid instance
             grid.GetXZ(GetMouseWorldPosition3D(), out int x, out int z); 
