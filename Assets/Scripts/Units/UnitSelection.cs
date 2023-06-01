@@ -57,7 +57,7 @@ public class UnitSelection : MonoBehaviour
 
     public void UpdateControlUI(){
         Debug.Log("UpdateControlUI");
-        ControlRenderer.Instance.UpdateInfo(unitsSelected);
+        ControlRenderer.Instance.UpdateInfoAndAction(unitsSelected);
     }
 
     public void ClearControlUI(){

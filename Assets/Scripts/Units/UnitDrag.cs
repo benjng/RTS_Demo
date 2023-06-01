@@ -33,7 +33,7 @@ public class UnitDrag : MonoBehaviour
             DrawVisual();
             DrawSelection();
         }
-        // release click
+        // release click (*both unitDrag and unitClick)
         if (Input.GetMouseButtonUp(0)){
             int unitCount = SelectUnits();
             startPosition = Vector2.zero;

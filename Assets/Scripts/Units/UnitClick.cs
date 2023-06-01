@@ -22,14 +22,12 @@ public class UnitClick : MonoBehaviour
 
             // hit a clickable (Shift/normal)
             if(Physics.Raycast(ray, out hit, Mathf.Infinity, clickable)){ // cast the ray
-                Debug.Log("HIT");
                 if (Input.GetKey(KeyCode.LeftShift)){
                     UnitSelection.Instance.ShiftClickSelect(hit.collider.gameObject);
                 } else {
                     UnitSelection.Instance.ClickSelect(hit.collider.gameObject);
                 }
             } else {
-                Debug.Log("NOHIT");
                 // didn't hit a clickable
                 if (!Input.GetKey(KeyCode.LeftShift))
                     UnitSelection.Instance.DeselectAll();

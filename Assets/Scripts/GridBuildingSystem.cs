@@ -8,7 +8,7 @@ public class GridBuildingSystem : MonoBehaviour
     public event EventHandler<OnSelectedChangedEventArgs> OnSelectedChanged;
     public class OnSelectedChangedEventArgs : EventArgs {}
 
-    [SerializeField] private List<PlacedObjectTypeSO> placedObjectTypeSOList;
+    [SerializeField] private List<PlacedObjectTypeSO> placedObjectTypeSOList; // TODO: use this list for action panel rendering
     private PlacedObjectTypeSO placedObjectTypeSO;
     [SerializeField] private LayerMask buildableLayers; 
     private PlacedObjectTypeSO.Dir dir = PlacedObjectTypeSO.Dir.Down;
