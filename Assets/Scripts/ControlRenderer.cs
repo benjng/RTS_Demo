@@ -11,6 +11,9 @@ public class ControlRenderer : MonoBehaviour
     [SerializeField] private TMP_Text unitDescription;
     [SerializeField] private Transform unitActionPanel;
     [SerializeField] private TMP_Text unitActionDescription;
+    [SerializeField] private GameObject buildingBtnPrefab;
+
+
     private static ControlRenderer instance;
     public static ControlRenderer Instance { get { return instance; }}
     void Awake(){
@@ -22,14 +25,15 @@ public class ControlRenderer : MonoBehaviour
     } 
 
     private void Start() {
-        // ActionPanel.SetActive(false);
         ClearInfoAndAction();
+        
     }
     
     public void UpdateInfoAndAction(List<GameObject> unitsSelected){
         ClearInfoAndAction();
         ShowInfo(unitsSelected);
         ShowAction(unitsSelected);
+        CreateActionButtons();
 
         if (unitsSelected.Count <= 1) return;
         // if more than 1 unit selected
@@ -47,6 +51,15 @@ public class ControlRenderer : MonoBehaviour
             unitIcon.transform.SetParent(unitIconPanel);
             Image unitIconImg = unitIcon.AddComponent<Image>();
             unitIconImg.sprite = unitSO.unitIcon;
+        }
+    }
+
+    private void CreateActionButtons(){
+        foreach (PlacedObjectTypeSO placedObjectType in GridBuildingSystem.Instance.placedObjectTypeSOList){
+            GameObject buildingBtn = Instantiate(buildingBtnPrefab, unitActionPanel);
+            GameObject buildingText = buildingBtn.transform.GetChild(0).gameObject;
+            TMP_Text text = buildingText.GetComponent<TMP_Text>();
+            text.text = placedObjectType.nameString;
         }
     }
 

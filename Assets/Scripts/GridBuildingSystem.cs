@@ -8,8 +8,8 @@ public class GridBuildingSystem : MonoBehaviour
     public event EventHandler<OnSelectedChangedEventArgs> OnSelectedChanged;
     public class OnSelectedChangedEventArgs : EventArgs {}
 
-    [SerializeField] private List<PlacedObjectTypeSO> placedObjectTypeSOList; // TODO: use this list for action panel rendering
-    private PlacedObjectTypeSO placedObjectTypeSO;
+    public List<PlacedObjectTypeSO> placedObjectTypeSOList; // TODO: loop thru this list, create new buttons for action panel rendering
+    private PlacedObjectTypeSO currentPlacedObjectTypeSO;
     [SerializeField] private LayerMask buildableLayers; 
     private PlacedObjectTypeSO.Dir dir = PlacedObjectTypeSO.Dir.Down;
     private Grid<GridObject> grid; // a grid building system has one grid
@@ -88,7 +88,7 @@ public class GridBuildingSystem : MonoBehaviour
         */
         grid = new Grid<GridObject>(gridWidth, gridHeight, cellSize, origin, (Grid<GridObject> g, int x, int z) => new GridObject(g, x, z));
 
-        placedObjectTypeSO = placedObjectTypeSOList[0];
+        currentPlacedObjectTypeSO = placedObjectTypeSOList[0];
     }
 
     private void Update() {
@@ -98,13 +98,13 @@ public class GridBuildingSystem : MonoBehaviour
         // switching placedObject 
         if (Input.GetKeyDown(KeyCode.Alpha1)) { 
             Debug.Log("hitting 1");
-            placedObjectTypeSO = placedObjectTypeSOList[0];
+            currentPlacedObjectTypeSO = placedObjectTypeSOList[0];
             OnSelectedChanged(this, new OnSelectedChangedEventArgs {});
             ModeHandler.currentMode = Mode.Building;
         }
         if (Input.GetKeyDown(KeyCode.Alpha2)) { 
             Debug.Log("hitting 2");
-            placedObjectTypeSO = placedObjectTypeSOList[1];
+            currentPlacedObjectTypeSO = placedObjectTypeSOList[1];
             OnSelectedChanged(this, new OnSelectedChangedEventArgs {});
             ModeHandler.currentMode = Mode.Building;
         }
@@ -123,7 +123,7 @@ public class GridBuildingSystem : MonoBehaviour
 
             bool canBuild = true;
             // **get all the grid positions that will be occupied by the building type**
-            List<Vector2Int> gridPositionList = placedObjectTypeSO.GetGridPositionList(new Vector2Int(x, z), dir);
+            List<Vector2Int> gridPositionList = currentPlacedObjectTypeSO.GetGridPositionList(new Vector2Int(x, z), dir);
 
             // if ANY gridPosition cannot be built, no build is allowed
             foreach (Vector2Int gridPosition in gridPositionList){
@@ -140,11 +140,11 @@ public class GridBuildingSystem : MonoBehaviour
             }
 
             // offset logic
-            Vector2Int rotationOffset = placedObjectTypeSO.GetRotationOffset(dir);
+            Vector2Int rotationOffset = currentPlacedObjectTypeSO.GetRotationOffset(dir);
             Vector3 placedObjectWorldPosition = grid.GetWorldPosition(x, z) + new Vector3(rotationOffset.x, 0, rotationOffset.y) * grid.GetCellSize();
             
             // *****Setting new placeObject into this gridObject, with building direction
-            PlacedObject placedObject = PlacedObject.Create(placedObjectWorldPosition, new Vector2Int(x, z), dir, placedObjectTypeSO);
+            PlacedObject placedObject = PlacedObject.Create(placedObjectWorldPosition, new Vector2Int(x, z), dir, currentPlacedObjectTypeSO);
 
             // Insert placedObject info into all the gridPosition occupied
             foreach (Vector2Int gridPosition in gridPositionList){
@@ -185,16 +185,16 @@ public class GridBuildingSystem : MonoBehaviour
 
     public Vector3 GetSnappedMouseWorldPosition(){
         grid.GetXZ(GetMouseWorldPosition3D(), out int x, out int z);
-        Vector2Int rotationOffset = placedObjectTypeSO.GetRotationOffset(dir);
+        Vector2Int rotationOffset = currentPlacedObjectTypeSO.GetRotationOffset(dir);
         Vector3 snappedMouseWorldPosition = grid.GetWorldPosition(x, z) + new Vector3(rotationOffset.x, 0, rotationOffset.y) * grid.GetCellSize();
         return snappedMouseWorldPosition;
     }
 
     public Quaternion GetPlacedObjectRotation(){
-        return Quaternion.Euler(0, placedObjectTypeSO.GetRotationAngle(dir), 0);
+        return Quaternion.Euler(0, currentPlacedObjectTypeSO.GetRotationAngle(dir), 0);
     }
 
     public PlacedObjectTypeSO GetPlacedObjectTypeSO(){
-        return placedObjectTypeSO;
+        return currentPlacedObjectTypeSO;
     }
 }
