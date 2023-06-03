@@ -51,7 +51,7 @@ public class UnitSelection : MonoBehaviour
             unit.transform.GetChild(0).gameObject.SetActive(false);
         }
         unitsSelected.Clear();
-        modeHandler.SwitchMode(null);
+        modeHandler.SwitchModeByUnitSO(null);
         ClearControlUI();
     }
 
@@ -75,6 +75,6 @@ public class UnitSelection : MonoBehaviour
 
     private void SwitchMode(GameObject unit){
         UnitSO unitSO = unit.GetComponent<Unit>().unitSO;
-        modeHandler.SwitchMode(unitSO);
+        modeHandler.SwitchModeByUnitSO(unitSO);
     }
 }

@@ -91,6 +91,10 @@ public class GridBuildingSystem : MonoBehaviour
     }
 
     private void Start(){
+        AddActionBtnsListener();
+    }
+
+    private void AddActionBtnsListener(){
         for (int i = 0; i < ControlRenderer.Instance.unitActionButtons.Count; i++){
             int index = i; // Capture the index variable
             GameObject actionBtn = ControlRenderer.Instance.unitActionButtons[i];
@@ -99,6 +103,17 @@ public class GridBuildingSystem : MonoBehaviour
         }
     }
 
+    private void CheckNumKeysInput(){
+        // switching placedObject 
+        if (Input.GetKeyDown(KeyCode.Alpha1)) { 
+            OnBuildingTrigger(0);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2)) { 
+            OnBuildingTrigger(1);
+        }
+    }
+
+    // both num keys/action buttons triggers
     private void OnBuildingTrigger(int index){
         Debug.Log("hitting build action " + index.ToString());
         currentPlacedObjectTypeSO = placedObjectTypeSOList[index];
@@ -110,21 +125,14 @@ public class GridBuildingSystem : MonoBehaviour
         if (ModeHandler.currentMode != Mode.BuilderSelected && 
             ModeHandler.currentMode != Mode.Building) return;
 
-        // switching placedObject 
-        if (Input.GetKeyDown(KeyCode.Alpha1)) { 
-            OnBuildingTrigger(0);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2)) { 
-            OnBuildingTrigger(1);
-        }
-        // if (Input.GetKeyDown(KeyCode.Alpha3)) { placedObjectTypeSO = placedObjectTypeSOList[2];}
-        // if (Input.GetKeyDown(KeyCode.Alpha4)) { placedObjectTypeSO = placedObjectTypeSOList[3];}
-        // if (Input.GetKeyDown(KeyCode.Alpha5)) { placedObjectTypeSO = placedObjectTypeSOList[4];}
+        CheckNumKeysInput();
 
         // ===Building mode logic===
         if (ModeHandler.currentMode != Mode.Building) return;
+        if (UI.isPointingUI) return; // no building when using UI
+        // (In buildingGhost)
 
-        // When player builds (LMB)
+        // When player builds (LMB) 
         if (Input.GetMouseButtonDown(0)){
             // find snapping location, output to x and z, fetch the current x,z GridObject from grid instance
             grid.GetXZ(GetMouseWorldPosition3D(), out int x, out int z); 
@@ -161,8 +169,13 @@ public class GridBuildingSystem : MonoBehaviour
             }
         }
 
+        // Quit building logic (RMB)
+        if (Input.GetMouseButtonUp(1) || Input.GetKeyDown(KeyCode.Escape)){ // Has to be MouseButtonUp for correct order
+            ModeHandler.currentMode = Mode.BuilderSelected; // Disable buildingGhost
+        }
+
         // Destroy building logic  (MMB)
-        if (Input.GetMouseButtonDown(2)){
+        if (Input.GetMouseButtonUp(2)){
             GridObject gridObject = grid.GetGridObjectByWorldPosition(GetMouseWorldPosition3D());
             PlacedObject placedObject = gridObject.GetPlacedObject();
             if (placedObject != null) {
@@ -178,6 +191,7 @@ public class GridBuildingSystem : MonoBehaviour
             }
         }
 
+        // Rotate building
         if (Input.GetKeyDown(KeyCode.R)){
             dir = PlacedObjectTypeSO.GetNextDir(dir);
         }

@@ -21,7 +21,7 @@ public class Unit : MonoBehaviour
 
     void CheckIfObstacleBlocking(){
         camToUnitRay = myCam.ScreenPointToRay(myCam.WorldToScreenPoint(transform.position));
-        RaycastHit[] hits = Physics.RaycastAll(camToUnitRay, Mathf.Infinity, obstacle); // When hitting obstacle
+        RaycastHit[] hits = Physics.RaycastAll(camToUnitRay, Mathf.Infinity, obstacle); // TODO: Fix built building layers
 
         // No obstacle hit(s) between unit and camera
         if (hits.Length == 0) { 

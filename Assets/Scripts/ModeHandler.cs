@@ -1,15 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class ModeHandler : MonoBehaviour
 {
     public static Mode currentMode = Mode.None;
+    [SerializeField] private TMP_Text debugText;
 
-    public void SwitchMode(UnitSO unitSO){
+    void Update(){
+        debugText.text = currentMode.ToString();
+    }
+
+    public void SwitchModeByUnitSO(UnitSO unitSO){
         if (unitSO == null) {
             currentMode = Mode.None;
-            // Debug.Log(currentMode);  
             return;
         }
 
@@ -19,6 +24,5 @@ public class ModeHandler : MonoBehaviour
         } else {
             currentMode = Mode.UnitSelected;
         }
-        // Debug.Log(currentMode);  
     }
 }

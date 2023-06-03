@@ -22,11 +22,11 @@ public class ControlRenderer : MonoBehaviour
             return;
         }
         instance = this;
+        CreateActionButtons(); // render action butons before game start
     } 
 
     private void Start() {
         ClearInfoAndAction();
-        CreateActionButtons(); // render action butons when game start
     }
     
     public void UpdateInfoAndAction(List<GameObject> unitsSelected){

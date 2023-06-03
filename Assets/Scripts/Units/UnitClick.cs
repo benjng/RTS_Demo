@@ -17,6 +17,12 @@ public class UnitClick : MonoBehaviour
 
     void Update()
     {
+        if (UI.isPointingUI) return; // no unit detection when cursor is inside UI
+
+        if (Input.GetKeyDown(KeyCode.Escape)){ // ESC
+            UnitSelection.Instance.DeselectAll();
+        }
+
         if (Input.GetMouseButtonDown(0)){ //LMB
             RaycastHit hit;
             ray = myCam.ScreenPointToRay(Input.mousePosition); // create a ray from screen to mouse
@@ -29,9 +35,9 @@ public class UnitClick : MonoBehaviour
                     UnitSelection.Instance.ClickSelect(hit.collider.gameObject);
                 }
             } else {
-                // didn't hit a clickable
-                // if (!Input.GetKey(KeyCode.LeftShift))
-                //     UnitSelection.Instance.DeselectAll();
+                // didn't hit a clickable (clicking nothing)
+                if (!Input.GetKey(KeyCode.LeftShift))
+                    UnitSelection.Instance.DeselectAll();
             }
         }
 
