@@ -130,17 +130,19 @@ public class GridBuildingSystem : MonoBehaviour
         // ===Building mode logic===
         if (ModeHandler.currentMode != Mode.Building) return;
         if (UI.isPointingUI) return; // no building when using UI
-        // (In buildingGhost)
+
+        // Enter BuildingGhost
 
         // When player builds (LMB) 
         if (Input.GetMouseButtonDown(0)){
-            // find snapping location, output to x and z, fetch the current x,z GridObject from grid instance
-            grid.GetXZ(GetMouseWorldPosition3D(), out int x, out int z); 
-            GridObject gridObject = grid.GetGridObject(x, z); 
+            // find snapping location of the mouse click, output to x and z, fetch the current x,z GridObject from grid instance
+            int snappedX, snappedZ;
+            grid.GetXZ(GetMouseWorldPosition3D(), out snappedX, out snappedZ); 
+            GridObject gridObject = grid.GetGridObject(snappedX, snappedZ); 
 
             bool canBuild = true;
             // **get all the grid positions that will be occupied by the building type**
-            List<Vector2Int> gridPositionList = currentPlacedObjectTypeSO.GetGridPositionList(new Vector2Int(x, z), dir);
+            List<Vector2Int> gridPositionList = currentPlacedObjectTypeSO.GetGridPositionList(new Vector2Int(snappedX, snappedZ), dir);
 
             // if ANY gridPosition cannot be built, no build is allowed
             foreach (Vector2Int gridPosition in gridPositionList){
@@ -158,10 +160,10 @@ public class GridBuildingSystem : MonoBehaviour
 
             // offset logic
             Vector2Int rotationOffset = currentPlacedObjectTypeSO.GetRotationOffset(dir);
-            Vector3 placedObjectWorldPosition = grid.GetWorldPosition(x, z) + new Vector3(rotationOffset.x, 0, rotationOffset.y) * grid.GetCellSize();
+            Vector3 placedObjectWorldPosition = grid.GetWorldPosition(snappedX, snappedZ) + new Vector3(rotationOffset.x, 0, rotationOffset.y) * grid.GetCellSize();
             
             // *****Setting new placeObject into this gridObject, with building direction
-            PlacedObject placedObject = PlacedObject.Create(placedObjectWorldPosition, new Vector2Int(x, z), dir, currentPlacedObjectTypeSO);
+            PlacedObject placedObject = PlacedObject.Create(placedObjectWorldPosition, new Vector2Int(snappedX, snappedZ), dir, currentPlacedObjectTypeSO);
 
             // Insert placedObject info into all the gridPosition occupied
             foreach (Vector2Int gridPosition in gridPositionList){
@@ -169,31 +171,47 @@ public class GridBuildingSystem : MonoBehaviour
             }
         }
 
-        // Quit building logic (RMB)
+        // RMB/ESC
         if (Input.GetMouseButtonUp(1) || Input.GetKeyDown(KeyCode.Escape)){ // Has to be MouseButtonUp for correct order
-            ModeHandler.currentMode = Mode.BuilderSelected; // Disable buildingGhost
+            QuitBuilding();
         }
 
-        // Destroy building logic  (MMB)
-        if (Input.GetMouseButtonUp(2)){
-            GridObject gridObject = grid.GetGridObjectByWorldPosition(GetMouseWorldPosition3D());
-            PlacedObject placedObject = gridObject.GetPlacedObject();
-            if (placedObject != null) {
-                placedObject.DestroySelf();
-
-                // **get all the grid positions that will be occupied by the building type**
-                List<Vector2Int> gridPositionList = placedObject.GetGridPositionList();
-
-                // Go into all gridPosition and clear the placedObject in it
-                foreach (Vector2Int gridPosition in gridPositionList){
-                    grid.GetGridObject(gridPosition.x, gridPosition.y).ClearPlacedObject();
-                }
-            }
+        // MMB
+        if (Input.GetMouseButtonDown(2)){
+            RemoveBuilt();
         }
 
         // Rotate building
         if (Input.GetKeyDown(KeyCode.R)){
-            dir = PlacedObjectTypeSO.GetNextDir(dir);
+            RotateBuildingGhost();
+        }
+    }
+
+    private void Build(){
+
+    }
+
+    private void RotateBuildingGhost(){
+        dir = PlacedObjectTypeSO.GetNextDir(dir);
+    }
+
+    private void QuitBuilding(){
+        ModeHandler.currentMode = Mode.BuilderSelected; // Disable buildingGhost
+    }
+
+    private void RemoveBuilt(){
+        GridObject gridObject = grid.GetGridObjectByWorldPosition(GetMouseWorldPosition3D());
+        PlacedObject placedObject = gridObject.GetPlacedObject();
+        if (placedObject != null) {
+            placedObject.DestroySelf();
+
+            // **get all the grid positions that will be occupied by the building type**
+            List<Vector2Int> gridPositionList = placedObject.GetGridPositionList();
+
+            // Go into all gridPosition and clear the placedObject in it
+            foreach (Vector2Int gridPosition in gridPositionList){
+                grid.GetGridObject(gridPosition.x, gridPosition.y).ClearPlacedObject();
+            }
         }
     }
 

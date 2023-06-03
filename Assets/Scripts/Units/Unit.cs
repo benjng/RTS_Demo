@@ -16,10 +16,10 @@ public class Unit : MonoBehaviour
     }
 
     void Update(){
-        CheckIfObstacleBlocking();
+        CheckObstacle();
     }
 
-    void CheckIfObstacleBlocking(){
+    void CheckObstacle(){
         camToUnitRay = myCam.ScreenPointToRay(myCam.WorldToScreenPoint(transform.position));
         RaycastHit[] hits = Physics.RaycastAll(camToUnitRay, Mathf.Infinity, obstacle); // TODO: Fix built building layers
 
