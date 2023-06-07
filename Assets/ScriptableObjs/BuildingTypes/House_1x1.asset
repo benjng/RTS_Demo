@@ -15,5 +15,6 @@ MonoBehaviour:
   nameString: House_1x1
   prefab: {fileID: 8398424438002290705, guid: 2651cbaa5979b8649ac7f237d43c1397, type: 3}
   visual: {fileID: 8398424438002290705, guid: 407496f38dc479943bdccec46ab5da51, type: 3}
+  actionBtnSprite: {fileID: 0}
   width: 1
   height: 1

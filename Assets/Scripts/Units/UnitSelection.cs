@@ -72,13 +72,11 @@ public class UnitSelection : MonoBehaviour
 
     // 1. add selected unit to list, 2. activate indicator, 3. enable unit movement
     private void ActivateUnit(GameObject unitToAdd){
-        Debug.Log(unitToAdd);
         unitsSelected.Add(unitToAdd);
         unitToAdd.GetComponent<Unit>().selectionIndicator.SetActive(true); // visual indicator
         if (unitToAdd.TryGetComponent<UnitMovement>(out UnitMovement unitMovement)){
             unitMovement.enabled = true;
         }
-        // unitToAdd.GetComponent<UnitMovement>().enabled = true;
     }
 
     private void SwitchMode(GameObject unit){

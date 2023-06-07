@@ -1,14 +1,13 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ObstacleDistributor : MonoBehaviour
 {
-    private int childCount;
-    void Start()
+    public virtual void Start()
     {
-        childCount = transform.childCount;
-        for (int i=0; i<childCount; i++){
+        for (int i=0; i< transform.childCount; i++){
             transform.GetChild(i).gameObject.AddComponent<Obstacle>();
         }
     }

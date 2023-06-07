@@ -9,6 +9,9 @@ public class GridBuildingSystem : MonoBehaviour
     public event EventHandler<OnSelectedChangedEventArgs> OnSelectedChanged;
     public class OnSelectedChangedEventArgs : EventArgs {}
 
+    public delegate void BuiltEventHandler();
+    public event BuiltEventHandler BuildEventTriggered;
+
     public List<PlacedObjectTypeSO> placedObjectTypeSOList; 
     [SerializeField] private LayerMask buildableLayers; 
     [SerializeField] private Transform newBuildingsHolder;
@@ -72,7 +75,7 @@ public class GridBuildingSystem : MonoBehaviour
     }
     // end of GridObject class
 
-
+    // Singleton
     public static GridBuildingSystem Instance;
 
     private void Awake() {
@@ -165,6 +168,7 @@ public class GridBuildingSystem : MonoBehaviour
             
             // *****Setting new placeObject into this gridObject, with building direction
             PlacedObject placedObject = PlacedObject.Create(placedObjectWorldPosition, new Vector2Int(snappedX, snappedZ), dir, currentPlacedObjectTypeSO, newBuildingsHolder);
+            BuildEventTriggered.Invoke(); // Invoke buildevent
 
             // Insert placedObject info into all the gridPosition occupied
             foreach (Vector2Int gridPosition in gridPositionList){

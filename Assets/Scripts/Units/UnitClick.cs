@@ -29,7 +29,6 @@ public class UnitClick : MonoBehaviour
 
             // hit a clickable (Shift/normal)
             if(Physics.Raycast(ray, out hit, Mathf.Infinity, clickable)){ // cast the ray
-                Debug.Log(hit.collider.name);
                 if (Input.GetKey(KeyCode.LeftShift)){
                     UnitSelection.Instance.ShiftClickSelect(hit.collider.gameObject);
                 } else {
