@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 19237a0ce10685140b9471c6e57a8d8b, type: 3}
-  m_Name: Building_2
+  m_Name: House_1x1
   m_EditorClassIdentifier: 
   unitName: Building_2
   material: {fileID: 0}

@@ -10,7 +10,7 @@ public class GridBuildingSystem : MonoBehaviour
     public class OnSelectedChangedEventArgs : EventArgs {}
 
     public delegate void BuiltEventHandler();
-    public event BuiltEventHandler BuildEventTriggered;
+    public event BuiltEventHandler OnBuildingBuilt;
 
     public List<BuildingTypeSO> buildingTypeSOList; 
     [SerializeField] private LayerMask buildableLayers; 
@@ -103,22 +103,22 @@ public class GridBuildingSystem : MonoBehaviour
             int index = i; // Capture the index variable
             GameObject actionBtn = ControlRenderer.Instance.unitActionButtons[i];
             Button btn = actionBtn.GetComponent<Button>();
-            btn.onClick.AddListener(() => OnBuildingTrigger(index));
+            btn.onClick.AddListener(() => OnBuildingActionTrigger(index));
         }
     }
 
     private void CheckNumKeysInput(){
         // switching building 
         if (Input.GetKeyDown(KeyCode.Alpha1)) { 
-            OnBuildingTrigger(0);
+            OnBuildingActionTrigger(0);
         }
         if (Input.GetKeyDown(KeyCode.Alpha2)) { 
-            OnBuildingTrigger(1);
+            OnBuildingActionTrigger(1);
         }
     }
 
     // both num keys/action buttons triggers
-    private void OnBuildingTrigger(int index){
+    private void OnBuildingActionTrigger(int index){
         // Debug.Log("hitting build action " + index.ToString());
         currentBuildingTypeSO = buildingTypeSOList[index];
         OnSelectedChanged(this, new OnSelectedChangedEventArgs {});
@@ -166,9 +166,9 @@ public class GridBuildingSystem : MonoBehaviour
             Vector2Int rotationOffset = currentBuildingTypeSO.GetRotationOffset(dir);
             Vector3 buildingWorldPosition = grid.GetWorldPosition(snappedX, snappedZ) + new Vector3(rotationOffset.x, 0, rotationOffset.y) * grid.GetCellSize();
             
-            // *****Setting new placeObject into this gridObject, with building direction
+            // *****Setting new building into this gridObject, with building direction
             Building building = Building.Create(buildingWorldPosition, new Vector2Int(snappedX, snappedZ), dir, currentBuildingTypeSO, newBuildingsHolder);
-            BuildEventTriggered.Invoke(); // Invoke buildevent
+            OnBuildingBuilt.Invoke(); // Invoke buildevent
 
             // Insert building info into all the gridPosition occupied
             foreach (Vector2Int gridPosition in gridPositionList){
@@ -190,10 +190,6 @@ public class GridBuildingSystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R)){
             RotateBuildingGhost();
         }
-    }
-
-    private void Build(){
-
     }
 
     private void RotateBuildingGhost(){

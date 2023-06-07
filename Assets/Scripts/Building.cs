@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class Building : MonoBehaviour
 {
+    private BuildingTypeSO buildingTypeSO;
+    private Vector2Int origin;
+    private BuildingTypeSO.Dir dir;
+    
     public static Building Create(Vector3 worldPosition, Vector2Int origin, BuildingTypeSO.Dir dir, BuildingTypeSO buildingTypeSO, Transform parent){
         Transform buildingTransform = Instantiate(buildingTypeSO.prefab, worldPosition, Quaternion.Euler(0, buildingTypeSO.GetRotationAngle(dir), 0), parent);
 
@@ -15,9 +19,6 @@ public class Building : MonoBehaviour
 
         return building;
     }
-    private BuildingTypeSO buildingTypeSO;
-    private Vector2Int origin;
-    private BuildingTypeSO.Dir dir;
 
     public List<Vector2Int> GetGridPositionList(){
         return buildingTypeSO.GetGridPositionList(origin, dir);

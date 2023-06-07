@@ -3,29 +3,30 @@ using UnityEngine;
 
 public class Unit : MonoBehaviour
 {
-    private Camera myCam;
-    public LayerMask obstacle;
-    private Ray camToUnitRay;
+    public LayerMask obstacleLayer;
     public List<Obstacle> currentObstHitList = new List<Obstacle>();
     public UnitSO unitSO;
-    public GameObject selectionIndicator;
+    public GameObject HPBar;
+    public int CurrentHP;
+
+    private Camera myCam;
+    private Ray camToUnitRay;
 
     void Start()
     {
         myCam = Camera.main;
         UnitSelection.Instance.unitList.Add(this.gameObject); // add this gameobject to unitList when game start
     }
-    // TODO: Fix building unit visuals (selection, indicator, etc)
 
     void Update(){
         CheckObstacle();
     }
 
     void CheckObstacle(){
-        if (unitSO.unitType == UnitType.Building) return; // TODO: Fix building as Unit
+        if (unitSO.unitType == UnitType.Building) return;
 
         camToUnitRay = myCam.ScreenPointToRay(myCam.WorldToScreenPoint(transform.position));
-        RaycastHit[] hits = Physics.RaycastAll(camToUnitRay, Mathf.Infinity, obstacle); // TODO: Fix built building layers
+        RaycastHit[] hits = Physics.RaycastAll(camToUnitRay, Mathf.Infinity, obstacleLayer);
 
         // No obstacle hit(s) between unit and camera
         if (hits.Length == 0) { 

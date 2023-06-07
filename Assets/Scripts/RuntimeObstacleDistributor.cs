@@ -7,7 +7,7 @@ public class RuntimeObstacleDistributor : ObstacleDistributor
     // Start is called before the first frame update
     public override void Start()
     {
-        GridBuildingSystem.Instance.BuildEventTriggered += OnBuildEventTriggered;
+        GridBuildingSystem.Instance.OnBuildingBuilt += OnBuildEventTriggered;
     }
 
     private void OnBuildEventTriggered()

@@ -369,11 +369,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 116dd7dd5e054b64d8a8b310528551e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  obstacle:
+  obstacleLayer:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 0
   currentObstHitList: []
-  unitSO: {fileID: 11400000, guid: 97172995cb57c9b4f99a79cbfe553bf9, type: 2}
+  unitSO: {fileID: 11400000, guid: 8a02cf7f49d092f4a8d49b3202227bf7, type: 2}
   selectionIndicator: {fileID: 1852549912929136762}
 --- !u!1 &7364582620466684033
 GameObject:
