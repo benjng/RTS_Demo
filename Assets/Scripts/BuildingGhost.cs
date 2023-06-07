@@ -5,7 +5,7 @@ using UnityEngine;
 public class BuildingGhost : MonoBehaviour
 {
     private Transform visual;
-    private PlacedObjectTypeSO placedObjectTypeSO;
+    private BuildingTypeSO buildingTypeSO;
 
     private void Start() {
         GridBuildingSystem.Instance.OnSelectedChanged += Instance_OnSelectedChanged;      
@@ -24,7 +24,7 @@ public class BuildingGhost : MonoBehaviour
         Vector3 targetPosition = GridBuildingSystem.Instance.GetSnappedMouseWorldPosition();
         targetPosition.y = 1.2f;
         transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * 15f);
-        transform.rotation = Quaternion.Lerp(transform.rotation, GridBuildingSystem.Instance.GetPlacedObjectRotation(), Time.deltaTime * 15f);
+        transform.rotation = Quaternion.Lerp(transform.rotation, GridBuildingSystem.Instance.GetBuildingRotation(), Time.deltaTime * 15f);
     }
 
     // Visual: for building preview
@@ -34,10 +34,10 @@ public class BuildingGhost : MonoBehaviour
             visual = null;
         }
 
-        PlacedObjectTypeSO placedObjectTypeSO = GridBuildingSystem.Instance.GetPlacedObjectTypeSO();
+        BuildingTypeSO buildingTypeSO = GridBuildingSystem.Instance.GetBuildingTypeSO();
 
-        if (placedObjectTypeSO != null){
-            visual = Instantiate(placedObjectTypeSO.visual, Vector3.zero, Quaternion.identity);
+        if (buildingTypeSO != null){
+            visual = Instantiate(buildingTypeSO.visual, Vector3.zero, Quaternion.identity);
             visual.parent = transform;
             visual.localPosition = Vector3.zero;
             visual.localEulerAngles = Vector3.zero;

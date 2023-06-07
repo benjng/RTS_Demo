@@ -12,12 +12,12 @@ public class GridBuildingSystem : MonoBehaviour
     public delegate void BuiltEventHandler();
     public event BuiltEventHandler BuildEventTriggered;
 
-    public List<PlacedObjectTypeSO> placedObjectTypeSOList; 
+    public List<BuildingTypeSO> buildingTypeSOList; 
     [SerializeField] private LayerMask buildableLayers; 
     [SerializeField] private Transform newBuildingsHolder;
 
-    private PlacedObjectTypeSO currentPlacedObjectTypeSO;
-    private PlacedObjectTypeSO.Dir dir = PlacedObjectTypeSO.Dir.Down;
+    private BuildingTypeSO currentBuildingTypeSO;
+    private BuildingTypeSO.Dir dir = BuildingTypeSO.Dir.Down;
     private Grid<GridObject> grid; // a grid building system has one grid
 
     #region Grid param (Width, Height, Origin, Cell size)
@@ -35,7 +35,7 @@ public class GridBuildingSystem : MonoBehaviour
         private Grid<GridObject> grid; // on each grid position belongs to a grid
         private int x; // each grid position has x and z
         private int z;
-        private PlacedObject placedObject; // the object that is placed on this grid position. Contains info of the object.
+        private Building building; // the object that is placed on this grid position. Contains info of the object.
 
         // Constructor
         public GridObject(Grid<GridObject> grid, int x, int z){ 
@@ -45,29 +45,29 @@ public class GridBuildingSystem : MonoBehaviour
         }
 
         // for setting new placeObject info into this GridObject
-        public void SetPlacedObject(PlacedObject placedObject){
-            this.placedObject = placedObject;
+        public void SetBuilding(Building building){
+            this.building = building;
             grid.TriggerGridObjectChanged(x, z); // inform grid that something has changed at the gridObject[x,z]
         }
 
-        public PlacedObject GetPlacedObject(){
-            return placedObject;
+        public Building GetBuilding(){
+            return building;
         }
 
-        public void ClearPlacedObject(){
-            placedObject = null;
+        public void ClearBuilding(){
+            building = null;
             grid.TriggerGridObjectChanged(x, z);
         }
 
         public bool CanBuild(){
-            return placedObject == null;
+            return building == null;
         }
 
         public override string ToString()
         {   
-            if (placedObject != null) {
+            if (building != null) {
                 // Debug.Log(transform.name);
-                return placedObject + "";
+                return building + "";
             }
 
             return x + ", " + z;
@@ -91,7 +91,7 @@ public class GridBuildingSystem : MonoBehaviour
         */
         grid = new Grid<GridObject>(gridWidth, gridHeight, cellSize, origin.position, (Grid<GridObject> g, int x, int z) => new GridObject(g, x, z));
 
-        currentPlacedObjectTypeSO = placedObjectTypeSOList[0];
+        currentBuildingTypeSO = buildingTypeSOList[0];
     }
 
     private void Start(){
@@ -108,7 +108,7 @@ public class GridBuildingSystem : MonoBehaviour
     }
 
     private void CheckNumKeysInput(){
-        // switching placedObject 
+        // switching building 
         if (Input.GetKeyDown(KeyCode.Alpha1)) { 
             OnBuildingTrigger(0);
         }
@@ -120,10 +120,10 @@ public class GridBuildingSystem : MonoBehaviour
     // both num keys/action buttons triggers
     private void OnBuildingTrigger(int index){
         // Debug.Log("hitting build action " + index.ToString());
-        currentPlacedObjectTypeSO = placedObjectTypeSOList[index];
+        currentBuildingTypeSO = buildingTypeSOList[index];
         OnSelectedChanged(this, new OnSelectedChangedEventArgs {});
         ModeHandler.currentMode = Mode.Building;
-    }
+    } 
 
     private void Update() {
         if (ModeHandler.currentMode != Mode.BuilderSelected && 
@@ -146,7 +146,7 @@ public class GridBuildingSystem : MonoBehaviour
 
             bool canBuild = true;
             // **get all the grid positions that will be occupied by the building type**
-            List<Vector2Int> gridPositionList = currentPlacedObjectTypeSO.GetGridPositionList(new Vector2Int(snappedX, snappedZ), dir);
+            List<Vector2Int> gridPositionList = currentBuildingTypeSO.GetGridPositionList(new Vector2Int(snappedX, snappedZ), dir);
 
             // if ANY gridPosition cannot be built, no build is allowed
             foreach (Vector2Int gridPosition in gridPositionList){
@@ -163,16 +163,16 @@ public class GridBuildingSystem : MonoBehaviour
             }
 
             // offset logic
-            Vector2Int rotationOffset = currentPlacedObjectTypeSO.GetRotationOffset(dir);
-            Vector3 placedObjectWorldPosition = grid.GetWorldPosition(snappedX, snappedZ) + new Vector3(rotationOffset.x, 0, rotationOffset.y) * grid.GetCellSize();
+            Vector2Int rotationOffset = currentBuildingTypeSO.GetRotationOffset(dir);
+            Vector3 buildingWorldPosition = grid.GetWorldPosition(snappedX, snappedZ) + new Vector3(rotationOffset.x, 0, rotationOffset.y) * grid.GetCellSize();
             
             // *****Setting new placeObject into this gridObject, with building direction
-            PlacedObject placedObject = PlacedObject.Create(placedObjectWorldPosition, new Vector2Int(snappedX, snappedZ), dir, currentPlacedObjectTypeSO, newBuildingsHolder);
+            Building building = Building.Create(buildingWorldPosition, new Vector2Int(snappedX, snappedZ), dir, currentBuildingTypeSO, newBuildingsHolder);
             BuildEventTriggered.Invoke(); // Invoke buildevent
 
-            // Insert placedObject info into all the gridPosition occupied
+            // Insert building info into all the gridPosition occupied
             foreach (Vector2Int gridPosition in gridPositionList){
-                grid.GetGridObject(gridPosition.x, gridPosition.y).SetPlacedObject(placedObject);
+                grid.GetGridObject(gridPosition.x, gridPosition.y).SetBuilding(building);
             }
         }
 
@@ -197,7 +197,7 @@ public class GridBuildingSystem : MonoBehaviour
     }
 
     private void RotateBuildingGhost(){
-        dir = PlacedObjectTypeSO.GetNextDir(dir);
+        dir = BuildingTypeSO.GetNextDir(dir);
     }
 
     private void QuitBuilding(){
@@ -206,16 +206,16 @@ public class GridBuildingSystem : MonoBehaviour
 
     private void RemoveBuilt(){
         GridObject gridObject = grid.GetGridObjectByWorldPosition(GetMouseWorldPosition3D());
-        PlacedObject placedObject = gridObject.GetPlacedObject();
-        if (placedObject != null) {
-            placedObject.DestroySelf();
+        Building building = gridObject.GetBuilding();
+        if (building != null) {
+            building.DestroySelf();
 
             // **get all the grid positions that will be occupied by the building type**
-            List<Vector2Int> gridPositionList = placedObject.GetGridPositionList();
+            List<Vector2Int> gridPositionList = building.GetGridPositionList();
 
-            // Go into all gridPosition and clear the placedObject in it
+            // Go into all gridPosition and clear the building in it
             foreach (Vector2Int gridPosition in gridPositionList){
-                grid.GetGridObject(gridPosition.x, gridPosition.y).ClearPlacedObject();
+                grid.GetGridObject(gridPosition.x, gridPosition.y).ClearBuilding();
             }
         }
     }
@@ -231,16 +231,16 @@ public class GridBuildingSystem : MonoBehaviour
 
     public Vector3 GetSnappedMouseWorldPosition(){
         grid.GetXZ(GetMouseWorldPosition3D(), out int x, out int z);
-        Vector2Int rotationOffset = currentPlacedObjectTypeSO.GetRotationOffset(dir);
+        Vector2Int rotationOffset = currentBuildingTypeSO.GetRotationOffset(dir);
         Vector3 snappedMouseWorldPosition = grid.GetWorldPosition(x, z) + new Vector3(rotationOffset.x, 0, rotationOffset.y) * grid.GetCellSize();
         return snappedMouseWorldPosition;
     }
 
-    public Quaternion GetPlacedObjectRotation(){
-        return Quaternion.Euler(0, currentPlacedObjectTypeSO.GetRotationAngle(dir), 0);
+    public Quaternion GetBuildingRotation(){
+        return Quaternion.Euler(0, currentBuildingTypeSO.GetRotationAngle(dir), 0);
     }
 
-    public PlacedObjectTypeSO GetPlacedObjectTypeSO(){
-        return currentPlacedObjectTypeSO;
+    public BuildingTypeSO GetBuildingTypeSO(){
+        return currentBuildingTypeSO;
     }
 }

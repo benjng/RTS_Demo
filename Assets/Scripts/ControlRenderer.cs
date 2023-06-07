@@ -54,13 +54,13 @@ public class ControlRenderer : MonoBehaviour
     }
 
     private void CreateActionButtons(){
-        foreach (PlacedObjectTypeSO placedObjectType in GridBuildingSystem.Instance.placedObjectTypeSOList){
+        foreach (BuildingTypeSO buildingType in GridBuildingSystem.Instance.buildingTypeSOList){
             //TODO: change button sprite to building sprite
             GameObject buildingBtn = Instantiate(buildingBtnPrefab, unitActionPanel);
             unitActionButtons.Add(buildingBtn);
             GameObject buildingText = buildingBtn.transform.GetChild(0).gameObject;
             TMP_Text text = buildingText.GetComponent<TMP_Text>();
-            text.text = placedObjectType.nameString;
+            text.text = buildingType.nameString;
         }
     }
 
