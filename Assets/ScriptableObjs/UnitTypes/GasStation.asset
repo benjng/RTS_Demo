@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19237a0ce10685140b9471c6e57a8d8b, type: 3}
   m_Name: GasStation
   m_EditorClassIdentifier: 
-  unitName: Building_1
+  unitName: GasStation
   material: {fileID: 0}
   unitIcon: {fileID: 0}
   unitType: 2
+  MaxHP: 0
