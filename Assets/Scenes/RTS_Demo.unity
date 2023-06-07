@@ -12150,7 +12150,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   clickable:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 576
   ui:
     serializedVersion: 2
     m_Bits: 0
@@ -40134,7 +40134,7 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: a8621ec3fc1ee974eabe78c9bdbd59b2, type: 2}
     - target: {fileID: 7909649195125507352, guid: 7632c75df46637a4a84e7389261a7d16, type: 3}
       propertyPath: obstacle.m_Bits
-      value: 0
+      value: 512
       objectReference: {fileID: 0}
     - target: {fileID: 7909649195125507352, guid: 7632c75df46637a4a84e7389261a7d16, type: 3}
       propertyPath: selectionIndicator

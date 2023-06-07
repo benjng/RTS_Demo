@@ -89,15 +89,7 @@ public class UnitDrag : MonoBehaviour
         foreach (var unit in UnitSelection.Instance.unitList){
             unitCount++;
             // **if unit is within the bounds of the selection rect
-            UnitSO unitSO = unit.transform.GetComponent<Unit>().unitSO;
-            Vector3 unitPos;
-            if (unitSO.unitType == UnitType.Building) {
-                unitPos = unit.transform.GetChild(2).position; // Building's center: Area
-            } else {
-                unitPos = unit.transform.position;
-            }
-
-            if (selectionBox.Contains(myCam.WorldToScreenPoint(unitPos))){
+            if (selectionBox.Contains(myCam.WorldToScreenPoint(unit.transform.position))){
                 // add them to selection
                 UnitSelection.Instance.DragSelect(unit);
             }

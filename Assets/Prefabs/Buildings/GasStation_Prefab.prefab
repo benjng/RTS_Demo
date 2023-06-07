@@ -18,7 +18,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6398143741855854344
 Transform:
   m_ObjectHideFlags: 0
@@ -49,7 +49,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 689265953414121087}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -93,7 +93,7 @@ BoxCollider:
   m_GameObject: {fileID: 689265953414121087}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -204,7 +204,6 @@ GameObject:
   m_Component:
   - component: {fileID: 673458954031844424}
   - component: {fileID: 4377678584095794023}
-  - component: {fileID: 2852256537044840836}
   m_Layer: 9
   m_Name: GasStation_Prefab
   m_TagString: Untagged
@@ -243,24 +242,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a249a2641f259614397c9ba5a4b60d72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2852256537044840836
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2711794982517474731}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 116dd7dd5e054b64d8a8b310528551e0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  obstacle:
-    serializedVersion: 2
-    m_Bits: 512
-  currentObstHitList: []
-  unitSO: {fileID: 11400000, guid: 97172995cb57c9b4f99a79cbfe553bf9, type: 2}
-  selectionIndicator: {fileID: 1852549912929136762}
 --- !u!1 &6306051224582029964
 GameObject:
   m_ObjectHideFlags: 0
@@ -273,6 +254,7 @@ GameObject:
   - component: {fileID: 6336979745780168502}
   - component: {fileID: 6328774681930175380}
   - component: {fileID: 6296326025880686638}
+  - component: {fileID: 1855192886748264499}
   m_Layer: 9
   m_Name: Gas_station_A
   m_TagString: Untagged
@@ -375,6 +357,24 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: 5bb97b332176ae0499af0f666e4f5828, type: 3}
+--- !u!114 &1855192886748264499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6306051224582029964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 116dd7dd5e054b64d8a8b310528551e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  obstacle:
+    serializedVersion: 2
+    m_Bits: 512
+  currentObstHitList: []
+  unitSO: {fileID: 11400000, guid: 97172995cb57c9b4f99a79cbfe553bf9, type: 2}
+  selectionIndicator: {fileID: 1852549912929136762}
 --- !u!1 &7364582620466684033
 GameObject:
   m_ObjectHideFlags: 0

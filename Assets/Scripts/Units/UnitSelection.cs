@@ -31,7 +31,9 @@ public class UnitSelection : MonoBehaviour
             ActivateUnit(unitToAdd);
         } else {
             // deselect unit
-            unitToAdd.GetComponent<UnitMovement>().enabled = false;
+            if (unitToAdd.TryGetComponent<UnitMovement>(out UnitMovement unitMovement)){
+                unitMovement.enabled = false;
+            }
             unitToAdd.GetComponent<Unit>().selectionIndicator.SetActive(false);
             unitsSelected.Remove(unitToAdd);
         }
@@ -58,12 +60,12 @@ public class UnitSelection : MonoBehaviour
     }
 
     public void UpdateControlUI(){
-        Debug.Log("UpdateControlUI");
+        // Debug.Log("UpdateControlUI");
         ControlRenderer.Instance.UpdateInfoAndAction(unitsSelected);
     }
 
     public void ClearControlUI(){
-        Debug.Log("ClearControlUI");
+        // Debug.Log("ClearControlUI");
         // Clear out UI info and action
         ControlRenderer.Instance.ClearInfoAndAction();
     }
