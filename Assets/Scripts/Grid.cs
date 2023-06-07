@@ -13,7 +13,7 @@ public class Grid<TGridObject> {
 
     private int width;
     private int height;
-    private float yOffset = 1.5f;
+    private float yOffset = 0.2f;
     private float cellSize;
     private TGridObject[,] gridArray; // Generic type array, takes care whatever type that comes in
     private TextMesh[,] debugTextArray;

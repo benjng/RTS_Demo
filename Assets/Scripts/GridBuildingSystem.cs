@@ -11,6 +11,7 @@ public class GridBuildingSystem : MonoBehaviour
 
     public List<PlacedObjectTypeSO> placedObjectTypeSOList; 
     [SerializeField] private LayerMask buildableLayers; 
+    [SerializeField] private Transform newBuildingsHolder;
 
     private PlacedObjectTypeSO currentPlacedObjectTypeSO;
     private PlacedObjectTypeSO.Dir dir = PlacedObjectTypeSO.Dir.Down;
@@ -115,7 +116,7 @@ public class GridBuildingSystem : MonoBehaviour
 
     // both num keys/action buttons triggers
     private void OnBuildingTrigger(int index){
-        Debug.Log("hitting build action " + index.ToString());
+        // Debug.Log("hitting build action " + index.ToString());
         currentPlacedObjectTypeSO = placedObjectTypeSOList[index];
         OnSelectedChanged(this, new OnSelectedChangedEventArgs {});
         ModeHandler.currentMode = Mode.Building;
@@ -138,7 +139,7 @@ public class GridBuildingSystem : MonoBehaviour
             // find snapping location of the mouse click, output to x and z, fetch the current x,z GridObject from grid instance
             int snappedX, snappedZ;
             grid.GetXZ(GetMouseWorldPosition3D(), out snappedX, out snappedZ); 
-            GridObject gridObject = grid.GetGridObject(snappedX, snappedZ); 
+            // GridObject gridObject = grid.GetGridObject(snappedX, snappedZ); 
 
             bool canBuild = true;
             // **get all the grid positions that will be occupied by the building type**
@@ -163,7 +164,7 @@ public class GridBuildingSystem : MonoBehaviour
             Vector3 placedObjectWorldPosition = grid.GetWorldPosition(snappedX, snappedZ) + new Vector3(rotationOffset.x, 0, rotationOffset.y) * grid.GetCellSize();
             
             // *****Setting new placeObject into this gridObject, with building direction
-            PlacedObject placedObject = PlacedObject.Create(placedObjectWorldPosition, new Vector2Int(snappedX, snappedZ), dir, currentPlacedObjectTypeSO);
+            PlacedObject placedObject = PlacedObject.Create(placedObjectWorldPosition, new Vector2Int(snappedX, snappedZ), dir, currentPlacedObjectTypeSO, newBuildingsHolder);
 
             // Insert placedObject info into all the gridPosition occupied
             foreach (Vector2Int gridPosition in gridPositionList){

@@ -12,14 +12,17 @@ public class Unit : MonoBehaviour
     void Start()
     {
         myCam = Camera.main;
-        UnitSelection.Instance.unitList.Add(this.gameObject);
+        UnitSelection.Instance.unitList.Add(this.gameObject); // add this gameobject to unitList when game start
     }
+    // TODO: Fix building unit visuals (selection, indicator, etc)
 
     void Update(){
         CheckObstacle();
     }
 
     void CheckObstacle(){
+        if (unitSO.unitType == UnitType.Building) return; // TODO: Fix building as Unit
+
         camToUnitRay = myCam.ScreenPointToRay(myCam.WorldToScreenPoint(transform.position));
         RaycastHit[] hits = Physics.RaycastAll(camToUnitRay, Mathf.Infinity, obstacle); // TODO: Fix built building layers
 

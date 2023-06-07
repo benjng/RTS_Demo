@@ -7,24 +7,14 @@ public class UI : MonoBehaviour, IPointerExitHandler, IPointerEnterHandler
 {
     public static bool isPointingUI;
 
-    // TODO: Fix UI click detection
-
-    // public void OnPointerDown(PointerEventData eventData)
-    // {
-        
-    //     // Debug.Log(eventData);
-    //     // if (eventData.button == PointerEventData.InputButton.Left){}
-    //     Debug.Log("UI panel clicked!");  
-    // }
-
     public void OnPointerEnter(PointerEventData eventData)
     {
+        // Debug.Log("Pointer entered UI");
         isPointingUI = true;
-        Debug.Log("Pointer entered UI");
     }
 
     public void OnPointerExit(PointerEventData eventData){
+        // Debug.Log("Pointer exited UI");
         isPointingUI = false;
-        Debug.Log("Pointer exited UI");
     }
 }
