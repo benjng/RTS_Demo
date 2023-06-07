@@ -8,6 +8,7 @@ public class Unit : MonoBehaviour
     private Ray camToUnitRay;
     public List<Obstacle> currentObstHitList = new List<Obstacle>();
     public UnitSO unitSO;
+    public GameObject selectionIndicator;
 
     void Start()
     {

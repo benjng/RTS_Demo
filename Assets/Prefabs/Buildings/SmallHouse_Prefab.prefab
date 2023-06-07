@@ -63,9 +63,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   obstacle:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 512
   currentObstHitList: []
   unitSO: {fileID: 11400000, guid: 8a02cf7f49d092f4a8d49b3202227bf7, type: 2}
+  selectionIndicator: {fileID: 8672498067972266806}
 --- !u!1 &97728511730889003
 GameObject:
   m_ObjectHideFlags: 0
