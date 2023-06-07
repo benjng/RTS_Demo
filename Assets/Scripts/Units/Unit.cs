@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Unit : MonoBehaviour
 {
+    // TODO: Add Enemy Unit
     public LayerMask obstacleLayer;
     public List<Obstacle> currentObstHitList = new List<Obstacle>();
     public UnitSO unitSO;
@@ -57,5 +58,12 @@ public class Unit : MonoBehaviour
     
     void OnDestroy() {
         UnitSelection.Instance.unitList.Remove(this.gameObject);
+    }
+
+    private void OnDrawGizmos() {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, unitSO.DetectRange);
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, unitSO.AttackRange);
     }
 }

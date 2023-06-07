@@ -11,4 +11,6 @@ public class UnitSO : ScriptableObject
     public Sprite unitIcon;
     public UnitType unitType;
     public int MaxHP;
+    public int DetectRange;
+    public int AttackRange;
 }
