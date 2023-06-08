@@ -17,5 +17,5 @@ MonoBehaviour:
   unitIcon: {fileID: 0}
   unitType: 3
   MaxHP: 10
-  DetectRange: 10
-  AttackRange: 5
+  DetectRadius: 20
+  AttackRadius: 15

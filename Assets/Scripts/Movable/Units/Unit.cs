@@ -9,8 +9,18 @@ public abstract class Unit : MonoBehaviour
     public GameObject HPBarCanvas;
     public TargetsDetector TargetsDetector;
 
+    private GameObject currentTarget;
+
     public virtual void Start(){
         CurrentHP = unitSO.MaxHP;
+    }
+
+    public void Update(){
+        if (TargetsDetector.targets.Count == 0) return;
+        currentTarget = TargetsDetector.targets[0]; // TODO: Fix no target assigned
+        RaycastHit hit;
+        Physics.Raycast(transform.position, currentTarget.transform.position, out hit);
+        Debug.DrawLine(transform.position, hit.point, Color.red);
     }
 
     private void OnDrawGizmos() {
