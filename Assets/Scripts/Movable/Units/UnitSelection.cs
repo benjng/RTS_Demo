@@ -34,7 +34,7 @@ public class UnitSelection : MonoBehaviour
             if (unitToAdd.TryGetComponent<UnitMovement>(out UnitMovement unitMovement)){
                 unitMovement.enabled = false;
             }
-            unitToAdd.GetComponent<Unit>().HPBar.SetActive(false);
+            unitToAdd.GetComponent<Unit>().HPBarCanvas.SetActive(false);
             unitsSelected.Remove(unitToAdd);
         }
         SwitchMode(unitToAdd);
@@ -52,7 +52,7 @@ public class UnitSelection : MonoBehaviour
             if (unit.TryGetComponent<UnitMovement>(out UnitMovement unitMovement)){
                 unitMovement.enabled = false;
             }
-            unit.GetComponent<Unit>().HPBar.SetActive(false); // visual indicator
+            unit.GetComponent<Unit>().HPBarCanvas.SetActive(false); // visual indicator
         }
         unitsSelected.Clear();
         modeHandler.SwitchModeByUnitSO(null);
@@ -73,7 +73,7 @@ public class UnitSelection : MonoBehaviour
     // 1. add selected unit to list, 2. activate indicator, 3. enable unit movement
     private void ActivateUnit(GameObject unitToAdd){
         unitsSelected.Add(unitToAdd);
-        unitToAdd.GetComponent<Unit>().HPBar.SetActive(true); // visual indicator
+        unitToAdd.GetComponent<Unit>().HPBarCanvas.SetActive(true); // visual indicator
         if (unitToAdd.TryGetComponent<UnitMovement>(out UnitMovement unitMovement)){
             unitMovement.enabled = true;
         }

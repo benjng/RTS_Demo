@@ -269,16 +269,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 6306051224582029964}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 116dd7dd5e054b64d8a8b310528551e0, type: 3}
+  m_Script: {fileID: 11500000, guid: 528e26b66d5aae74e872ff0cfb20756d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  obstacleLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  currentObstHitList: []
-  unitSO: {fileID: 11400000, guid: 8a02cf7f49d092f4a8d49b3202227bf7, type: 2}
-  HPBar: {fileID: 4374921394821315288}
   CurrentHP: 0
+  unitSO: {fileID: 11400000, guid: 8a02cf7f49d092f4a8d49b3202227bf7, type: 2}
+  HPBarCanvas: {fileID: 4374921394821315288}
 --- !u!1 &7364582620466684033
 GameObject:
   m_ObjectHideFlags: 0
