@@ -3,12 +3,8 @@ using UnityEngine;
 
 public class ArmyUnit : Unit
 {
-    // TODO: Add Enemy Unit
-    public LayerMask obstacleLayer;
-    public List<Obstacle> currentObstHitList = new List<Obstacle>();
-    // public UnitSO unitSO;
-    // public GameObject HPBarCanvas;
-
+    [SerializeField] private LayerMask obstacleLayer;
+    private List<Obstacle> currentObstHitList = new List<Obstacle>();
     private Camera myCam;
     private Ray camToUnitRay;
 
@@ -58,12 +54,5 @@ public class ArmyUnit : Unit
     
     void OnDestroy() {
         UnitSelection.Instance.unitList.Remove(this.gameObject);
-    }
-
-    private void OnDrawGizmos() {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, unitSO.DetectRange);
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, unitSO.AttackRange);
     }
 }

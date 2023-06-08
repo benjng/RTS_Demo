@@ -1,5 +1,6 @@
 public enum UnitType{
     Builder,
     Soldier,
-    Building
+    Building,
+    Enemy
 }
