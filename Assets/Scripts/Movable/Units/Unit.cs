@@ -1,20 +1,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Unit : MonoBehaviour
+public class Unit : Movable
 {
     // TODO: Add Enemy Unit
     public LayerMask obstacleLayer;
     public List<Obstacle> currentObstHitList = new List<Obstacle>();
-    public UnitSO unitSO;
+    // public UnitSO unitSO;
     public GameObject HPBar;
-    public int CurrentHP;
+
 
     private Camera myCam;
     private Ray camToUnitRay;
 
     void Start()
     {
+        CurrentHP = unitSO.MaxHP;
         myCam = Camera.main;
         UnitSelection.Instance.unitList.Add(this.gameObject); // add this gameobject to unitList when game start
     }
@@ -25,7 +26,7 @@ public class Unit : MonoBehaviour
 
     void CheckObstacle(){
         if (unitSO.unitType == UnitType.Building) return;
-
+        
         camToUnitRay = myCam.ScreenPointToRay(myCam.WorldToScreenPoint(transform.position));
         RaycastHit[] hits = Physics.RaycastAll(camToUnitRay, Mathf.Infinity, obstacleLayer);
 
