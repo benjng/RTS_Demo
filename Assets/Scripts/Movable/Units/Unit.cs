@@ -8,6 +8,7 @@ public abstract class Unit : MonoBehaviour
     public UnitSO unitSO;
     public GameObject HPBarCanvas;
     public RangeDetector RangeDetector;
+    public List<GameObject> targets = new List<GameObject>();
 
     public void Awake(){
         RangeDetector.radian = unitSO.DetectRange;
@@ -15,10 +16,6 @@ public abstract class Unit : MonoBehaviour
 
     public virtual void Start(){
         CurrentHP = unitSO.MaxHP;
-    }
-
-    public void DetectOpponent(){
-        // Vector3.Distance()
     }
 
     // private void OnDrawGizmos() {
