@@ -9,6 +9,8 @@ public class BuildingUnit : Unit
         UnitSelection.Instance.unitList.Add(this.gameObject); // add this gameobject to unitList when game start
     }
 
+    // TODO: Building unit logics
+
     void OnDestroy() {
         UnitSelection.Instance.unitList.Remove(this.gameObject);
     }
