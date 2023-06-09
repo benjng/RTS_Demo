@@ -22,7 +22,7 @@ public class ModeHandler : MonoBehaviour
         if (unitType == UnitType.Builder){
             currentMode = Mode.BuilderSelected;
         } else {
-            currentMode = Mode.UnitSelected;
+            currentMode = Mode.SoliderSelected;
         }
     }
 }

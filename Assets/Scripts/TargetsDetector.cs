@@ -20,6 +20,7 @@ public class TargetsDetector : MonoBehaviour
     }
 
     private void OnTriggerEnter(Collider other) {
+        if (other.GetComponent<EnemyUnit>() == null) return;
         if (targets.Contains(other.gameObject)) return;
         if (other.GetComponentInChildren<Unit>()){
             targets.Add(other.gameObject);

@@ -14,14 +14,13 @@ public class UnitMovement : MonoBehaviour
 
     void Update()
     {
-        if (ModeHandler.currentMode == Mode.Building) return;
-        
         if (Input.GetMouseButtonDown(1)){
             PlayerMovement();
         }
     }
 
     void PlayerMovement(){
+        if (ModeHandler.currentMode == Mode.Building) return; // No Player control when in Building mode
         RaycastHit hit;
         Ray ray = myCam.ScreenPointToRay(Input.mousePosition);
 
