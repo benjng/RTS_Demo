@@ -15,11 +15,17 @@ public class UnitMovement : MonoBehaviour
     void Update()
     {
         if (Input.GetMouseButtonDown(1)){
-            PlayerMovement();
+            // TODO: if raycast not touching enemyunit, 
+            PlayerMovementOrder();
+            return;
+            // TODO: else
+            // PlayerAttackOrder();
         }
+
+        AutoMovement();
     }
 
-    void PlayerMovement(){
+    void PlayerMovementOrder(){
         if (ModeHandler.currentMode == Mode.Building) return; // No Player control when in Building mode
         RaycastHit hit;
         Ray ray = myCam.ScreenPointToRay(Input.mousePosition);
@@ -27,5 +33,14 @@ public class UnitMovement : MonoBehaviour
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, ground)){
             myAgent.SetDestination(hit.point);
         }
+    }
+
+    void PlayerAttackOrder(){
+        // TODO: Implement Player attack order
+        // myAgent.SetDestination( Attack location );
+    }
+
+    void AutoMovement(){
+        // TODO: Implement Unit auto movement (e.g. detected enemy auto movement)
     }
 }

@@ -41,14 +41,16 @@ public class UnitClick : MonoBehaviour
             }
         }
 
-        // if (Input.GetMouseButtonDown(1)){ //RMB
-        //     RaycastHit hit;
-        //     Ray ray = myCam.ScreenPointToRay(Input.mousePosition); // create a ray from screen to mouse
+        // TODO: TargetSelection here?
+        if (Input.GetMouseButtonDown(1)){ //RMB
+            if (ModeHandler.currentMode != Mode.SoliderSelected) return;
+            RaycastHit hit;
+            Ray ray = myCam.ScreenPointToRay(Input.mousePosition); // create a ray from screen to mouse
 
-        //     if(Physics.Raycast(ray, out hit, Mathf.Infinity, ground)){ // cast the ray
-                
-        //     }
-        // }
+            if(Physics.Raycast(ray, out hit, Mathf.Infinity)){ // cast the ray
+                Debug.Log(hit.collider.gameObject.transform.parent);
+            }
+        }
     }
 
     private void OnDrawGizmos() {
