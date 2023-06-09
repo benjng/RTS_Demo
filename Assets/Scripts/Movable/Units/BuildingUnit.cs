@@ -10,8 +10,6 @@ public class BuildingUnit : Unit
     }
 
     // TODO: Building unit logics
-    public override void LateUpdate(){}
-
     void OnDestroy() {
         UnitSelection.Instance.unitList.Remove(this.gameObject);
     }

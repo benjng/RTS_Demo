@@ -15,7 +15,8 @@ public class ArmyUnit : Unit
         UnitSelection.Instance.unitList.Add(this.gameObject); // add this gameobject to unitList when game start
     }
 
-    void Update(){
+    public override void Update(){
+        base.Update();
         CheckObstacle();
     }
 

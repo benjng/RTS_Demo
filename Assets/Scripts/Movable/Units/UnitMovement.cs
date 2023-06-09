@@ -17,12 +17,16 @@ public class UnitMovement : MonoBehaviour
         if (ModeHandler.currentMode == Mode.Building) return;
         
         if (Input.GetMouseButtonDown(1)){
-            RaycastHit hit;
-            Ray ray = myCam.ScreenPointToRay(Input.mousePosition);
+            PlayerMovement();
+        }
+    }
 
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, ground)){
-                myAgent.SetDestination(hit.point);
-            }
+    void PlayerMovement(){
+        RaycastHit hit;
+        Ray ray = myCam.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, ground)){
+            myAgent.SetDestination(hit.point);
         }
     }
 }
