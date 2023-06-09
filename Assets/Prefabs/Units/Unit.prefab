@@ -146,6 +146,9 @@ MonoBehaviour:
   ground:
     serializedVersion: 2
     m_Bits: 128
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 1024
 --- !u!136 &4991589825909394539
 CapsuleCollider:
   m_ObjectHideFlags: 0

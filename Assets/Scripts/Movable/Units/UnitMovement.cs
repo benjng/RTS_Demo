@@ -6,6 +6,7 @@ public class UnitMovement : MonoBehaviour
     Camera myCam;
     NavMeshAgent myAgent;
     public LayerMask ground;
+    public LayerMask enemyLayer;
     void Start()
     {
         myCam = Camera.main;
@@ -15,18 +16,23 @@ public class UnitMovement : MonoBehaviour
     void Update()
     {
         if (Input.GetMouseButtonDown(1)){
-            // TODO: if raycast not touching enemyunit, 
+            if (ModeHandler.currentMode == Mode.Building) return; // No Player control when in Building mode
+
+            // if raycast not touching enemyunit
+            Ray ray = myCam.ScreenPointToRay(Input.mousePosition); // create a ray from screen to mouse
+            if(Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, enemyLayer)) {
+                PlayerAttackOrder();
+                return;
+            }
             PlayerMovementOrder();
             return;
-            // TODO: else
-            // PlayerAttackOrder();
         }
 
         AutoMovement();
     }
 
+    // MovementOrder: Move to ordered destination
     void PlayerMovementOrder(){
-        if (ModeHandler.currentMode == Mode.Building) return; // No Player control when in Building mode
         RaycastHit hit;
         Ray ray = myCam.ScreenPointToRay(Input.mousePosition);
 
@@ -35,9 +41,11 @@ public class UnitMovement : MonoBehaviour
         }
     }
 
+    // AttackOrder: Move to attackable range
     void PlayerAttackOrder(){
         // TODO: Implement Player attack order
         // myAgent.SetDestination( Attack location );
+        Debug.Log("Player Attack Ordered. Move into attackable range");
     }
 
     void AutoMovement(){

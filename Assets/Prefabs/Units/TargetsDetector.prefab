@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3112817847577078081}
   - component: {fileID: -6931587144013091469}
   - component: {fileID: 585169104965688030}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: TargetsDetector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -98,6 +98,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 0
+  targets: []
 --- !u!136 &585169104965688030
 CapsuleCollider:
   m_ObjectHideFlags: 0

@@ -47,7 +47,7 @@ public class UnitClick : MonoBehaviour
             RaycastHit hit;
             Ray ray = myCam.ScreenPointToRay(Input.mousePosition); // create a ray from screen to mouse
 
-            if(Physics.Raycast(ray, out hit, Mathf.Infinity)){ // cast the ray
+            if(Physics.Raycast(ray, out hit, Mathf.Infinity, clickable)){ // cast the ray
                 Debug.Log(hit.collider.gameObject.transform.parent);
             }
         }
