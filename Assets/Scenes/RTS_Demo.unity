@@ -597,7 +597,7 @@ GameObject:
   m_Component:
   - component: {fileID: 131582937}
   m_Layer: 0
-  m_Name: Units
+  m_Name: ArmyUnits
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4523,7 +4523,7 @@ GameObject:
   m_Component:
   - component: {fileID: 764493143}
   m_Layer: 0
-  m_Name: Enemies
+  m_Name: EnemyUnits
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6286,7 +6286,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1243973967}
   m_Layer: 0
-  m_Name: Movables
+  m_Name: Units
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

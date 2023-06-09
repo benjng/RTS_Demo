@@ -5,4 +5,6 @@ using UnityEngine;
 public class EnemyUnit : Unit
 {
     // TODO: Enemy unit logics here
+    public override void LateUpdate(){}
+    public override void OnDrawGizmos(){}
 }

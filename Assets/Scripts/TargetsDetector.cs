@@ -6,9 +6,10 @@ public class TargetsDetector : MonoBehaviour
 {
     public float radius;
     private Unit unit;
-    public List<GameObject> targets = new List<GameObject>();
+    public List<GameObject> targets;
 
     private void Awake() {
+        targets = new List<GameObject>();
         unit = transform.parent.GetComponent<Unit>();
         radius = unit.unitSO.DetectRadius;
         gameObject.layer = 0;

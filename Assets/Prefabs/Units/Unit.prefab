@@ -55,7 +55,7 @@ MonoBehaviour:
   CurrentHP: 0
   unitSO: {fileID: 0}
   HPBarCanvas: {fileID: 3187378859603711730}
-  TargetsDetector: {fileID: 8636750240144099370}
+  targetsDetector: {fileID: 8636750240144099370}
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 0
