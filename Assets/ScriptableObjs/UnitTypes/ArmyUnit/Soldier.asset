@@ -18,4 +18,4 @@ MonoBehaviour:
   unitType: 1
   MaxHP: 20
   DetectRadius: 20
-  AttackRadius: 15
+  AttackRadius: 10

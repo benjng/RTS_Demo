@@ -10,8 +10,6 @@ public abstract class Unit : MonoBehaviour
     public TargetsDetector targetsDetector;
 
     private GameObject currentTarget;
-    RaycastHit hit;
-
     public virtual void Start(){
         CurrentHP = unitSO.MaxHP;
     }
@@ -21,15 +19,15 @@ public abstract class Unit : MonoBehaviour
         Debug.Log(targetsDetector.targets[0]);
         currentTarget = targetsDetector.targets[0];
         Vector3 direction = currentTarget.transform.position - transform.position;
-        Physics.Raycast(transform.position, direction.normalized, out hit);
-        Debug.DrawLine(transform.position, hit.point, Color.red, 2f);
+        if (Physics.Raycast(transform.position, direction.normalized, out RaycastHit hit)) {
+            Debug.DrawLine(transform.position, hit.point, Color.red, 2f);
+            transform.LookAt(currentTarget.transform);
+        }
     }
 
 
     public virtual void OnDrawGizmos() {
-        // if (unitSO.DetectRadius == 0) return;
-        // Gizmos.color = Color.yellow;
-        // Gizmos.DrawWireSphere(transform.position, unitSO.DetectRadius);
+        if (unitSO == null) return;
         if (unitSO.AttackRadius == 0) return;
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, unitSO.AttackRadius);
