@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8398424438002290705}
   - component: {fileID: 708186680491675395}
-  m_Layer: 9
+  m_Layer: 8
   m_Name: testing_Prefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -61,7 +61,7 @@ GameObject:
   - component: {fileID: 75725864170326485}
   - component: {fileID: 124701763361411359}
   - component: {fileID: 5453826714637916798}
-  m_Layer: 9
+  m_Layer: 8
   m_Name: Building_V
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -169,6 +169,7 @@ MonoBehaviour:
   CurrentHP: 0
   unitSO: {fileID: 11400000, guid: 97172995cb57c9b4f99a79cbfe553bf9, type: 2}
   HPBarCanvas: {fileID: 4726588659336814405}
+  targetsDetector: {fileID: 0}
 --- !u!1 &1822403755434151060
 GameObject:
   m_ObjectHideFlags: 0
@@ -181,7 +182,7 @@ GameObject:
   - component: {fileID: 499290563242587002}
   - component: {fileID: 478364768718333059}
   - component: {fileID: 7508019148453262717}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -278,7 +279,7 @@ GameObject:
   - component: {fileID: 5748033049161163542}
   - component: {fileID: 830730679672781359}
   - component: {fileID: 4477920829882760644}
-  m_Layer: 9
+  m_Layer: 8
   m_Name: Anchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -377,6 +378,18 @@ PrefabInstance:
     - target: {fileID: 8644514390141813584, guid: 4d2b15e3c0e6cfa4b8062a38ce4ba196, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8644514390141813587, guid: 4d2b15e3c0e6cfa4b8062a38ce4ba196, type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8644514390765885648, guid: 4d2b15e3c0e6cfa4b8062a38ce4ba196, type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8644514390771416292, guid: 4d2b15e3c0e6cfa4b8062a38ce4ba196, type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8644514391523362982, guid: 4d2b15e3c0e6cfa4b8062a38ce4ba196, type: 3}
       propertyPath: m_Pivot.x

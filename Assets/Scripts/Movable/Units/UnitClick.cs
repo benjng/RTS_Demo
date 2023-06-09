@@ -6,7 +6,7 @@ public class UnitClick : MonoBehaviour
 {
     private Camera myCam;
 
-    public LayerMask clickable;
+    public LayerMask clickSelectableUnit;
     public LayerMask ui;
     // public LayerMask ground;
     Ray ray;
@@ -27,15 +27,15 @@ public class UnitClick : MonoBehaviour
             RaycastHit hit;
             ray = myCam.ScreenPointToRay(Input.mousePosition); // create a ray from screen to mouse
 
-            // hit a clickable (Shift/normal)
-            if(Physics.Raycast(ray, out hit, Mathf.Infinity, clickable)){ // cast the ray
+            // hit a clickSelectableUnit (Shift/normal)
+            if(Physics.Raycast(ray, out hit, Mathf.Infinity, clickSelectableUnit)){ // cast the ray
                 if (Input.GetKey(KeyCode.LeftShift)){
                     UnitSelection.Instance.ShiftClickSelect(hit.collider.gameObject);
                 } else {
                     UnitSelection.Instance.ClickSelect(hit.collider.gameObject);
                 }
             } else {
-                // didn't hit a clickable (clicking nothing)
+                // didn't hit a clickSelectableUnit (clicking nothing)
                 if (!Input.GetKey(KeyCode.LeftShift))
                     UnitSelection.Instance.DeselectAll();
             }
@@ -47,7 +47,7 @@ public class UnitClick : MonoBehaviour
             RaycastHit hit;
             Ray ray = myCam.ScreenPointToRay(Input.mousePosition); // create a ray from screen to mouse
 
-            if(Physics.Raycast(ray, out hit, Mathf.Infinity, clickable)){ // cast the ray
+            if(Physics.Raycast(ray, out hit, Mathf.Infinity, clickSelectableUnit)){ // cast the ray
                 Debug.Log(hit.collider.gameObject.transform.parent);
             }
         }

@@ -5,7 +5,7 @@ public class UnitMovement : MonoBehaviour
 {
     Camera myCam;
     NavMeshAgent myAgent;
-    public LayerMask ground;
+    public LayerMask groundLayer;
     public LayerMask enemyLayer;
     void Start()
     {
@@ -22,9 +22,9 @@ public class UnitMovement : MonoBehaviour
             Ray ray = myCam.ScreenPointToRay(Input.mousePosition); // create a ray from screen to mouse
             if(Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, enemyLayer)) {
                 PlayerAttackOrder();
-                return;
+            } else {
+                PlayerMovementOrder();
             }
-            PlayerMovementOrder();
             return;
         }
 
@@ -36,7 +36,7 @@ public class UnitMovement : MonoBehaviour
         RaycastHit hit;
         Ray ray = myCam.ScreenPointToRay(Input.mousePosition);
 
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, ground)){
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, groundLayer)){
             myAgent.SetDestination(hit.point);
         }
     }
