@@ -46,21 +46,23 @@ public class UnitMovement : MonoBehaviour
         }
     }
 
-    // TODO: TargetLockOn logic
+    // TODO: TargetLockOn logic/ Chasing function
     // AttackMovement: Move to attackable range
     void AttackMovement(GameObject newTarget){
         Debug.Log("Player Attack Ordered. Move into attackable range");
         Unit newTargetUnit = newTarget.GetComponent<Unit>();
-        
         newTargetUnit.isLockedOn = true;
+
         float targetDist = Vector3.Distance(transform.position, newTarget.transform.position);
-        // float attackablePositionDist = targetDist - myUnit.unitSO.AttackRadius;
         Debug.Log(targetDist);
+        // float attackablePositionDist = targetDist - myUnit.unitSO.AttackRadius;
         // Debug.Log(attackablePositionDist);
-        // TODO: Move agent into attack range and stop
+
         if (targetDist < myUnit.unitSO.AttackRadius) return;
         myAgent.stoppingDistance = myUnit.unitSO.AttackRadius;
-        myAgent.SetDestination(newTarget.transform.position);
+        myAgent.SetDestination(newTarget.transform.position); //TODO: repeat SetDestination until lockon is off
+        // TODO: insert atk logic
+        // TODO: add de-lockon logic when player assigned different actions
     }
 
     void AutoMovement(){

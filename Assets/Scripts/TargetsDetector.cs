@@ -42,6 +42,7 @@ public class TargetsDetector : MonoBehaviour
 
     private void OnTriggerExit(Collider other) {
         if (!targetList.Contains(other.gameObject)) return;
+        if (other.gameObject.GetComponent<Unit>().isLockedOn) return;
         targetList.Remove(other.gameObject);
     }
 }
