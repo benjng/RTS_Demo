@@ -4,19 +4,19 @@ using UnityEngine;
 
 public class TargetsDetector : MonoBehaviour
 {
-    public float radius;
+    public float detectRadius;
     private Unit owner;
     public LinkedList<GameObject> targetList;
 
     private void Awake() {
         targetList = new LinkedList<GameObject>(); // TODO: targetList = new LinkedList<Unit>();
         owner = transform.parent.GetComponent<Unit>();
-        radius = owner.unitSO.DetectRadius;
+        detectRadius = owner.unitSO.DetectRadius;
         gameObject.layer = 0;
     }
 
     private void Start() {
-        transform.localScale = new Vector3 (radius*3, 0.001f, radius*3);
+        transform.localScale = new Vector3 (detectRadius*3, 0.001f, detectRadius*3);
     }
 
     public void AddFirstToTargetList(GameObject newTarget){

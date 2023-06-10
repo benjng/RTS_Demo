@@ -30,7 +30,7 @@ public class UnitMovement : MonoBehaviour
                 targetsDetector.AddFirstToTargetList(newTarget);
                 AttackMovement(newTarget);
             } else {
-                MoveUnitByRay(ray);
+                PreciseMovement(ray);
             }
             return;
         }
@@ -39,7 +39,8 @@ public class UnitMovement : MonoBehaviour
     }
 
     // MovementOrder: Move to ordered destination. Should have higher priority than automovement.
-    void MoveUnitByRay(Ray ray){
+    void PreciseMovement(Ray ray){
+        myAgent.stoppingDistance = 0;
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, groundLayer)){
             myAgent.SetDestination(hit.point);
         }
@@ -53,12 +54,13 @@ public class UnitMovement : MonoBehaviour
         
         newTargetUnit.isLockedOn = true;
         float targetDist = Vector3.Distance(transform.position, newTarget.transform.position);
-        float attackablePositionDist = targetDist - myUnit.unitSO.AttackRadius;
+        // float attackablePositionDist = targetDist - myUnit.unitSO.AttackRadius;
         Debug.Log(targetDist);
-        Debug.Log(attackablePositionDist);
-        myAgent.stoppingDistance = attackablePositionDist;
-
+        // Debug.Log(attackablePositionDist);
         // TODO: Move agent into attack range and stop
+        if (targetDist < myUnit.unitSO.AttackRadius) return;
+        myAgent.stoppingDistance = myUnit.unitSO.AttackRadius;
+        myAgent.SetDestination(newTarget.transform.position);
     }
 
     void AutoMovement(){
