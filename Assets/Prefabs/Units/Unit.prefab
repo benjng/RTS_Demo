@@ -59,6 +59,7 @@ MonoBehaviour:
   shootableLayer:
     serializedVersion: 2
     m_Bits: 1088
+  isLockedOn: 0
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 768
@@ -80,6 +81,7 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 1024
+  targetsDetector: {fileID: 8636750240144099370}
 --- !u!195 &7452248463654720129
 NavMeshAgent:
   m_ObjectHideFlags: 0

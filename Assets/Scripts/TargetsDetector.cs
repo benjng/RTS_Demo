@@ -9,7 +9,7 @@ public class TargetsDetector : MonoBehaviour
     public LinkedList<GameObject> targetList;
 
     private void Awake() {
-        targetList = new LinkedList<GameObject>();
+        targetList = new LinkedList<GameObject>(); // TODO: targetList = new LinkedList<Unit>();
         owner = transform.parent.GetComponent<Unit>();
         radius = owner.unitSO.DetectRadius;
         gameObject.layer = 0;
