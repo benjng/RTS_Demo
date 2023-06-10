@@ -10,10 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 8677767776898214552}
   - component: {fileID: 7909649195125507352}
+  - component: {fileID: 406722372678592292}
   - component: {fileID: 7452248463654720129}
   - component: {fileID: 8677767776898214631}
   - component: {fileID: 8677767776898214630}
-  - component: {fileID: 406722372678592292}
   - component: {fileID: 4991589825909394539}
   - component: {fileID: 8811663791173198512}
   m_Layer: 6
@@ -56,9 +56,30 @@ MonoBehaviour:
   unitSO: {fileID: 0}
   HPBarCanvas: {fileID: 3187378859603711730}
   targetsDetector: {fileID: 8636750240144099370}
+  shootableLayer:
+    serializedVersion: 2
+    m_Bits: 1088
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 768
+--- !u!114 &406722372678592292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8677767776898214555}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86eecaafd700ec1459cbe97e2c1ff24a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 1024
 --- !u!195 &7452248463654720129
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -131,24 +152,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &406722372678592292
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8677767776898214555}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86eecaafd700ec1459cbe97e2c1ff24a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 128
-  enemyLayer:
-    serializedVersion: 2
-    m_Bits: 1024
 --- !u!136 &4991589825909394539
 CapsuleCollider:
   m_ObjectHideFlags: 0

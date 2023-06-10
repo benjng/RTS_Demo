@@ -7,6 +7,8 @@ public class UnitMovement : MonoBehaviour
     NavMeshAgent myAgent;
     public LayerMask groundLayer;
     public LayerMask enemyLayer;
+    [SerializeField] private TargetsDetector targetsDetector;
+
     void Start()
     {
         myCam = Camera.main;
@@ -21,9 +23,11 @@ public class UnitMovement : MonoBehaviour
             // if raycast not touching enemyunit
             Ray ray = myCam.ScreenPointToRay(Input.mousePosition); // create a ray from screen to mouse
             if(Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, enemyLayer)) {
-                PlayerAttackOrder();
+                GameObject newTarget = hit.collider.gameObject;
+                targetsDetector.AddFirstToTargetList(newTarget);
+                AttackMovement(newTarget);
             } else {
-                PlayerMovementOrder();
+                DestinatedMovement();
             }
             return;
         }
@@ -31,8 +35,8 @@ public class UnitMovement : MonoBehaviour
         AutoMovement();
     }
 
-    // MovementOrder: Move to ordered destination
-    void PlayerMovementOrder(){
+    // MovementOrder: Move to ordered destination. Should have higher priority than automovement.
+    void DestinatedMovement(){
         RaycastHit hit;
         Ray ray = myCam.ScreenPointToRay(Input.mousePosition);
 
@@ -42,9 +46,9 @@ public class UnitMovement : MonoBehaviour
     }
 
     // AttackOrder: Move to attackable range
-    void PlayerAttackOrder(){
+    void AttackMovement(GameObject newTarget){
         // TODO: Implement Player attack order
-        // myAgent.SetDestination( Attack location );
+        // TODO: Move agent into attack range and stop
         Debug.Log("Player Attack Ordered. Move into attackable range");
     }
 

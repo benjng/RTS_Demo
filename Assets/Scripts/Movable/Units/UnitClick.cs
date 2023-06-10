@@ -1,13 +1,12 @@
 using UnityEngine;
 
-// Actual Clicking mechanics (getmousebuttondown, raycast)
 // send the detected gameObj to UnitSelection instance for add/remove 
 public class UnitClick : MonoBehaviour
 {
     private Camera myCam;
 
     public LayerMask clickSelectableUnit;
-    public LayerMask ui;
+    // public LayerMask ui;
     // public LayerMask ground;
     Ray ray;
     void Start()
@@ -42,22 +41,22 @@ public class UnitClick : MonoBehaviour
         }
 
         // TODO: TargetSelection here?
-        if (Input.GetMouseButtonDown(1)){ //RMB
-            if (ModeHandler.currentMode != Mode.SoliderSelected) return;
-            RaycastHit hit;
-            Ray ray = myCam.ScreenPointToRay(Input.mousePosition); // create a ray from screen to mouse
+        // if (Input.GetMouseButtonDown(1)){ //RMB
+        //     if (ModeHandler.currentMode != Mode.SoliderSelected) return;
+        //     RaycastHit hit;
+        //     Ray ray = myCam.ScreenPointToRay(Input.mousePosition); // create a ray from screen to mouse
 
-            if(Physics.Raycast(ray, out hit, Mathf.Infinity, clickSelectableUnit)){ // cast the ray
-                Debug.Log(hit.collider.gameObject.transform.parent);
-            }
-        }
+        //     if(Physics.Raycast(ray, out hit, Mathf.Infinity, clickSelectableUnit)){ // cast the ray
+        //         Debug.Log(hit.collider.gameObject.transform.parent);
+        //     }
+        // }
     }
 
     private void OnDrawGizmos() {
-        Gizmos.color = Color.red;
+        Gizmos.color = Color.black;
         Gizmos.DrawRay(ray.origin, ray.direction*70);
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawLine(ray.origin, ray.direction*70);
-        Gizmos.DrawSphere(ray.direction*70, 2f);
+        // Gizmos.color = Color.yellow;
+        // Gizmos.DrawLine(ray.origin, ray.direction*70);
+        // Gizmos.DrawSphere(ray.direction*70, 2f);
     }
 }

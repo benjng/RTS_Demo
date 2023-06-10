@@ -139,41 +139,7 @@ public class GridBuildingSystem : MonoBehaviour
 
         // When player builds (LMB) 
         if (Input.GetMouseButtonDown(0)){
-            // find snapping location of the mouse click, output to x and z, fetch the current x,z GridObject from grid instance
-            int snappedX, snappedZ;
-            grid.GetXZ(GetMouseWorldPosition3D(), out snappedX, out snappedZ); 
-            // GridObject gridObject = grid.GetGridObject(snappedX, snappedZ); 
-
-            bool canBuild = true;
-            // **get all the grid positions that will be occupied by the building type**
-            List<Vector2Int> gridPositionList = currentBuildingTypeSO.GetGridPositionList(new Vector2Int(snappedX, snappedZ), dir);
-
-            // if ANY gridPosition cannot be built, no build is allowed
-            foreach (Vector2Int gridPosition in gridPositionList){
-                if (!grid.GetGridObject(gridPosition.x, gridPosition.y).CanBuild()){
-                    canBuild = false;
-                    break;
-                }
-            }
-
-            // Check if any existing building in all occupied area
-            if (!canBuild) {
-                Debug.Log("YOU CANNOT BUILD HERE");
-                return;
-            }
-
-            // offset logic
-            Vector2Int rotationOffset = currentBuildingTypeSO.GetRotationOffset(dir);
-            Vector3 buildingWorldPosition = grid.GetWorldPosition(snappedX, snappedZ) + new Vector3(rotationOffset.x, 0, rotationOffset.y) * grid.GetCellSize();
-            
-            // *****Setting new building into this gridObject, with building direction
-            Building building = Building.Create(buildingWorldPosition, new Vector2Int(snappedX, snappedZ), dir, currentBuildingTypeSO, newBuildingsHolder);
-            OnBuildingBuilt.Invoke(); // Invoke buildevent
-
-            // Insert building info into all the gridPosition occupied
-            foreach (Vector2Int gridPosition in gridPositionList){
-                grid.GetGridObject(gridPosition.x, gridPosition.y).SetBuilding(building);
-            }
+            StartBuilding();
         }
 
         // RMB/ESC
@@ -194,6 +160,44 @@ public class GridBuildingSystem : MonoBehaviour
 
     private void RotateBuildingGhost(){
         dir = BuildingTypeSO.GetNextDir(dir);
+    }
+
+    private void StartBuilding(){
+        // find snapping location of the mouse click, output to x and z, fetch the current x,z GridObject from grid instance
+        int snappedX, snappedZ;
+        grid.GetXZ(GetMouseWorldPosition3D(), out snappedX, out snappedZ); 
+        // GridObject gridObject = grid.GetGridObject(snappedX, snappedZ); 
+
+        bool canBuild = true;
+        // **get all the grid positions that will be occupied by the building type**
+        List<Vector2Int> gridPositionList = currentBuildingTypeSO.GetGridPositionList(new Vector2Int(snappedX, snappedZ), dir);
+
+        // if ANY gridPosition cannot be built, no build is allowed
+        foreach (Vector2Int gridPosition in gridPositionList){
+            if (!grid.GetGridObject(gridPosition.x, gridPosition.y).CanBuild()){
+                canBuild = false;
+                break;
+            }
+        }
+
+        // Check if any existing building in all occupied area
+        if (!canBuild) {
+            Debug.Log("YOU CANNOT BUILD HERE");
+            return;
+        }
+
+        // offset logic
+        Vector2Int rotationOffset = currentBuildingTypeSO.GetRotationOffset(dir);
+        Vector3 buildingWorldPosition = grid.GetWorldPosition(snappedX, snappedZ) + new Vector3(rotationOffset.x, 0, rotationOffset.y) * grid.GetCellSize();
+        
+        // *****Setting new building into this gridObject, with building direction
+        Building building = Building.Create(buildingWorldPosition, new Vector2Int(snappedX, snappedZ), dir, currentBuildingTypeSO, newBuildingsHolder);
+        OnBuildingBuilt.Invoke(); // Invoke buildevent
+
+        // Insert building info into all the gridPosition occupied
+        foreach (Vector2Int gridPosition in gridPositionList){
+            grid.GetGridObject(gridPosition.x, gridPosition.y).SetBuilding(building);
+        }
     }
 
     private void QuitBuilding(){

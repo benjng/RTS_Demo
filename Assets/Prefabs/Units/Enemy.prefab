@@ -55,6 +55,9 @@ MonoBehaviour:
   unitSO: {fileID: 11400000, guid: f9264654ce9a48a4c887d949cd9d3a58, type: 2}
   HPBarCanvas: {fileID: 3187378859603711730}
   targetsDetector: {fileID: 5763390400138257896}
+  shootableLayer:
+    serializedVersion: 2
+    m_Bits: 1088
 --- !u!195 &7452248463654720129
 NavMeshAgent:
   m_ObjectHideFlags: 0

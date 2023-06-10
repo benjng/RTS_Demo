@@ -8,6 +8,7 @@ public abstract class Unit : MonoBehaviour
     public UnitSO unitSO;
     public GameObject HPBarCanvas;
     public TargetsDetector targetsDetector;
+    public LayerMask shootableLayer;
 
     private GameObject currentTarget;
     public virtual void Start(){
@@ -16,23 +17,28 @@ public abstract class Unit : MonoBehaviour
 
     public virtual void Update(){
         UpdateTarget();
-        RaycastTarget();
+        if (currentTarget == null) {
+            // Debug.Log("No target found.");
+            return;
+        }
+        ShootTarget();
     }
 
     public void UpdateTarget(){
-        if (targetsDetector.targets.Count == 0) {
+        if (targetsDetector.targetList.Count == 0) {
             currentTarget = null;
             return;
         }
-        if (currentTarget == targetsDetector.targets[0]) return;
+        if (currentTarget == targetsDetector.targetList.First.Value) return;
         
-        currentTarget = targetsDetector.targets[0];
+        currentTarget = targetsDetector.targetList.First.Value;
     }
 
-    public void RaycastTarget(){
-        if (currentTarget == null) return;
+    public void ShootTarget(){
+        // TODO: Implement shooting logic
+        // Debug.Log("Current target exists. Shooting target.");
         Vector3 direction = currentTarget.transform.position - transform.position;
-        if (Physics.Raycast(transform.position, direction.normalized, out RaycastHit hit)) {
+        if (Physics.Raycast(transform.position, direction.normalized, out RaycastHit hit, Mathf.Infinity, shootableLayer)) {
             Debug.DrawLine(transform.position, hit.point, Color.red, 2f);
             transform.LookAt(currentTarget.transform);
         }

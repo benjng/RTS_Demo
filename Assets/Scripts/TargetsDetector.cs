@@ -5,13 +5,13 @@ using UnityEngine;
 public class TargetsDetector : MonoBehaviour
 {
     public float radius;
-    private Unit unit;
-    public List<GameObject> targets;
+    private Unit owner;
+    public LinkedList<GameObject> targetList;
 
     private void Awake() {
-        targets = new List<GameObject>();
-        unit = transform.parent.GetComponent<Unit>();
-        radius = unit.unitSO.DetectRadius;
+        targetList = new LinkedList<GameObject>();
+        owner = transform.parent.GetComponent<Unit>();
+        radius = owner.unitSO.DetectRadius;
         gameObject.layer = 0;
     }
 
@@ -19,16 +19,29 @@ public class TargetsDetector : MonoBehaviour
         transform.localScale = new Vector3 (radius*3, 0.001f, radius*3);
     }
 
+    public void AddFirstToTargetList(GameObject newTarget){
+        targetList.AddFirst(newTarget);
+    }
+
+    public void AddLastToTargetList(GameObject newTarget){
+        targetList.AddLast(newTarget);
+    }
+
     private void OnTriggerEnter(Collider other) {
-        if (other.GetComponent<EnemyUnit>() == null) return;
-        if (targets.Contains(other.gameObject)) return;
-        if (other.GetComponentInChildren<Unit>()){
-            targets.Add(other.gameObject);
+        if (other.GetComponentInChildren<Unit>() == null) return;
+
+        if (owner.unitSO.unitType == UnitType.Enemy){
+            if (other.GetComponent<EnemyUnit>() != null) return; // return if trigger is enemy
+        } else {
+            if (other.GetComponent<EnemyUnit>() == null) return; // return if trigger is not enemy
         }
+
+        if (targetList.Contains(other.gameObject)) return;
+        AddLastToTargetList(other.gameObject);
     }
 
     private void OnTriggerExit(Collider other) {
-        if (!targets.Contains(other.gameObject)) return;
-        targets.Remove(other.gameObject);
+        if (!targetList.Contains(other.gameObject)) return;
+        targetList.Remove(other.gameObject);
     }
 }
