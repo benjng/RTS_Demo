@@ -30,7 +30,6 @@ public class UnitMovement : MonoBehaviour
             MoveToPos(targetPos);
         }
 
-        // AutoMovement();
     }
 
     void OnMouseRightClicked(){
@@ -40,19 +39,19 @@ public class UnitMovement : MonoBehaviour
             // Check if its locking on target or normal movement
             Ray ray = myCam.ScreenPointToRay(Input.mousePosition); // create a ray from screen to mouse
             if(Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, enemyLayer)) {
+                // *** Atk movement
                 GameObject newTarget = hit.collider.gameObject;
                 targetsDetector.AddFirstToTargetList(newTarget);
             } else {
+                // *** Precise Movement
                 targetsDetector.ClearTargetList();
                 targetPos = GetPreciseMovementPos(ray);
                 if (targetPos == transform.position) return;
                 MoveToPos(targetPos);
-                return;
             }
         }
     }
 
-    // TODO: TargetLockOn logic/ Chasing function
     // AttackMovement: Move to attackable range
     Vector3 GetAttackMovementPos(GameObject newTarget){
         Debug.Log("Player Attack Ordered. Move into attackable range");
@@ -79,10 +78,6 @@ public class UnitMovement : MonoBehaviour
         return transform.position;
     }
 
-    void AutoMovement(){
-        // TODO: Implement Unit auto movement (e.g. detected enemy auto movement)
-    }
-    
     void MoveToPos(Vector3 pos){
         myAgent.SetDestination(pos);
     }
