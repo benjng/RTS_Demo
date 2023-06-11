@@ -59,7 +59,6 @@ MonoBehaviour:
   shootableLayer:
     serializedVersion: 2
     m_Bits: 1088
-  isLockedOn: 0
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 768
@@ -70,11 +69,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8677767776898214555}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 86eecaafd700ec1459cbe97e2c1ff24a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isUnitSelected: 0
   groundLayer:
     serializedVersion: 2
     m_Bits: 128

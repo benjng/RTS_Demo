@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class TargetsDetector : MonoBehaviour
@@ -7,9 +8,11 @@ public class TargetsDetector : MonoBehaviour
     public float detectRadius;
     private Unit owner;
     public LinkedList<GameObject> targetList;
+    public List<GameObject> debugTgtList;
 
     private void Awake() {
-        targetList = new LinkedList<GameObject>(); // TODO: targetList = new LinkedList<Unit>();
+        targetList = new LinkedList<GameObject>(); 
+        debugTgtList = new List<GameObject>();
         owner = transform.parent.GetComponent<Unit>();
         detectRadius = owner.unitSO.DetectRadius;
         gameObject.layer = 0;
@@ -17,15 +20,10 @@ public class TargetsDetector : MonoBehaviour
 
     private void Start() {
         transform.localScale = new Vector3 (detectRadius*3, 0.001f, detectRadius*3);
-        // StartCoroutine(DebugPrintTgtList());
     }
 
-    private IEnumerator DebugPrintTgtList(){
-        while (owner.unitSO.unitType == UnitType.Soldier) {
-            if (targetList.Count == 0) yield return null;
-            Debug.Log(targetList.First.Value.transform.position);
-            yield return new WaitForSeconds(3);
-        }
+    private void Update() {
+        debugTgtList = targetList.ToList();
     }
 
     public void AddFirstToTargetList(GameObject newTarget){

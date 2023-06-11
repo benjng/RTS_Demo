@@ -3,6 +3,7 @@ using UnityEngine.AI;
 
 public class UnitMovement : MonoBehaviour
 {
+    public bool isUnitSelected = false;
     public LayerMask groundLayer;
     public LayerMask enemyLayer;
 
@@ -22,7 +23,18 @@ public class UnitMovement : MonoBehaviour
 
     void Update()
     {
-        Debug.Log(targetPos);
+        if (isUnitSelected) 
+            OnMouseRightClicked();
+
+        if (isTracingTarget){
+            targetPos = GetAttackMovementPos(targetsDetector.targetList.First.Value);
+            MoveToPos(targetPos);
+        }
+
+        // AutoMovement();
+    }
+
+    void OnMouseRightClicked(){
         if (Input.GetMouseButtonDown(1)){
             if (ModeHandler.currentMode == Mode.Building) return; // No Player control when in Building mode
 
@@ -40,13 +52,6 @@ public class UnitMovement : MonoBehaviour
                 return;
             }
         }
-
-        if (isTracingTarget){
-            targetPos = GetAttackMovementPos(targetsDetector.targetList.First.Value);
-            MoveToPos(targetPos);
-        }
-
-        // AutoMovement();
     }
 
     // TODO: TargetLockOn logic/ Chasing function
@@ -60,7 +65,9 @@ public class UnitMovement : MonoBehaviour
         // float attackablePositionDist = targetDist - myUnit.unitSO.AttackRadius;
         // Debug.Log(attackablePositionDist);
 
-        if (targetDist < myUnit.unitSO.AttackRadius) return transform.position;
+        if (targetDist < myUnit.unitSO.AttackRadius) 
+            return transform.position;
+
         myAgent.stoppingDistance = myUnit.unitSO.AttackRadius;
         return newTarget.transform.position;
     }
@@ -68,9 +75,9 @@ public class UnitMovement : MonoBehaviour
     // GetPreciseMovementPos: Move to ordered destination. Should have higher priority than automovement.
     Vector3 GetPreciseMovementPos(Ray ray){
         myAgent.stoppingDistance = 0;
-        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, groundLayer)){
+        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, groundLayer))
             return hit.point;
-        }
+
         return transform.position;
     }
 

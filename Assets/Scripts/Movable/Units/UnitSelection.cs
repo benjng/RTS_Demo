@@ -32,7 +32,7 @@ public class UnitSelection : MonoBehaviour
         } else {
             // deselect unit
             if (unitToAdd.TryGetComponent<UnitMovement>(out UnitMovement unitMovement)){
-                unitMovement.enabled = false;
+                unitMovement.isUnitSelected = false;
             }
             unitToAdd.GetComponent<Unit>().HPBarCanvas.SetActive(false);
             unitsSelected.Remove(unitToAdd);
@@ -50,7 +50,7 @@ public class UnitSelection : MonoBehaviour
     public void DeselectAll(){
         foreach (var unit in unitsSelected){
             if (unit.TryGetComponent<UnitMovement>(out UnitMovement unitMovement)){
-                unitMovement.enabled = false;
+                unitMovement.isUnitSelected = false;
             }
             unit.GetComponent<Unit>().HPBarCanvas.SetActive(false); // visual indicator
         }
@@ -75,7 +75,7 @@ public class UnitSelection : MonoBehaviour
         unitsSelected.Add(unitToAdd);
         unitToAdd.GetComponent<Unit>().HPBarCanvas.SetActive(true); // visual indicator
         if (unitToAdd.TryGetComponent<UnitMovement>(out UnitMovement unitMovement)){
-            unitMovement.enabled = true;
+            unitMovement.isUnitSelected = true;
         }
     }
 
