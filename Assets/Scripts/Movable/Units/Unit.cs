@@ -9,7 +9,6 @@ public abstract class Unit : MonoBehaviour
     public GameObject HPBarCanvas;
     public TargetsDetector targetsDetector;
     public LayerMask shootableLayer;
-    public bool isLockedOn = false;
 
     private GameObject currentTarget;
     public virtual void Start(){

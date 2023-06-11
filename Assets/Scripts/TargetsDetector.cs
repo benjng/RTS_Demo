@@ -17,6 +17,15 @@ public class TargetsDetector : MonoBehaviour
 
     private void Start() {
         transform.localScale = new Vector3 (detectRadius*3, 0.001f, detectRadius*3);
+        // StartCoroutine(DebugPrintTgtList());
+    }
+
+    private IEnumerator DebugPrintTgtList(){
+        while (owner.unitSO.unitType == UnitType.Soldier) {
+            if (targetList.Count == 0) yield return null;
+            Debug.Log(targetList.First.Value.transform.position);
+            yield return new WaitForSeconds(3);
+        }
     }
 
     public void AddFirstToTargetList(GameObject newTarget){
@@ -42,7 +51,7 @@ public class TargetsDetector : MonoBehaviour
 
     private void OnTriggerExit(Collider other) {
         if (!targetList.Contains(other.gameObject)) return;
-        if (other.gameObject.GetComponent<Unit>().isLockedOn) return;
+        if (other.gameObject == targetList.First.Value) return; // always lockon first target
         targetList.Remove(other.gameObject);
     }
 }

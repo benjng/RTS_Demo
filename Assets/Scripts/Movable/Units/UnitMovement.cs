@@ -6,10 +6,12 @@ public class UnitMovement : MonoBehaviour
     public LayerMask groundLayer;
     public LayerMask enemyLayer;
 
+    [SerializeField] private TargetsDetector targetsDetector;
     private Unit myUnit;
     private NavMeshAgent myAgent;
     private Camera myCam;
-    [SerializeField] private TargetsDetector targetsDetector;
+    private Vector3 targetPos;
+    private bool isTracingTarget = false;
 
     void Start()
     {
@@ -20,6 +22,7 @@ public class UnitMovement : MonoBehaviour
 
     void Update()
     {
+        Debug.Log(targetPos);
         if (Input.GetMouseButtonDown(1)){
             if (ModeHandler.currentMode == Mode.Building) return; // No Player control when in Building mode
 
@@ -28,44 +31,55 @@ public class UnitMovement : MonoBehaviour
             if(Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, enemyLayer)) {
                 GameObject newTarget = hit.collider.gameObject;
                 targetsDetector.AddFirstToTargetList(newTarget);
-                AttackMovement(newTarget);
+                isTracingTarget = true;
             } else {
-                PreciseMovement(ray);
+                isTracingTarget = false;
+                targetPos = GetPreciseMovementPos(ray);
+                if (targetPos == transform.position) return;
+                MoveToPos(targetPos);
+                return;
             }
-            return;
         }
 
-        AutoMovement();
-    }
-
-    // MovementOrder: Move to ordered destination. Should have higher priority than automovement.
-    void PreciseMovement(Ray ray){
-        myAgent.stoppingDistance = 0;
-        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, groundLayer)){
-            myAgent.SetDestination(hit.point);
+        if (isTracingTarget){
+            targetPos = GetAttackMovementPos(targetsDetector.targetList.First.Value);
+            MoveToPos(targetPos);
         }
+
+        // AutoMovement();
     }
 
     // TODO: TargetLockOn logic/ Chasing function
     // AttackMovement: Move to attackable range
-    void AttackMovement(GameObject newTarget){
+    Vector3 GetAttackMovementPos(GameObject newTarget){
         Debug.Log("Player Attack Ordered. Move into attackable range");
         Unit newTargetUnit = newTarget.GetComponent<Unit>();
-        newTargetUnit.isLockedOn = true;
 
         float targetDist = Vector3.Distance(transform.position, newTarget.transform.position);
-        Debug.Log(targetDist);
+        // Debug.Log(targetDist);
         // float attackablePositionDist = targetDist - myUnit.unitSO.AttackRadius;
         // Debug.Log(attackablePositionDist);
 
-        if (targetDist < myUnit.unitSO.AttackRadius) return;
+        if (targetDist < myUnit.unitSO.AttackRadius) return transform.position;
         myAgent.stoppingDistance = myUnit.unitSO.AttackRadius;
-        myAgent.SetDestination(newTarget.transform.position); //TODO: repeat SetDestination until lockon is off
-        // TODO: insert atk logic
-        // TODO: add de-lockon logic when player assigned different actions
+        return newTarget.transform.position;
+    }
+
+    // GetPreciseMovementPos: Move to ordered destination. Should have higher priority than automovement.
+    Vector3 GetPreciseMovementPos(Ray ray){
+        myAgent.stoppingDistance = 0;
+        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, groundLayer)){
+            return hit.point;
+        }
+        return transform.position;
     }
 
     void AutoMovement(){
         // TODO: Implement Unit auto movement (e.g. detected enemy auto movement)
     }
+    
+    void MoveToPos(Vector3 pos){
+        myAgent.SetDestination(pos);
+    }
+
 }
