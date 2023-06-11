@@ -27,11 +27,17 @@ public class TargetsDetector : MonoBehaviour
     }
 
     public void AddFirstToTargetList(GameObject newTarget){
+        if (targetList.Contains(newTarget))
+            targetList.Remove(newTarget);
         targetList.AddFirst(newTarget);
     }
 
     public void AddLastToTargetList(GameObject newTarget){
         targetList.AddLast(newTarget);
+    }
+
+    public void ClearTargetList(){
+        targetList.Clear();
     }
 
     private void OnTriggerEnter(Collider other) {
@@ -49,7 +55,7 @@ public class TargetsDetector : MonoBehaviour
 
     private void OnTriggerExit(Collider other) {
         if (!targetList.Contains(other.gameObject)) return;
-        if (other.gameObject == targetList.First.Value) return; // always lockon first target
+        // if (other.gameObject == targetList.First.Value) return; // lockon first target when tracing
         targetList.Remove(other.gameObject);
     }
 }

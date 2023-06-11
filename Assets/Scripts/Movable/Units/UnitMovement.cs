@@ -12,7 +12,6 @@ public class UnitMovement : MonoBehaviour
     private NavMeshAgent myAgent;
     private Camera myCam;
     private Vector3 targetPos;
-    private bool isTracingTarget = false;
 
     void Start()
     {
@@ -26,7 +25,7 @@ public class UnitMovement : MonoBehaviour
         if (isUnitSelected) 
             OnMouseRightClicked();
 
-        if (isTracingTarget){
+        if (targetsDetector.targetList.Count != 0){
             targetPos = GetAttackMovementPos(targetsDetector.targetList.First.Value);
             MoveToPos(targetPos);
         }
@@ -43,9 +42,8 @@ public class UnitMovement : MonoBehaviour
             if(Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, enemyLayer)) {
                 GameObject newTarget = hit.collider.gameObject;
                 targetsDetector.AddFirstToTargetList(newTarget);
-                isTracingTarget = true;
             } else {
-                isTracingTarget = false;
+                targetsDetector.ClearTargetList();
                 targetPos = GetPreciseMovementPos(ray);
                 if (targetPos == transform.position) return;
                 MoveToPos(targetPos);
