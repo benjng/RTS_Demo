@@ -22,19 +22,24 @@ public class UnitMovement : MonoBehaviour
 
     void Update()
     {
-        // Handle RMB & Precise mvmt
+        // Handle RMB & atk mvmt && Precise mvmt
         if (isUnitSelected && ModeHandler.currentMode != Mode.Building) {
             CheckRMBIsEnemy();
         }
 
-        // No other movement when moving
-        if(myAgent.remainingDistance > 0) return;
-
-        // If there is any target, move to attack position, including player assignment/automvmt
-        if (targetsDetector.targetList.Count != 0){
-            targetPos = GetPosByTarget(targetsDetector.targetList.First.Value);
-            MoveToPos(targetPos);
+        // Prevent jittering
+        if (myAgent.stoppingDistance > 0 && myAgent.velocity.magnitude < 0.1){
+            myAgent.ResetPath();
         }
+
+        // Prevent automovement when precise/atk moving
+        Debug.Log(myAgent.velocity.magnitude);
+        if(myAgent.velocity.magnitude != 0) return;
+
+        if (targetsDetector.targetList.Count == 0) return; // && current action finished
+        // Automvmt
+        targetPos = GetPosByTarget(targetsDetector.targetList.First.Value);
+        MoveToPos(targetPos);
     }
 
     void CheckRMBIsEnemy(){
@@ -44,12 +49,12 @@ public class UnitMovement : MonoBehaviour
         if(Physics.Raycast(ray, out RaycastHit enemyHit, Mathf.Infinity, enemyLayer)) {
             // *** Atk movement
             UpdateTarget(enemyHit);
-            return;
-        } 
+            targetPos = GetPosByTarget(targetsDetector.targetList.First.Value);
+        } else {
+            // *** Precise Movement
+            targetPos = GetPosByRay(ray);
+        }
 
-        // *** Precise Movement
-        targetPos = GetPosByRay(ray);
-        if (targetPos == transform.position) return;
         MoveToPos(targetPos); // Move till reaching destination without being stopped
     }
 
@@ -62,13 +67,7 @@ public class UnitMovement : MonoBehaviour
 
     // AttackMovement: Move to attackable range
     Vector3 GetPosByTarget(GameObject newTarget){
-        Debug.Log("Player Attack Ordered. Move into attackable range");
-        Unit newTargetUnit = newTarget.GetComponent<Unit>();
-
         float targetDist = Vector3.Distance(transform.position, newTarget.transform.position);
-        // Debug.Log(targetDist);
-        // float attackablePositionDist = targetDist - myUnit.unitSO.AttackRadius;
-        // Debug.Log(attackablePositionDist);
 
         if (targetDist < myUnit.unitSO.AttackRadius) 
             return transform.position;
@@ -87,6 +86,7 @@ public class UnitMovement : MonoBehaviour
     }
 
     void MoveToPos(Vector3 pos){
+        if (pos == transform.position) return;
         myAgent.SetDestination(pos);
     }
 
