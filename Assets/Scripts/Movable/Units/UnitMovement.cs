@@ -22,38 +22,46 @@ public class UnitMovement : MonoBehaviour
 
     void Update()
     {
-        if (isUnitSelected) 
-            OnMouseRightClicked();
+        // Handle RMB & Precise mvmt
+        if (isUnitSelected && ModeHandler.currentMode != Mode.Building) {
+            CheckRMBIsEnemy();
+        }
 
+        // No other movement when moving
+        if(myAgent.remainingDistance > 0) return;
+
+        // If there is any target, move to attack position, including player assignment/automvmt
         if (targetsDetector.targetList.Count != 0){
-            targetPos = GetAttackMovementPos(targetsDetector.targetList.First.Value);
+            targetPos = GetPosByTarget(targetsDetector.targetList.First.Value);
             MoveToPos(targetPos);
         }
-
     }
 
-    void OnMouseRightClicked(){
-        if (Input.GetMouseButtonDown(1)){
-            if (ModeHandler.currentMode == Mode.Building) return; // No Player control when in Building mode
+    void CheckRMBIsEnemy(){
+        if (!Input.GetMouseButtonDown(1)) return;
 
-            // Check if its locking on target or normal movement
-            Ray ray = myCam.ScreenPointToRay(Input.mousePosition); // create a ray from screen to mouse
-            if(Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, enemyLayer)) {
-                // *** Atk movement
-                GameObject newTarget = hit.collider.gameObject;
-                targetsDetector.AddFirstToTargetList(newTarget);
-            } else {
-                // *** Precise Movement
-                targetsDetector.ClearTargetList();
-                targetPos = GetPreciseMovementPos(ray);
-                if (targetPos == transform.position) return;
-                MoveToPos(targetPos);
-            }
-        }
+        Ray ray = myCam.ScreenPointToRay(Input.mousePosition);
+        if(Physics.Raycast(ray, out RaycastHit enemyHit, Mathf.Infinity, enemyLayer)) {
+            // *** Atk movement
+            UpdateTarget(enemyHit);
+            return;
+        } 
+
+        // *** Precise Movement
+        targetPos = GetPosByRay(ray);
+        if (targetPos == transform.position) return;
+        MoveToPos(targetPos); // Move till reaching destination without being stopped
     }
+
+    void UpdateTarget(RaycastHit hit){
+        // Update targetList first target
+        GameObject newTarget = hit.collider.gameObject;
+        targetsDetector.AddFirstToTargetList(newTarget); 
+    }
+
 
     // AttackMovement: Move to attackable range
-    Vector3 GetAttackMovementPos(GameObject newTarget){
+    Vector3 GetPosByTarget(GameObject newTarget){
         Debug.Log("Player Attack Ordered. Move into attackable range");
         Unit newTargetUnit = newTarget.GetComponent<Unit>();
 
@@ -69,8 +77,8 @@ public class UnitMovement : MonoBehaviour
         return newTarget.transform.position;
     }
 
-    // GetPreciseMovementPos: Move to ordered destination. Should have higher priority than automovement.
-    Vector3 GetPreciseMovementPos(Ray ray){
+    // Move to ordered destination. Have higher priority than any other movement.
+    Vector3 GetPosByRay(Ray ray){
         myAgent.stoppingDistance = 0;
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, groundLayer))
             return hit.point;
