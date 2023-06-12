@@ -16,15 +16,14 @@ public abstract class Unit : MonoBehaviour
     }
 
     public virtual void Update(){
-        UpdateTarget();
-        if (currentTarget == null) {
-            // Debug.Log("No target found.");
+        GetTarget();
+        if (currentTarget == null)
             return;
-        }
-        ShootTarget();
+        // if 
+        DetectTarget();
     }
 
-    public void UpdateTarget(){
+    public void GetTarget(){
         if (targetsDetector.targetList.Count == 0) {
             currentTarget = null;
             return;
@@ -34,13 +33,20 @@ public abstract class Unit : MonoBehaviour
         currentTarget = targetsDetector.targetList.First.Value;
     }
 
-    public void ShootTarget(){
-        // TODO: Implement shooting logic
-        // Debug.Log("Current target exists. Shooting target.");
+    private void DetectTarget(){
         Vector3 direction = currentTarget.transform.position - transform.position;
         if (Physics.Raycast(transform.position, direction.normalized, out RaycastHit hit, Mathf.Infinity, shootableLayer)) {
             Debug.DrawLine(transform.position, hit.point, Color.red, 2f);
             transform.LookAt(currentTarget.transform);
+            ShootTarget(hit);
+        }
+    }
+
+    private void ShootTarget(RaycastHit hit){
+        float distanceToTgt = Vector3.Distance(transform.position, currentTarget.transform.position);
+        Debug.Log(distanceToTgt);
+        if (distanceToTgt < unitSO.AttackRadius){
+            Debug.DrawLine(transform.position, hit.point, Color.green, 2f);
         }
     }
 

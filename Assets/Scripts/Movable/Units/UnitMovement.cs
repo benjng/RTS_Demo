@@ -16,15 +16,15 @@ public class UnitMovement : MonoBehaviour
     void Start()
     {
         myUnit = GetComponent<Unit>();
-        myCam = Camera.main;
         myAgent = GetComponent<NavMeshAgent>();
+        myCam = Camera.main;
     }
 
     void Update()
     {
         // Handle RMB & atk mvmt && Precise mvmt
         if (isUnitSelected && ModeHandler.currentMode != Mode.Building) {
-            CheckRMBIsEnemy();
+            ManualMovement();
         }
 
         // Prevent jittering
@@ -33,16 +33,15 @@ public class UnitMovement : MonoBehaviour
         }
 
         // Prevent automovement when precise/atk moving
-        Debug.Log(myAgent.velocity.magnitude);
         if(myAgent.velocity.magnitude != 0) return;
 
-        if (targetsDetector.targetList.Count == 0) return; // && current action finished
         // Automvmt
+        if (targetsDetector.targetList.Count == 0) return;
         targetPos = GetPosByTarget(targetsDetector.targetList.First.Value);
         MoveToPos(targetPos);
     }
 
-    void CheckRMBIsEnemy(){
+    void ManualMovement(){
         if (!Input.GetMouseButtonDown(1)) return;
 
         Ray ray = myCam.ScreenPointToRay(Input.mousePosition);
@@ -55,7 +54,8 @@ public class UnitMovement : MonoBehaviour
             targetPos = GetPosByRay(ray);
         }
 
-        MoveToPos(targetPos); // Move till reaching destination without being stopped
+        // Move till reaching destination without being stopped
+        MoveToPos(targetPos); 
     }
 
     void UpdateTarget(RaycastHit hit){
