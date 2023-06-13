@@ -10,16 +10,21 @@ public abstract class Unit : MonoBehaviour
     public TargetsDetector targetsDetector;
     public LayerMask shootableLayer;
 
+    [SerializeField] private GameObject bullet;
     private GameObject currentTarget;
+    private bool tgtInAttackRange = false;
+
     public virtual void Start(){
         CurrentHP = unitSO.MaxHP;
+        StartCoroutine(ShootTarget());
     }
 
     public virtual void Update(){
         GetTarget();
-        if (currentTarget == null)
-            return;
-        // if 
+        if (currentTarget == null) return;
+
+        // If there is target, look at it
+        transform.LookAt(currentTarget.transform);
         DetectTarget();
     }
 
@@ -34,19 +39,32 @@ public abstract class Unit : MonoBehaviour
     }
 
     private void DetectTarget(){
-        Vector3 direction = currentTarget.transform.position - transform.position;
-        if (Physics.Raycast(transform.position, direction.normalized, out RaycastHit hit, Mathf.Infinity, shootableLayer)) {
-            Debug.DrawLine(transform.position, hit.point, Color.red, 2f);
-            transform.LookAt(currentTarget.transform);
-            ShootTarget(hit);
+        Vector3 currentTargetPos = currentTarget.transform.position;
+        Vector3 direction = currentTargetPos - transform.position;
+        
+        float distanceToTgt = Vector3.Distance(transform.position, currentTargetPos);
+
+        if (distanceToTgt < unitSO.AttackRadius){
+            // Debug.Log("Target in atk range");
+            Debug.DrawLine(transform.position, currentTargetPos, Color.green, 2f);
+            tgtInAttackRange = true;
+        } else if (distanceToTgt < unitSO.DetectRadius){
+            // Debug.Log("Target in detect range");
+            Debug.DrawLine(transform.position, currentTargetPos, Color.red, 2f);
+            tgtInAttackRange = false;
+        } else {
+            tgtInAttackRange = false;
         }
     }
 
-    private void ShootTarget(RaycastHit hit){
-        float distanceToTgt = Vector3.Distance(transform.position, currentTarget.transform.position);
-        Debug.Log(distanceToTgt);
-        if (distanceToTgt < unitSO.AttackRadius){
-            Debug.DrawLine(transform.position, hit.point, Color.green, 2f);
+    private IEnumerator ShootTarget(){ // TODO:
+        while (true){
+            if (tgtInAttackRange){
+                Debug.Log("Shooting");
+                Instantiate(bullet, transform.position, Quaternion.Euler(transform.rotation.eulerAngles), transform);
+                yield return new WaitForSeconds(1);
+            }
+            yield return null;
         }
     }
 

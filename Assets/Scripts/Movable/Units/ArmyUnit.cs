@@ -10,7 +10,7 @@ public class ArmyUnit : Unit
 
     public override void Start()
     {
-        CurrentHP = unitSO.MaxHP;
+        base.Start();
         myCam = Camera.main;
         UnitSelection.Instance.unitList.Add(this.gameObject); // add this gameobject to unitList when game start
     }
@@ -20,6 +20,7 @@ public class ArmyUnit : Unit
         CheckObstacle();
     }
 
+    // TODO: All units should check obstacles?
     void CheckObstacle(){
         if (unitSO.unitType == UnitType.Building) return;
         

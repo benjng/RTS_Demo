@@ -35,7 +35,7 @@ public class UnitMovement : MonoBehaviour
         // Prevent automovement when precise/atk moving
         if(myAgent.velocity.magnitude != 0) return;
 
-        // Automvmt
+        // Automvmt (Chase target when there is any)
         if (targetsDetector.targetList.Count == 0) return;
         targetPos = GetPosByTarget(targetsDetector.targetList.First.Value);
         MoveToPos(targetPos);
