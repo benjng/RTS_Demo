@@ -47,6 +47,7 @@ public abstract class Unit : MonoBehaviour
         if (distanceToTgt < unitSO.AttackRadius){
             // Debug.Log("Target in atk range");
             // Debug.DrawLine(transform.position, currentTargetPos, Color.green, 2f);
+            transform.LookAt(currentTarget.transform);
             tgtInAttackRange = true;
         } else if (distanceToTgt < unitSO.DetectRadius){
             // Debug.Log("Target in detect range");

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -28,7 +29,7 @@ public class UnitMovement : MonoBehaviour
         }
 
         // Prevent jittering
-        if (myAgent.stoppingDistance > 0 && myAgent.velocity.magnitude < 0.1){
+        if (myAgent.stoppingDistance > 0 && myAgent.velocity.magnitude < 0.2f){
             myAgent.ResetPath();
         }
 
@@ -52,6 +53,32 @@ public class UnitMovement : MonoBehaviour
         } else {
             // *** Precise Movement
             targetPos = GetPosByRay(ray);
+            List<GameObject> currentUnitsSelected = UnitSelection.Instance.unitsSelected;
+            int numOfSelectedUnit = currentUnitsSelected.Count;
+            if (!currentUnitsSelected.Contains(gameObject)) throw new System.Exception("selected obj not found");
+
+            int indexOfUnit = currentUnitsSelected.IndexOf(gameObject); 
+            // 0 1 2 
+            // 3 4 5 
+            // 6 7 8
+            // 9 10 11
+            // 12 13 14
+            
+            int numOfCol = 3;
+
+            int offsetX = indexOfUnit % numOfCol;
+            int offsetZ = indexOfUnit / numOfCol;
+            Debug.Log("offsetX:" + offsetX + "; offsetZ:" + offsetZ);
+
+            // Vector3[,] posOffsetArray = new Vector3[3, Mathf.FloorToInt(numOfSelectedUnit/3)];
+            // for (int x = 0; x < posOffsetArray.GetLength(0); x++){
+            //     for (int z = 0; z < posOffsetArray.GetLength(1); z++){
+            //         posOffsetArray[x,z] = new Vector3(x, 0, z);
+            //     }
+            // }
+            float multiplier = 4;
+            Vector3 offSetVector = new Vector3(offsetX, 0, offsetZ) * multiplier;
+            targetPos += offSetVector;
         }
 
         // Move till reaching destination without being stopped
