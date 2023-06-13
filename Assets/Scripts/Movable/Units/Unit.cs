@@ -10,9 +10,10 @@ public abstract class Unit : MonoBehaviour
     public TargetsDetector targetsDetector;
     public LayerMask shootableLayer;
 
-    [SerializeField] private GameObject bullet;
+    [SerializeField] private GameObject bulletPrefab;
     private GameObject currentTarget;
     private bool tgtInAttackRange = false;
+    private float distanceToTgt;
 
     public virtual void Start(){
         CurrentHP = unitSO.MaxHP;
@@ -22,9 +23,6 @@ public abstract class Unit : MonoBehaviour
     public virtual void Update(){
         GetTarget();
         if (currentTarget == null) return;
-
-        // If there is target, look at it
-        transform.LookAt(currentTarget.transform);
         DetectTarget();
     }
 
@@ -42,14 +40,15 @@ public abstract class Unit : MonoBehaviour
         Vector3 currentTargetPos = currentTarget.transform.position;
         Vector3 direction = currentTargetPos - transform.position;
         
-        float distanceToTgt = Vector3.Distance(transform.position, currentTargetPos);
+        distanceToTgt = Vector3.Distance(transform.position, currentTargetPos);
 
         if (distanceToTgt < unitSO.AttackRadius){
             // Debug.Log("Target in atk range");
-            Debug.DrawLine(transform.position, currentTargetPos, Color.green, 2f);
+            // Debug.DrawLine(transform.position, currentTargetPos, Color.green, 2f);
             tgtInAttackRange = true;
         } else if (distanceToTgt < unitSO.DetectRadius){
             // Debug.Log("Target in detect range");
+            transform.LookAt(currentTarget.transform);
             Debug.DrawLine(transform.position, currentTargetPos, Color.red, 2f);
             tgtInAttackRange = false;
         } else {
@@ -59,10 +58,29 @@ public abstract class Unit : MonoBehaviour
 
     private IEnumerator ShootTarget(){ // TODO:
         while (true){
-            if (tgtInAttackRange){
-                Debug.Log("Shooting");
-                Instantiate(bullet, transform.position, Quaternion.Euler(transform.rotation.eulerAngles), transform);
+            if (tgtInAttackRange) {
+
+                GameObject bullet = Instantiate(bulletPrefab, transform.position, transform.rotation, transform);
+                Vector3 startPos = transform.position;
+                Vector3 endPos = currentTarget.transform.position;
+                float bulletSpeed = 10f;
+                float remainingDistance = distanceToTgt;
+
+                // Loop (Move) till it reaches Endpoint using Lerp
+                while(remainingDistance > 0){
+                    bullet.transform.position = Vector3.Lerp(
+                        startPos,
+                        endPos,
+                        Mathf.Clamp01(1 - (remainingDistance / distanceToTgt))
+                    );
+                    remainingDistance -= bulletSpeed * Time.deltaTime;
+                    yield return null;
+                }
+
+                bullet.transform.position = endPos; // Make sure it reaches EndPoint
+                Destroy(bullet, 0.1f);
                 yield return new WaitForSeconds(1);
+
             }
             yield return null;
         }
