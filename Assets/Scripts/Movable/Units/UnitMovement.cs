@@ -55,30 +55,11 @@ public class UnitMovement : MonoBehaviour
             targetPos = GetPosByRay(ray);
             List<GameObject> currentUnitsSelected = UnitSelection.Instance.unitsSelected;
             int numOfSelectedUnit = currentUnitsSelected.Count;
-            if (!currentUnitsSelected.Contains(gameObject)) throw new System.Exception("selected obj not found");
 
-            int indexOfUnit = currentUnitsSelected.IndexOf(gameObject); 
-            // 0 1 2 
-            // 3 4 5 
-            // 6 7 8
-            // 9 10 11
-            // 12 13 14
-            
-            int numOfCol = 3;
-
-            int offsetX = indexOfUnit % numOfCol;
-            int offsetZ = indexOfUnit / numOfCol;
-            Debug.Log("offsetX:" + offsetX + "; offsetZ:" + offsetZ);
-
-            // Vector3[,] posOffsetArray = new Vector3[3, Mathf.FloorToInt(numOfSelectedUnit/3)];
-            // for (int x = 0; x < posOffsetArray.GetLength(0); x++){
-            //     for (int z = 0; z < posOffsetArray.GetLength(1); z++){
-            //         posOffsetArray[x,z] = new Vector3(x, 0, z);
-            //     }
-            // }
-            float multiplier = 4;
-            Vector3 offSetVector = new Vector3(offsetX, 0, offsetZ) * multiplier;
-            targetPos += offSetVector;
+            // On Multiple units selected
+            if (numOfSelectedUnit > 1) {
+                targetPos += GetOffSetVector(numOfSelectedUnit, currentUnitsSelected);
+            }
         }
 
         // Move till reaching destination without being stopped
@@ -110,6 +91,27 @@ public class UnitMovement : MonoBehaviour
             return hit.point;
 
         return transform.position;
+    }
+
+    Vector3 GetOffSetVector(int numOfSelectedUnit, List<GameObject> currentUnitsSelected){
+        if (!currentUnitsSelected.Contains(gameObject)) throw new System.Exception("selected obj not found");
+
+        int indexOfUnit = currentUnitsSelected.IndexOf(gameObject); 
+        
+        int numOfCol;
+        if (numOfSelectedUnit % 2 == 0){
+            numOfCol = 2;
+        } else {
+            numOfCol = 3;
+        }
+
+        int offsetX = indexOfUnit % numOfCol;
+        int offsetZ = indexOfUnit / numOfCol;
+        Debug.Log("offsetX:" + offsetX + "; offsetZ:" + offsetZ);
+
+        float multiplier = 2;
+        Vector3 offSetVector = new Vector3(offsetX, 0, offsetZ) * multiplier;
+        return offSetVector;
     }
 
     void MoveToPos(Vector3 pos){

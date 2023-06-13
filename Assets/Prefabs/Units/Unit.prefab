@@ -60,7 +60,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1088
   bulletPrefab: {fileID: 3587991438908524183, guid: 31c14aa3921a9d84d89bb611dd2bf841, type: 3}
-  bulletParent: {fileID: 0}
+  shootingInterval: 0.001
+  bulletSpeed: 100
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 768
@@ -93,7 +94,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 8677767776898214555}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 1.5
+  m_Radius: 1
   m_Speed: 8
   m_Acceleration: 100
   avoidancePriority: 50
