@@ -11,6 +11,8 @@ public abstract class Unit : MonoBehaviour
     public LayerMask shootableLayer;
 
     [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private float shootingInterval = 0.001f;
+    [SerializeField] private float bulletSpeed = 100f;
     private GameObject currentTarget;
     private bool tgtInAttackRange = false;
     private float distanceToTgt;
@@ -49,7 +51,7 @@ public abstract class Unit : MonoBehaviour
         } else if (distanceToTgt < unitSO.DetectRadius){
             // Debug.Log("Target in detect range");
             transform.LookAt(currentTarget.transform);
-            Debug.DrawLine(transform.position, currentTargetPos, Color.red, 2f);
+            Debug.DrawLine(transform.position, currentTargetPos, Color.red, 0.5f);
             tgtInAttackRange = false;
         } else {
             tgtInAttackRange = false;
@@ -60,14 +62,21 @@ public abstract class Unit : MonoBehaviour
         while (true){
             if (tgtInAttackRange) {
 
-                GameObject bullet = Instantiate(bulletPrefab, transform.position, transform.rotation, transform);
+                GameObject bullet = Instantiate(bulletPrefab, transform.position, transform.rotation);
+                Vector3 randomSpread = new Vector3(
+                    Random.Range(-0.2f, 0.2f), 
+                    Random.Range(-0.2f, 0.2f), 
+                    0
+                );
+
                 Vector3 startPos = transform.position;
-                Vector3 endPos = currentTarget.transform.position;
-                float bulletSpeed = 10f;
+                Vector3 endPos = currentTarget.transform.position + randomSpread;
+
                 float remainingDistance = distanceToTgt;
 
                 // Loop (Move) till it reaches Endpoint using Lerp
                 while(remainingDistance > 0){
+                    bullet.transform.LookAt(endPos);
                     bullet.transform.position = Vector3.Lerp(
                         startPos,
                         endPos,
@@ -79,8 +88,7 @@ public abstract class Unit : MonoBehaviour
 
                 bullet.transform.position = endPos; // Make sure it reaches EndPoint
                 Destroy(bullet, 0.1f);
-                yield return new WaitForSeconds(1);
-
+                yield return new WaitForSeconds(shootingInterval);
             }
             yield return null;
         }

@@ -59,6 +59,8 @@ MonoBehaviour:
   shootableLayer:
     serializedVersion: 2
     m_Bits: 1088
+  bulletPrefab: {fileID: 3587991438908524183, guid: 31c14aa3921a9d84d89bb611dd2bf841, type: 3}
+  bulletParent: {fileID: 0}
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 768
