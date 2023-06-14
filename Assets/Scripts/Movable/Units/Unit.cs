@@ -40,7 +40,7 @@ public abstract class Unit : MonoBehaviour
 
     private void DetectTarget(){
         Vector3 currentTargetPos = currentTarget.transform.position;
-        Vector3 direction = currentTargetPos - transform.position;
+        // Vector3 direction = currentTargetPos - transform.position;
         
         distanceToTgt = Vector3.Distance(transform.position, currentTargetPos);
 
@@ -59,7 +59,7 @@ public abstract class Unit : MonoBehaviour
         }
     }
 
-    private IEnumerator ShootTarget(){ // TODO:
+    private IEnumerator ShootTarget(){ 
         while (true){
             if (tgtInAttackRange) {
 
