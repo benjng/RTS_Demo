@@ -13,7 +13,7 @@ public class UnitMovement : MonoBehaviour
     private Unit myUnit;
     private NavMeshAgent myAgent;
     private Camera myCam;
-    private Vector3 targetPos;
+    private Vector3 destination;
 
     void Start()
     {
@@ -39,8 +39,8 @@ public class UnitMovement : MonoBehaviour
 
         // Automvmt (Chase target when there is any)
         if (targetsDetector.targetList.Count == 0) return;
-        targetPos = GetPosByTarget(targetsDetector.targetList.First.Value);
-        MoveToPos(targetPos);
+        destination = GetPosByTarget(targetsDetector.targetList.First.Value);
+        MoveToPos(destination);
     }
 
     void ManualMovement(){
@@ -50,21 +50,21 @@ public class UnitMovement : MonoBehaviour
         if(Physics.Raycast(ray, out RaycastHit enemyHit, Mathf.Infinity, enemyLayer)) {
             // *** Atk movement
             UpdateTarget(enemyHit);
-            targetPos = GetPosByTarget(targetsDetector.targetList.First.Value);
+            destination = GetPosByTarget(targetsDetector.targetList.First.Value);
         } else {
             // *** Precise Movement
-            targetPos = GetPosByRay(ray);
+            destination = GetPosByRay(ray);
             List<GameObject> currentUnitsSelected = UnitSelection.Instance.unitsSelected;
             int numOfSelectedUnit = currentUnitsSelected.Count;
 
             // On Multiple units selected
             if (numOfSelectedUnit > 1) {
-                targetPos += GetOffSetVector(numOfSelectedUnit, currentUnitsSelected);
+                destination += GetOffSetVector(numOfSelectedUnit, currentUnitsSelected);
             }
         }
 
         // Move till reaching destination without being stopped
-        MoveToPos(targetPos); 
+        MoveToPos(destination); 
     }
 
     void UpdateTarget(RaycastHit hit){

@@ -41,21 +41,27 @@ public class TargetsDetector : MonoBehaviour
     }
 
     private void OnTriggerEnter(Collider other) {
-        if (other.GetComponentInChildren<Unit>() == null) return;
+        Unit unit = other.GetComponentInChildren<Unit>();
+        EnemyUnit enemyUnit = other.GetComponent<EnemyUnit>();
 
-        if (owner.unitSO.unitType == UnitType.Enemy){
-            if (other.GetComponent<EnemyUnit>() != null) return; // return if trigger is enemy
+        if (unit == null)
+            return;
+
+        // Only the opposite team units will be added to targetList
+        if (owner.unitSO.unitType == UnitType.Enemy) {
+            if (enemyUnit != null) return;
         } else {
-            if (other.GetComponent<EnemyUnit>() == null) return; // return if trigger is not enemy
+            if (enemyUnit == null) return;
         }
 
-        if (targetList.Contains(other.gameObject)) return;
+        if (targetList.Contains(other.gameObject))
+            return;
+
         AddLastToTargetList(other.gameObject);
     }
 
     private void OnTriggerExit(Collider other) {
         if (!targetList.Contains(other.gameObject)) return;
-        // if (other.gameObject == targetList.First.Value) return; // lockon first target when tracing
         targetList.Remove(other.gameObject);
     }
 }
