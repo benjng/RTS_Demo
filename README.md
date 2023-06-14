@@ -5,7 +5,7 @@ A demonstration of a simple strategy game mechanics.
 ## Table of contents
 
 - [Unit](#unit-)
-- [Unit Selection](#unit-selection-system)
+- [Unit Selection](#unit-selection-system-)
 - [Unit Movements](#unit-movements-)
 
 ## Unit
