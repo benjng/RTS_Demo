@@ -9,6 +9,7 @@ public class UnitMovement : MonoBehaviour
     public LayerMask enemyLayer;
 
     [SerializeField] private TargetsDetector targetsDetector;
+    [SerializeField] private float unitFormationGap = 2;
     private Unit myUnit;
     private NavMeshAgent myAgent;
     private Camera myCam;
@@ -94,10 +95,10 @@ public class UnitMovement : MonoBehaviour
     }
 
     Vector3 GetOffSetVector(int numOfSelectedUnit, List<GameObject> currentUnitsSelected){
-        if (!currentUnitsSelected.Contains(gameObject)) throw new System.Exception("selected obj not found");
-
+        if (!currentUnitsSelected.Contains(gameObject)) throw new System.Exception("selected obj not found in list");
         int indexOfUnit = currentUnitsSelected.IndexOf(gameObject); 
         
+        // units formation
         int numOfCol;
         if (numOfSelectedUnit % 2 == 0){
             numOfCol = 2;
@@ -107,10 +108,8 @@ public class UnitMovement : MonoBehaviour
 
         int offsetX = indexOfUnit % numOfCol;
         int offsetZ = indexOfUnit / numOfCol;
-        Debug.Log("offsetX:" + offsetX + "; offsetZ:" + offsetZ);
 
-        float multiplier = 2;
-        Vector3 offSetVector = new Vector3(offsetX, 0, offsetZ) * multiplier;
+        Vector3 offSetVector = new Vector3(offsetX, 0, offsetZ) * unitFormationGap;
         return offSetVector;
     }
 
