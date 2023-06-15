@@ -15,7 +15,7 @@ All units in game, including player controllable units, buildings, enemy units, 
 ### Unit class
 
 1. GetTarget()
-	- Retrieve updated target from TargetsDetector
+	- Retrieve updated target from TargetDetector
 2. DetectTarget()
 	- Check if target is within attack range, or detect range
 	- Set the unit to face towards target when in range

@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 8811663791173198512}
   m_Layer: 6
   m_Name: Unit
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -55,7 +55,7 @@ MonoBehaviour:
   CurrentHP: 0
   unitSO: {fileID: 0}
   HPBarCanvas: {fileID: 3187378859603711730}
-  targetsDetector: {fileID: 8636750240144099370}
+  targetDetector: {fileID: 8636750240144099370}
   shootableLayer:
     serializedVersion: 2
     m_Bits: 1088
@@ -84,7 +84,8 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 1024
-  targetsDetector: {fileID: 8636750240144099370}
+  targetDetector: {fileID: 8636750240144099370}
+  unitFormationGap: 2
 --- !u!195 &7452248463654720129
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -368,6 +369,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be001d1f0da902244bd5b11e407b824f, type: 3}
+  m_Script: {fileID: 11500000, guid: 3bb25cc4ae7812e499a2720ad1134068, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

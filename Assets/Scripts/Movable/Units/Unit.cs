@@ -7,7 +7,7 @@ public abstract class Unit : MonoBehaviour
     public int CurrentHP;
     public UnitSO unitSO;
     public GameObject HPBarCanvas;
-    public TargetsDetector targetsDetector;
+    public TargetDetector targetDetector;
     public LayerMask shootableLayer;
 
     [SerializeField] private GameObject bulletPrefab;
@@ -29,13 +29,13 @@ public abstract class Unit : MonoBehaviour
     }
 
     public void GetTarget(){
-        if (targetsDetector.targetList.Count == 0) {
+        if (targetDetector.targetList.Count == 0) {
             currentTarget = null;
             return;
         }
-        if (currentTarget == targetsDetector.targetList.First.Value) return;
+        if (currentTarget == targetDetector.targetList.First.Value) return;
         
-        currentTarget = targetsDetector.targetList.First.Value;
+        currentTarget = targetDetector.targetList.First.Value;
     }
 
     private void DetectTarget(){
@@ -64,6 +64,7 @@ public abstract class Unit : MonoBehaviour
             if (tgtInAttackRange) {
 
                 GameObject bullet = Instantiate(bulletPrefab, transform.position, transform.rotation);
+                bullet.tag = transform.tag; // add the same tag as this transform shoot (Enemy/Player)
                 Vector3 randomSpread = new Vector3(
                     Random.Range(-0.2f, 0.2f), 
                     Random.Range(-0.2f, 0.2f), 
@@ -95,6 +96,11 @@ public abstract class Unit : MonoBehaviour
         }
     }
 
+    public void OnTriggerEnter(Collider other) {
+        if (!other.gameObject.layer.Equals(LayerMask.NameToLayer("Damage"))) return;
+        if (other.tag == transform.tag) return; // no self/team hurting
+        Debug.Log("Damaged to " + transform.name);
+    }
     public virtual void OnDrawGizmos() {
         if (unitSO == null) return;
         if (unitSO.AttackRadius == 0) return;

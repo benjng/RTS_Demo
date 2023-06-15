@@ -8,7 +8,7 @@ public class UnitMovement : MonoBehaviour
     public LayerMask groundLayer;
     public LayerMask enemyLayer;
 
-    [SerializeField] private TargetsDetector targetsDetector;
+    [SerializeField] private TargetDetector targetDetector;
     [SerializeField] private float unitFormationGap = 2;
     private Unit myUnit;
     private NavMeshAgent myAgent;
@@ -38,8 +38,8 @@ public class UnitMovement : MonoBehaviour
         if(myAgent.velocity.magnitude != 0) return;
 
         // Automvmt (Chase target when there is any)
-        if (targetsDetector.targetList.Count == 0) return;
-        destination = GetPosByTarget(targetsDetector.targetList.First.Value);
+        if (targetDetector.targetList.Count == 0) return;
+        destination = GetPosByTarget(targetDetector.targetList.First.Value);
         MoveToPos(destination);
     }
 
@@ -50,7 +50,7 @@ public class UnitMovement : MonoBehaviour
         if(Physics.Raycast(ray, out RaycastHit enemyHit, Mathf.Infinity, enemyLayer)) {
             // *** Atk movement
             UpdateTarget(enemyHit);
-            destination = GetPosByTarget(targetsDetector.targetList.First.Value);
+            destination = GetPosByTarget(targetDetector.targetList.First.Value);
         } else {
             // *** Precise Movement
             destination = GetPosByRay(ray);
@@ -70,7 +70,7 @@ public class UnitMovement : MonoBehaviour
     void UpdateTarget(RaycastHit hit){
         // Update targetList first target
         GameObject newTarget = hit.collider.gameObject;
-        targetsDetector.AddFirstToTargetList(newTarget); 
+        targetDetector.AddFirstToTargetList(newTarget); 
     }
 
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class TargetsDetector : MonoBehaviour
+public class TargetDetector : MonoBehaviour
 {
     public float detectRadius;
     private Unit owner;
@@ -15,7 +15,7 @@ public class TargetsDetector : MonoBehaviour
         debugTgtList = new List<GameObject>();
         owner = transform.parent.GetComponent<Unit>();
         detectRadius = owner.unitSO.DetectRadius;
-        gameObject.layer = 0;
+        // gameObject.layer = 0;
     }
 
     private void Start() {
