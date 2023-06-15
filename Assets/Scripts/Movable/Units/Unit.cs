@@ -6,7 +6,7 @@ public abstract class Unit : MonoBehaviour
 {
     public int CurrentHP;
     public UnitSO unitSO;
-    public GameObject HPBarCanvas;
+    public GameObject HPBarCanvas; // needed?
     public TargetDetector targetDetector;
     public LayerMask shootableLayer;
 
@@ -18,7 +18,6 @@ public abstract class Unit : MonoBehaviour
     private float distanceToTgt;
 
     public virtual void Start(){
-        CurrentHP = unitSO.MaxHP;
         StartCoroutine(ShootTarget());
     }
 
@@ -96,11 +95,19 @@ public abstract class Unit : MonoBehaviour
         }
     }
 
-    public void OnTriggerEnter(Collider other) {
+    private void OnGotShot(Collider other){
         if (!other.gameObject.layer.Equals(LayerMask.NameToLayer("Damage"))) return;
         if (other.tag == transform.tag) return; // no self/team hurting
+
+        HPBarCanvas.SetActive(true);
+        transform.GetComponentInChildren<UnitHP>().DeductHP(1);
         Debug.Log("Damaged to " + transform.name);
     }
+
+    public void OnTriggerEnter(Collider other) {
+        OnGotShot(other);
+    }
+
     public virtual void OnDrawGizmos() {
         if (unitSO == null) return;
         if (unitSO.AttackRadius == 0) return;
