@@ -16,4 +16,9 @@ MonoBehaviour:
   material: {fileID: 0}
   unitIcon: {fileID: 0}
   unitType: 2
-  MaxHP: 0
+  weaponSO: {fileID: 0}
+  MaxHP: 200
+  DetectRadius: 0
+  AttackRadius: 0
+  ShootingInterval: 0
+  BulletSpeed: 0
