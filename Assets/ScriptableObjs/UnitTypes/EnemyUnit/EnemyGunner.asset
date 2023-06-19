@@ -10,14 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 19237a0ce10685140b9471c6e57a8d8b, type: 3}
-  m_Name: EnemySolider
+  m_Name: EnemyGunner
   m_EditorClassIdentifier: 
-  unitName: EnemySoldier
+  unitName: EnemyGunner
   material: {fileID: 0}
   unitIcon: {fileID: 0}
   unitType: 3
+  weaponSO: {fileID: 11400000, guid: 68c6ab7815b972a489244192e3417ad6, type: 2}
   MaxHP: 60
-  DetectRadius: 20
-  AttackRadius: 15
-  ShootingInterval: 0
+  DetectRadius: 10
+  AttackRadius: 5
+  ShootingInterval: 1
   BulletSpeed: 100

@@ -5,15 +5,15 @@ using UnityEngine.AI;
 public class UnitMovement : MonoBehaviour
 {
     public bool isUnitSelected = false;
-    public LayerMask groundLayer;
-    public LayerMask enemyLayer;
 
-    [SerializeField] private TargetDetector targetDetector;
+    [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private LayerMask enemyLayer;
+    [SerializeField] protected TargetDetector targetDetector;
     [SerializeField] private float unitFormationGap = 2;
-    private Unit myUnit;
-    private NavMeshAgent myAgent;
-    private Camera myCam;
-    private Vector3 destination;
+    protected Unit myUnit;
+    protected NavMeshAgent myAgent;
+    protected Camera myCam;
+    protected Vector3 destination;
 
     void Start()
     {
@@ -37,14 +37,14 @@ public class UnitMovement : MonoBehaviour
         // Prevent automovement when precise/atk moving
         if(myAgent.velocity.magnitude != 0) return;
 
-        // Automvmt (Chase target when there is any)
-        if (targetDetector.targetList.Count == 0) return;
-
         // Make sure target is still alive
+        if (targetDetector.targetList.Count == 0) return;
         if (targetDetector.targetList.First.Value == null) {
             targetDetector.targetList.RemoveFirst();
             return;
         }
+
+        // Automvmt by targetList (Chase target when there is any)
         destination = GetDestinationByTarget(targetDetector.targetList.First.Value);
         MoveToPos(destination);
     }
@@ -86,7 +86,7 @@ public class UnitMovement : MonoBehaviour
 
 
     // AttackMovement: Move to attackable range
-    Vector3 GetDestinationByTarget(GameObject newTarget){
+    protected Vector3 GetDestinationByTarget(GameObject newTarget){
         float targetDist = Vector3.Distance(transform.position, newTarget.transform.position);
 
         if (targetDist < myUnit.unitSO.AttackRadius) 
@@ -124,7 +124,7 @@ public class UnitMovement : MonoBehaviour
         return offSetVector;
     }
 
-    void MoveToPos(Vector3 pos){
+    protected void MoveToPos(Vector3 pos){
         if (pos == transform.position) return;
         myAgent.SetDestination(pos);
     }

@@ -12,6 +12,7 @@ public abstract class Unit : MonoBehaviour
     private float distanceToTgt;
 
     public virtual void Start(){
+        if (unitSO.weaponSO == null) return;
         if (unitSO.weaponSO.isRange){
             StartCoroutine(ShootTarget());
         }
@@ -29,7 +30,6 @@ public abstract class Unit : MonoBehaviour
             return;
         }
         if (currentTarget == targetDetector.targetList.First.Value) return;
-        
         currentTarget = targetDetector.targetList.First.Value;
     }
 
@@ -56,6 +56,7 @@ public abstract class Unit : MonoBehaviour
 
     private IEnumerator ShootTarget(){ 
         while (true){
+            // Debug.Log("Shooting from " + transform.name);
             if (tgtInAttackRange && currentTarget != null) {
 
                 GameObject bullet = Instantiate(unitSO.weaponSO.prefab, transform.position, transform.rotation);

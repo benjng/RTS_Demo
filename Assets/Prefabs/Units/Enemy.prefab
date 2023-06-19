@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8677767776898214552}
   - component: {fileID: 4259372142996426090}
+  - component: {fileID: 1571654319954478502}
   - component: {fileID: 7452248463654720129}
   - component: {fileID: 8677767776898214631}
   - component: {fileID: 8677767776898214630}
@@ -51,16 +52,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bafbf7f72b43a944c8658015d446bc0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CurrentHP: 0
   unitSO: {fileID: 11400000, guid: f9264654ce9a48a4c887d949cd9d3a58, type: 2}
   HPBarCanvas: {fileID: 3187378859603711730}
   targetDetector: {fileID: 5763390400138257896}
-  shootableLayer:
+--- !u!114 &1571654319954478502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8677767776898214555}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 588a0942763393941a73f8f10fe315dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isUnitSelected: 0
+  groundLayer:
     serializedVersion: 2
-    m_Bits: 1088
-  bulletPrefab: {fileID: 0}
-  shootingInterval: 0.001
-  bulletSpeed: 100
+    m_Bits: 0
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  targetDetector: {fileID: 5763390400138257896}
+  unitFormationGap: 2
 --- !u!195 &7452248463654720129
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -68,7 +83,7 @@ NavMeshAgent:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8677767776898214555}
-  m_Enabled: 0
+  m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 1.5
   m_Speed: 8
