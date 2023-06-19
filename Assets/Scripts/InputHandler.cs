@@ -8,7 +8,7 @@ public class InputHandler : MonoBehaviour
     {
         // if (Input.GetMouseButtonDown(0)){
         //     // Under what mode was LMB clicked?
-        //     if (ModeHandler.currentMode == Mode.SoliderSelected){
+        //     if (ModeHandler.currentMode == Mode.SoldierSelected){
 
         //     }
         // }

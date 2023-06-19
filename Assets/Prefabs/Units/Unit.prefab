@@ -49,17 +49,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 8677767776898214555}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 035b75fb0e59a6d4d90e55b4aac4970a, type: 3}
+  m_Script: {fileID: 11500000, guid: ecd48d001000b914eac53ce0f9b523b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CurrentHP: 0
   unitSO: {fileID: 11400000, guid: a8621ec3fc1ee974eabe78c9bdbd59b2, type: 2}
   HPBarCanvas: {fileID: 3187378859603711730}
   targetDetector: {fileID: 8636750240144099370}
-  shootableLayer:
-    serializedVersion: 2
-    m_Bits: 1088
-  bulletPrefab: {fileID: 3587991438908524183, guid: 31c14aa3921a9d84d89bb611dd2bf841, type: 3}
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 768

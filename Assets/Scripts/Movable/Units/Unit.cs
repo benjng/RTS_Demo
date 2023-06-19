@@ -4,20 +4,17 @@ using UnityEngine;
 
 public abstract class Unit : MonoBehaviour
 {
-    public int CurrentHP;
     public UnitSO unitSO;
-    // public WeaponSO weaponSO;
     public GameObject HPBarCanvas; // needed?
     public TargetDetector targetDetector;
-    public LayerMask shootableLayer;
-
-    [SerializeField] private GameObject bulletPrefab;
     private GameObject currentTarget;
     private bool tgtInAttackRange = false;
     private float distanceToTgt;
 
     public virtual void Start(){
-        StartCoroutine(ShootTarget());
+        if (unitSO.weaponSO.isRange){
+            StartCoroutine(ShootTarget());
+        }
     }
 
     public virtual void Update(){
@@ -61,7 +58,7 @@ public abstract class Unit : MonoBehaviour
         while (true){
             if (tgtInAttackRange && currentTarget != null) {
 
-                GameObject bullet = Instantiate(bulletPrefab, transform.position, transform.rotation);
+                GameObject bullet = Instantiate(unitSO.weaponSO.prefab, transform.position, transform.rotation);
                 bullet.tag = transform.tag; // add the same tag as this transform shoot (Enemy/Player)
                 Vector3 randomSpread = new Vector3(
                     Random.Range(-0.2f, 0.2f), 

@@ -42,7 +42,7 @@ public class UnitClick : MonoBehaviour
 
         // TODO: TargetSelection here?
         // if (Input.GetMouseButtonDown(1)){ //RMB
-        //     if (ModeHandler.currentMode != Mode.SoliderSelected) return;
+        //     if (ModeHandler.currentMode != Mode.SoldierSelected) return;
         //     RaycastHit hit;
         //     Ray ray = myCam.ScreenPointToRay(Input.mousePosition); // create a ray from screen to mouse
 

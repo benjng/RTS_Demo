@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ArmyUnit : Unit
+public class SoldierUnit : Unit
 {
     [SerializeField] private LayerMask obstacleLayer;
     private List<Obstacle> currentObstHitList = new List<Obstacle>();

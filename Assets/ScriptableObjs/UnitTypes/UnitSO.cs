@@ -10,6 +10,7 @@ public class UnitSO : ScriptableObject
     public Material material;
     public Sprite unitIcon;
     public UnitType unitType;
+    public WeaponSO weaponSO;
     public int MaxHP;
     public float DetectRadius;
     public float AttackRadius;
