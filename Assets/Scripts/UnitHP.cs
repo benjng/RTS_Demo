@@ -36,10 +36,10 @@ public class UnitHP : MonoBehaviour
     }
 
     private void OnHPZero(float value){
-        slider.onValueChanged.RemoveListener(OnHPZero);
         if (value <= 0) {
-            // TODO: destroy unit
-            // Destroy(gameObject, 1);
+            slider.onValueChanged.RemoveListener(OnHPZero);
+            Debug.Log("HP reached 0");
+            Destroy(transform.parent.gameObject);
         }
     }
 }

@@ -9,15 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19237a0ce10685140b9471c6e57a8d8b, type: 3}
-  m_Name: EnemySolider
+  m_Script: {fileID: 11500000, guid: 7f4771a8d7bf5604fa131e5f8e636970, type: 3}
+  m_Name: Bullet
   m_EditorClassIdentifier: 
-  unitName: EnemySoldier
-  material: {fileID: 0}
-  unitIcon: {fileID: 0}
-  unitType: 3
-  MaxHP: 60
-  DetectRadius: 20
-  AttackRadius: 15
-  ShootingInterval: 0
-  BulletSpeed: 100
+  isRange: 1
+  damage: 3

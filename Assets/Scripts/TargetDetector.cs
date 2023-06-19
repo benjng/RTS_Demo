@@ -36,6 +36,10 @@ public class TargetDetector : MonoBehaviour
         targetList.AddLast(newTarget);
     }
 
+    public void RemoveTargetFromList(GameObject targetToRemove){
+        targetList.Remove(targetToRemove);
+    }
+
     public void ClearTargetList(){
         targetList.Clear();
     }

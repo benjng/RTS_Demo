@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8677767776898214552}
-  - component: {fileID: 7909649195125507352}
+  - component: {fileID: 7616096807156182900}
   - component: {fileID: 406722372678592292}
   - component: {fileID: 7452248463654720129}
   - component: {fileID: 8677767776898214631}
@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 4991589825909394539}
   - component: {fileID: 8811663791173198512}
   m_Layer: 6
-  m_Name: Unit
+  m_Name: Worker
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -40,7 +40,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7909649195125507352
+--- !u!114 &7616096807156182900
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -49,17 +49,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 8677767776898214555}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 035b75fb0e59a6d4d90e55b4aac4970a, type: 3}
+  m_Script: {fileID: 11500000, guid: b126e7a0ce350bb46b8a273298609c53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   CurrentHP: 0
-  unitSO: {fileID: 11400000, guid: a8621ec3fc1ee974eabe78c9bdbd59b2, type: 2}
+  unitSO: {fileID: 11400000, guid: 52bf73797d8dff04398208928a1729e3, type: 2}
+  weaponSO: {fileID: 0}
   HPBarCanvas: {fileID: 3187378859603711730}
   targetDetector: {fileID: 8636750240144099370}
   shootableLayer:
     serializedVersion: 2
-    m_Bits: 1088
-  bulletPrefab: {fileID: 3587991438908524183, guid: 31c14aa3921a9d84d89bb611dd2bf841, type: 3}
+    m_Bits: 0
+  bulletPrefab: {fileID: 0}
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 768

@@ -67,7 +67,7 @@ public class ControlRenderer : MonoBehaviour
     private void ShowAction(List<GameObject> unitsSelected){
         foreach (GameObject unit in unitsSelected){
             UnitSO unitSO = unit.GetComponent<Unit>().unitSO;
-            if(unitSO.unitType == UnitType.Builder){
+            if(unitSO.unitType == UnitType.Worker){
                 // If unitsSelected contains any builder unit, bring up building list
                 unitActionPanel.gameObject.SetActive(true);
                 return;

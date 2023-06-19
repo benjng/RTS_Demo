@@ -6,13 +6,12 @@ public abstract class Unit : MonoBehaviour
 {
     public int CurrentHP;
     public UnitSO unitSO;
+    // public WeaponSO weaponSO;
     public GameObject HPBarCanvas; // needed?
     public TargetDetector targetDetector;
     public LayerMask shootableLayer;
 
     [SerializeField] private GameObject bulletPrefab;
-    [SerializeField] private float shootingInterval = 0.001f;
-    [SerializeField] private float bulletSpeed = 100f;
     private GameObject currentTarget;
     private bool tgtInAttackRange = false;
     private float distanceToTgt;
@@ -60,7 +59,7 @@ public abstract class Unit : MonoBehaviour
 
     private IEnumerator ShootTarget(){ 
         while (true){
-            if (tgtInAttackRange) {
+            if (tgtInAttackRange && currentTarget != null) {
 
                 GameObject bullet = Instantiate(bulletPrefab, transform.position, transform.rotation);
                 bullet.tag = transform.tag; // add the same tag as this transform shoot (Enemy/Player)
@@ -83,29 +82,31 @@ public abstract class Unit : MonoBehaviour
                         endPos,
                         Mathf.Clamp01(1 - (remainingDistance / distanceToTgt))
                     );
-                    remainingDistance -= bulletSpeed * Time.deltaTime;
+                    remainingDistance -= unitSO.BulletSpeed * Time.deltaTime;
                     yield return null;
                 }
 
                 bullet.transform.position = endPos; // Make sure it reaches EndPoint
                 Destroy(bullet, 0.1f);
-                yield return new WaitForSeconds(shootingInterval);
+                yield return new WaitForSeconds(unitSO.ShootingInterval);
             }
             yield return null;
         }
     }
 
-    private void OnGotShot(Collider other){
-        if (!other.gameObject.layer.Equals(LayerMask.NameToLayer("Damage"))) return;
-        if (other.tag == transform.tag) return; // no self/team hurting
+    private void OnGotAttacked(Collider dmgSource){
+        if (!dmgSource.gameObject.layer.Equals(LayerMask.NameToLayer("Damage"))) return;
+        if (dmgSource.tag == transform.tag) return; // no self/team hurting
 
+        int dmg = dmgSource.GetComponent<Weapon>().GetWeaponDamage();
+        
         HPBarCanvas.SetActive(true);
-        transform.GetComponentInChildren<UnitHP>().DeductHP(1);
+        transform.GetComponentInChildren<UnitHP>().DeductHP(dmg);
         Debug.Log("Damaged to " + transform.name);
     }
 
     public void OnTriggerEnter(Collider other) {
-        OnGotShot(other);
+        OnGotAttacked(other);
     }
 
     public virtual void OnDrawGizmos() {

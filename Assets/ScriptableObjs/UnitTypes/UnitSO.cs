@@ -13,4 +13,6 @@ public class UnitSO : ScriptableObject
     public int MaxHP;
     public float DetectRadius;
     public float AttackRadius;
+    public float ShootingInterval;
+    public float BulletSpeed = 50f;
 }

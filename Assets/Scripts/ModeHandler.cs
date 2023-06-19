@@ -19,7 +19,7 @@ public class ModeHandler : MonoBehaviour
         }
 
         UnitType unitType = unitSO.unitType;
-        if (unitType == UnitType.Builder){
+        if (unitType == UnitType.Worker){
             currentMode = Mode.BuilderSelected;
         } else {
             currentMode = Mode.SoliderSelected;

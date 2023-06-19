@@ -10,12 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 19237a0ce10685140b9471c6e57a8d8b, type: 3}
-  m_Name: Builder
+  m_Name: Worker
   m_EditorClassIdentifier: 
-  unitName: Builder
+  unitName: Worker
   material: {fileID: 0}
   unitIcon: {fileID: 21300000, guid: ecb321cfb331c5e4faf058dc133e6fcc, type: 3}
   unitType: 0
-  MaxHP: 10
-  DetectRange: 1
-  AttackRange: 0.5
+  MaxHP: 30
+  DetectRadius: 0
+  AttackRadius: 0
+  ShootingInterval: 0
+  BulletSpeed: 100

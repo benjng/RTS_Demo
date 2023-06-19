@@ -19,3 +19,5 @@ MonoBehaviour:
   MaxHP: 20
   DetectRadius: 20
   AttackRadius: 10
+  ShootingInterval: 1
+  BulletSpeed: 100

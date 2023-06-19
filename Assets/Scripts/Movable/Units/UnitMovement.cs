@@ -39,7 +39,13 @@ public class UnitMovement : MonoBehaviour
 
         // Automvmt (Chase target when there is any)
         if (targetDetector.targetList.Count == 0) return;
-        destination = GetPosByTarget(targetDetector.targetList.First.Value);
+
+        // Make sure target is still alive
+        if (targetDetector.targetList.First.Value == null) {
+            targetDetector.targetList.RemoveFirst();
+            return;
+        }
+        destination = GetDestinationByTarget(targetDetector.targetList.First.Value);
         MoveToPos(destination);
     }
 
@@ -50,21 +56,26 @@ public class UnitMovement : MonoBehaviour
         if(Physics.Raycast(ray, out RaycastHit enemyHit, Mathf.Infinity, enemyLayer)) {
             // *** Atk movement
             UpdateTarget(enemyHit);
-            destination = GetPosByTarget(targetDetector.targetList.First.Value);
+            if (targetDetector.targetList.First.Value != null) { // Make sure target still exist
+                destination = GetDestinationByTarget(targetDetector.targetList.First.Value);
+            } else {
+                targetDetector.targetList.RemoveFirst();
+            }
         } else {
             // *** Precise Movement
-            destination = GetPosByRay(ray);
+            destination = GetDestinationByRay(ray);
             List<GameObject> currentUnitsSelected = UnitSelection.Instance.unitsSelected;
             int numOfSelectedUnit = currentUnitsSelected.Count;
 
-            // On Multiple units selected
+            // On Multiple units selected form formation by offset
             if (numOfSelectedUnit > 1) {
                 destination += GetOffSetVector(numOfSelectedUnit, currentUnitsSelected);
             }
         }
 
         // Move till reaching destination without being stopped
-        MoveToPos(destination); 
+        if (destination != null)
+            MoveToPos(destination); 
     }
 
     void UpdateTarget(RaycastHit hit){
@@ -75,7 +86,7 @@ public class UnitMovement : MonoBehaviour
 
 
     // AttackMovement: Move to attackable range
-    Vector3 GetPosByTarget(GameObject newTarget){
+    Vector3 GetDestinationByTarget(GameObject newTarget){
         float targetDist = Vector3.Distance(transform.position, newTarget.transform.position);
 
         if (targetDist < myUnit.unitSO.AttackRadius) 
@@ -86,7 +97,7 @@ public class UnitMovement : MonoBehaviour
     }
 
     // Move to ordered destination. Have higher priority than any other movement.
-    Vector3 GetPosByRay(Ray ray){
+    Vector3 GetDestinationByRay(Ray ray){
         myAgent.stoppingDistance = 0;
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, groundLayer))
             return hit.point;
