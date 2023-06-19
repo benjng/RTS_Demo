@@ -54,7 +54,7 @@ public class UnitMovement : MonoBehaviour
 
         Ray ray = myCam.ScreenPointToRay(Input.mousePosition);
         if(Physics.Raycast(ray, out RaycastHit enemyHit, Mathf.Infinity, enemyLayer)) {
-            // *** Atk movement
+            // *** Player ordered Atk movement
             UpdateTarget(enemyHit);
             if (targetDetector.targetList.First.Value != null) { // Make sure target still exist
                 destination = GetDestinationByTarget(targetDetector.targetList.First.Value);
@@ -62,7 +62,7 @@ public class UnitMovement : MonoBehaviour
                 targetDetector.targetList.RemoveFirst();
             }
         } else {
-            // *** Precise Movement
+            // *** Player ordered Precise Movement
             destination = GetDestinationByRay(ray);
             List<GameObject> currentUnitsSelected = UnitSelection.Instance.unitsSelected;
             int numOfSelectedUnit = currentUnitsSelected.Count;

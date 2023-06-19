@@ -79,6 +79,11 @@ public class UnitSelection : MonoBehaviour
         }
     }
 
+    public void DelistUnit(GameObject unitToRemove){
+        unitsSelected.Remove(unitToRemove);
+        unitList.Remove(unitToRemove);
+    }
+
     private void SwitchMode(GameObject unit){
         UnitSO unitSO = unit.GetComponent<Unit>().unitSO;
         modeHandler.SwitchModeByUnitSO(unitSO);

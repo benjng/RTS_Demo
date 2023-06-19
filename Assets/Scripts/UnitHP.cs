@@ -36,10 +36,17 @@ public class UnitHP : MonoBehaviour
     }
 
     private void OnHPZero(float value){
-        if (value <= 0) {
-            slider.onValueChanged.RemoveListener(OnHPZero);
-            Debug.Log("HP reached 0");
+        if (value > 0) return;
+        Debug.Log("HP reached 0");
+
+        slider.onValueChanged.RemoveListener(OnHPZero);
+        
+        if (unitSO.unitType == UnitType.Enemy){
             Destroy(transform.parent.gameObject);
+            return;
         }
+
+        UnitSelection.Instance.DelistUnit(transform.parent.gameObject);
+        Destroy(transform.parent.gameObject);
     }
 }
