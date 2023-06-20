@@ -41,7 +41,7 @@ public abstract class Unit : MonoBehaviour
 
         if (distanceToTgt < unitSO.AttackRadius){
             // Debug.Log("Target in atk range");
-            // Debug.DrawLine(transform.position, currentTargetPos, Color.green, 2f);
+            Debug.DrawLine(transform.position, currentTargetPos, Color.green, 0.5f);
             transform.LookAt(currentTarget.transform);
             tgtInAttackRange = true;
         } else if (distanceToTgt < unitSO.DetectRadius){
@@ -100,7 +100,7 @@ public abstract class Unit : MonoBehaviour
         
         HPBarCanvas.SetActive(true);
         transform.GetComponentInChildren<UnitHP>().DeductHP(dmg);
-        Debug.Log("Damaged to " + transform.name);
+        // Debug.Log("Damaged to " + transform.name);
     }
 
     public void OnTriggerEnter(Collider other) {

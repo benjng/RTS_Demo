@@ -18,7 +18,7 @@ MonoBehaviour:
   unitType: 3
   weaponSO: {fileID: 11400000, guid: 68c6ab7815b972a489244192e3417ad6, type: 2}
   MaxHP: 60
-  DetectRadius: 30
-  AttackRadius: 25
+  DetectRadius: 8
+  AttackRadius: 5
   ShootingInterval: 1
   BulletSpeed: 100

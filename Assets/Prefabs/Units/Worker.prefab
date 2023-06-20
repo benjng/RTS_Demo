@@ -52,15 +52,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b126e7a0ce350bb46b8a273298609c53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CurrentHP: 0
   unitSO: {fileID: 11400000, guid: 52bf73797d8dff04398208928a1729e3, type: 2}
-  weaponSO: {fileID: 0}
   HPBarCanvas: {fileID: 3187378859603711730}
   targetDetector: {fileID: 8636750240144099370}
-  shootableLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  bulletPrefab: {fileID: 0}
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 768
@@ -185,7 +179,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 84
   m_CollisionDetection: 0
 --- !u!1001 &6614842438664347227
 PrefabInstance:

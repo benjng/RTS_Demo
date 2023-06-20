@@ -18,7 +18,7 @@ public class UnitHP : MonoBehaviour
     private void Start(){
         slider.maxValue = unitSO.MaxHP;
         slider.value = slider.maxValue;
-        slider.onValueChanged.AddListener(OnHPZero);
+        // slider.onValueChanged.AddListener(OnHPZero);
     }
 
     private void LateUpdate(){
@@ -37,7 +37,7 @@ public class UnitHP : MonoBehaviour
 
     private void OnHPZero(float value){
         if (value > 0) return;
-        Debug.Log("HP reached 0");
+        // Debug.Log("HP reached 0");
 
         slider.onValueChanged.RemoveListener(OnHPZero);
         

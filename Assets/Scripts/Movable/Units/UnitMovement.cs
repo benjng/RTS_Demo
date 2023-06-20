@@ -14,6 +14,7 @@ public class UnitMovement : MonoBehaviour
     protected NavMeshAgent myAgent;
     protected Camera myCam;
     protected Vector3 destination;
+    private Ray ray;
 
     void Start()
     {
@@ -33,36 +34,37 @@ public class UnitMovement : MonoBehaviour
         if (myAgent.stoppingDistance > 0 && myAgent.velocity.magnitude < 0.2f){
             myAgent.ResetPath();
         }
-
-        // TODO: override Automovement when Manualmovement is in progress
+        
         // Prevent automovement when precise/atk moving
         if(myAgent.velocity.magnitude != 0) return;
 
-        AutoMovement();
+        Movement();
     }
 
     void ManualMovement(){
         if (!Input.GetMouseButtonDown(1)) return;
+        ray = myCam.ScreenPointToRay(Input.mousePosition);
 
-        Ray ray = myCam.ScreenPointToRay(Input.mousePosition);
-        if(Physics.Raycast(ray, out RaycastHit enemyHit, Mathf.Infinity, enemyLayer)) {
-            // *** Player ordered Atk movement
+        // *** Player ordered Atk movement
+        if(Physics.Raycast(ray, out RaycastHit enemyHit, Mathf.Infinity, enemyLayer, QueryTriggerInteraction.Collide)) {
+            Debug.Log("Attack on target");
             UpdateTarget(enemyHit);
-            if (targetDetector.targetList.First.Value != null) { // Make sure target still exist
-                destination = GetDestinationByTarget(targetDetector.targetList.First.Value);
-            } else {
-                targetDetector.targetList.RemoveFirst();
-            }
+            return;
+        } 
+        // *** Player ordered Precise movement
+        myAgent.stoppingDistance = 0;
+        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, groundLayer)) {
+            Debug.Log("Precise movement on ground");
+            destination = hit.point;
         } else {
-            // *** Player ordered Precise Movement
-            destination = GetDestinationByRay(ray);
-            List<GameObject> currentUnitsSelected = UnitSelection.Instance.unitsSelected;
-            int numOfSelectedUnit = currentUnitsSelected.Count;
+            destination = transform.position;
+        }
 
-            // On Multiple units selected form formation by offset
-            if (numOfSelectedUnit > 1) {
-                destination += GetOffSetVector(numOfSelectedUnit, currentUnitsSelected);
-            }
+        // On Multiple units selected form formation by offset
+        List<GameObject> currentUnitsSelected = UnitSelection.Instance.unitsSelected;
+        int numOfSelectedUnit = currentUnitsSelected.Count;
+        if (numOfSelectedUnit > 1) {
+            destination += GetOffSetVector(numOfSelectedUnit, currentUnitsSelected);
         }
 
         // Move till reaching destination without being stopped
@@ -70,7 +72,7 @@ public class UnitMovement : MonoBehaviour
             MoveToPos(destination); 
     }
 
-    protected void AutoMovement(){
+    protected void Movement(){
         // Make sure target is still alive
         if (targetDetector.targetList.Count == 0) return;
         if (targetDetector.targetList.First.Value == null) {
@@ -102,13 +104,13 @@ public class UnitMovement : MonoBehaviour
     }
 
     // Move to ordered destination. Have higher priority than any other movement.
-    Vector3 GetDestinationByRay(Ray ray){
-        myAgent.stoppingDistance = 0;
-        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, groundLayer))
-            return hit.point;
+    // Vector3 GetDestinationByRay(Ray ray){
+    //     myAgent.stoppingDistance = 0;
+    //     if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, groundLayer))
+    //         return hit.point;
 
-        return transform.position;
-    }
+    //     return transform.position;
+    // }
 
     Vector3 GetOffSetVector(int numOfSelectedUnit, List<GameObject> currentUnitsSelected){
         if (!currentUnitsSelected.Contains(gameObject)) throw new System.Exception("selected obj not found in list");
@@ -134,4 +136,11 @@ public class UnitMovement : MonoBehaviour
         myAgent.SetDestination(pos);
     }
 
+    private void OnDrawGizmos() {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawRay(ray.origin, ray.direction*70);
+        // Gizmos.color = Color.yellow;
+        // Gizmos.DrawLine(ray.origin, ray.direction*70);
+        // Gizmos.DrawSphere(ray.direction*70, 2f);
+    }
 }

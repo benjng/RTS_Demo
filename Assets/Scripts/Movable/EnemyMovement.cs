@@ -16,6 +16,6 @@ public class EnemyMovement : UnitMovement
         // Prevent automovement when precise/atk moving
         if(myAgent.velocity.magnitude != 0) return;
 
-        AutoMovement();
+        Movement();
     }
 }
