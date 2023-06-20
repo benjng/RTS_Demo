@@ -7,13 +7,17 @@ public class CameraController : MonoBehaviour
 {
     [SerializeField] private Transform cameraTransform;
     [SerializeField] private float moveSpeed;
+    [SerializeField] private float mouseZoomDuration = 0.2f;
     // private float leftEdge = 0f;
     // private float bottomEdge = 10f;
     private float rightEdge = Screen.width - 10;
     private float TopEdge = Screen.height - 10;
+
+
     void Start()
     {
         // Cursor.lockState = CursorLockMode.Confined;
+        StartCoroutine(CameraLerp());
     }
 
     void Update()
@@ -39,28 +43,6 @@ public class CameraController : MonoBehaviour
             verticalInput = 0;
         }
 
-        float scrollWheelInput = Input.GetAxis("Mouse ScrollWheel");
-        float currentFOV = cameraTransform.GetComponent<CinemachineVirtualCamera>().m_Lens.FieldOfView;
-        float targetFOV = currentFOV;
-        if (scrollWheelInput > 0f){
-            // Scroll wheel is scrolling up
-            targetFOV -= 5;
-            
-        } else if (scrollWheelInput < 0f){
-            // Scroll wheel is scrolling down
-            targetFOV += 5;
-        }
-
-        // TODO: Fix lerp
-        if (targetFOV != currentFOV) {
-            float t = 0;
-            for (int i=0; i<1000; i++){
-                cameraTransform.GetComponent<CinemachineVirtualCamera>().m_Lens.FieldOfView = Mathf.Lerp(currentFOV, targetFOV, t);
-                t += 0.001f;
-            }
-        }
-
-
         // Calculate the movement direction based on the camera's orientation
         Vector3 cameraForward = new Vector3(cameraTransform.forward.x, 0, cameraTransform.forward.z);      
         Vector3 cameraRight = cameraTransform.right;
@@ -70,6 +52,35 @@ public class CameraController : MonoBehaviour
         movementDir.Normalize();
 
         transform.position += movementDir * Time.deltaTime * moveSpeed;
+    }
+
+    IEnumerator CameraLerp(){
+        while (true){
+            float scrollWheelInput = Input.GetAxis("Mouse ScrollWheel");
+            if (scrollWheelInput == 0) yield return null;
+
+            float currentFOV = cameraTransform.GetComponent<CinemachineVirtualCamera>().m_Lens.FieldOfView;
+            float targetFOV = currentFOV;
+            if (scrollWheelInput > 0f){ // Scroll wheel is scrolling up
+                targetFOV -= 5;
+            } else if (scrollWheelInput < 0f){ // Scroll wheel is scrolling down
+                targetFOV += 5;
+            }
+
+
+            if (targetFOV != currentFOV) {
+                float t = 0;
+                float _smoothness = 10f;
+                float timeStarted = Time.time;
+                for (int i=0; i<_smoothness; i++){
+                    cameraTransform.GetComponent<CinemachineVirtualCamera>().m_Lens.FieldOfView = Mathf.Lerp(currentFOV, targetFOV, t);
+                    t += 1f/_smoothness;
+                    yield return new WaitForSeconds(mouseZoomDuration/_smoothness);
+                }
+                Debug.Log(Time.time - timeStarted);
+            }
+            yield return null;
+        }
     }
 
     // void OnDrawGizmos() {

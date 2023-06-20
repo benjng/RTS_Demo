@@ -35,9 +35,13 @@ public class UnitMovement : MonoBehaviour
             myAgent.ResetPath();
         }
         
-        // Prevent automovement when precise/atk moving
-        if(myAgent.velocity.magnitude != 0) return;
+        // Prevent automovement when precise moving
+        if(myAgent.velocity.magnitude != 0) {
+            Debug.Log("moving");
+            return;
+        }
 
+        // TODO: Improve chasing steering flexibility
         Movement();
     }
 
@@ -47,14 +51,12 @@ public class UnitMovement : MonoBehaviour
 
         // *** Player ordered Atk movement
         if(Physics.Raycast(ray, out RaycastHit enemyHit, Mathf.Infinity, enemyLayer, QueryTriggerInteraction.Collide)) {
-            Debug.Log("Attack on target");
             UpdateTarget(enemyHit);
             return;
         } 
         // *** Player ordered Precise movement
         myAgent.stoppingDistance = 0;
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, groundLayer)) {
-            Debug.Log("Precise movement on ground");
             destination = hit.point;
         } else {
             destination = transform.position;
@@ -80,7 +82,7 @@ public class UnitMovement : MonoBehaviour
             return;
         }
 
-        // Automvmt by targetList (Chase target when there is any)
+        // Movement include player targeted movements, automovements
         destination = GetDestinationByTarget(targetDetector.targetList.First.Value);
         MoveToPos(destination);
     }
